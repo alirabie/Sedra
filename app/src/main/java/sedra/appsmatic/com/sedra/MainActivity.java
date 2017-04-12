@@ -12,14 +12,48 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Spinner citiesList;
+    private Spinner countrieList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        citiesList = (Spinner) findViewById(R.id.citydown);
+        countrieList=(Spinner) findViewById(R.id.countrydown);
+
+        String[] items = new String[]{"مصر", "السعودية"};
+
+        //Country List
+        ArrayAdapter<String> cityadapter = new ArrayAdapter<String>(this,R.layout.drop_down_list_custome, items);
+        citiesList.setAdapter(cityadapter);
+
+
+
+        //Cities List
+        ArrayAdapter<String> cuntryadapter = new ArrayAdapter<String>(this,R.layout.drop_down_list_custome, items);
+        countrieList.setAdapter(cuntryadapter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
