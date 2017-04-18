@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="sedra.appsmatic.com.sedra.MainActivity">
+    tools:context=".Activites.Home">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -19,48 +19,52 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="horizontal"
-           android:padding="10dp">
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="30dp"
-               android:layout_weight="1"
-               android:background="@drawable/customespanner"
-               android:orientation="horizontal"
-               android:layout_margin="5dp">
-               <com.weiwangcn.betterspinner.library.BetterSpinner
-                   android:id="@+id/citydown"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="5dp"
-                   android:background="@android:color/transparent"
-                   android:gravity="center"
-                   android:spinnerMode="dropdown"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/customespanner"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_margin="5dp">
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/citydown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:textSize="10dp" />
 
 
-           </LinearLayout>
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="30dp"
-               android:layout_weight="1"
-               android:background="@drawable/customespanner"
-               android:orientation="horizontal"
-               android:layout_margin="5dp">
-               <com.weiwangcn.betterspinner.library.BetterSpinner
-                   android:id="@+id/countrydown"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:padding="5dp"
-                   android:background="@android:color/transparent"
-                   android:gravity="center"
-                   android:spinnerMode="dropdown"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/customespanner"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_margin="5dp">
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/countrydown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:textSize="10dp" />
 
 
-           </LinearLayout>
-       </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
 

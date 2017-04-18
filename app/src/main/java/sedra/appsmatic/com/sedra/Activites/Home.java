@@ -1,8 +1,11 @@
-package sedra.appsmatic.com.sedra;
+package sedra.appsmatic.com.sedra.Activites;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,14 +20,80 @@ import android.widget.Spinner;
 
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
+import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.R;
+
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private BetterSpinner citiesList;
     private BetterSpinner countrieList;
+
+    private final String clientId = "70a96d7c-247c-4cd0-9737-937859e059a9";
+    private final String clientSecret = "your-client-secret";
+    private final String redirectUri = "http://sedragift.com";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        //Test web service categories
+     Generator.createService(SedraApi.class).getCategories().enqueue(new Callback<ResCategories>() {
+         @Override
+         public void onResponse(Call<ResCategories> call, Response<ResCategories> response) {
+
+             if (response.isSuccessful()) {
+                 Log.e("True", response.body().getCategories().get(1).getId() + " "
+                         + response.body().getCategories().get(1).getName() + " "
+                         + response.body().getCategories().get(1).getDescription()
+                         + " " + response.body().getCategories().get(1).getImage().getSrc());
+             } else {
+
+                 Log.e("notsucsess", "response");
+
+             }
+         }
+
+         @Override
+         public void onFailure(Call<ResCategories> call, Throwable t) {
+             Log.e("Erorr", t.getMessage().toString());
+         }
+     });
+
+
+        //Test web service categories products
+        Generator.createService(SedraApi.class).getCategoryProducts(4).enqueue(new Callback<ResProducts>() {
+            @Override
+            public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+                if(response.isSuccessful()){
+
+                    Log.e("product",response.body().getProducts().get(1).getName()+ "\n"+
+                            response.body().getProducts().get(1).getFullDescription()+ "\n"+
+                            response.body().getProducts().get(1).getShortDescription()+ "\n"+
+                            response.body().getProducts().get(1).getImages().get(0).getSrc()+ "\n"+
+                            response.body().getProducts().get(1).getId());
+
+                }else {
+
+                    Log.e("Erorr","not sucsess");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResProducts> call, Throwable t) {
+                Log.e("Erorr",t.getMessage());
+            }
+        });
+
+
+
 
         citiesList = (BetterSpinner) findViewById(R.id.citydown);
         countrieList=(BetterSpinner) findViewById(R.id.countrydown);
@@ -35,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ArrayAdapter<String> cityadapter = new ArrayAdapter<String>(this,R.layout.drop_down_list_custome, items);
         citiesList.setAdapter(cityadapter);
         citiesList.setHint("Select City");
+
 
 
 
