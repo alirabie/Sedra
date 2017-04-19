@@ -1,8 +1,10 @@
 package sedra.appsmatic.com.sedra.API.WebServiceTools;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
+import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 
 /**
@@ -14,10 +16,13 @@ public interface SedraApi {
     @GET("api/categories?fields=id,name,description,image")
     Call<ResCategories> getCategories();
 
-    //Get Category Product by Id
+    //Get Category Products by Id
     @GET("api/products?fields=id,name,short_description,full_description,images")
-    Call<ResProducts> getCategoryProducts(@Query("category_id") int id);
+    Call<ResProducts> getCategoryProducts(@Query("category_id") String id);
 
+    //Get Product info by id
+    @GET("api/products/{id}")
+    Call<ResProducts> getProductInfo(@Path("id") String id);
 
 
 

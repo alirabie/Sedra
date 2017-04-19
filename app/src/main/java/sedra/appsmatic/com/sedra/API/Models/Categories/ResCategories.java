@@ -11,13 +11,13 @@ import java.util.List;
 public class ResCategories {
     @SerializedName("categories")
     @Expose
-    private List<Categori> categories = null;
+    private List<Category> categories = null;
 
-    public List<Categori> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Categori> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 }
