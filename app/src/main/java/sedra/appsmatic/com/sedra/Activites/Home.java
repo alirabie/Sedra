@@ -42,8 +42,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private static List<String> ids;
     private static List<String>products;
     private static List<String>pids;
-
-
     private final String clientId = "70a96d7c-247c-4cd0-9737-937859e059a9";
     private final String clientSecret = "your-client-secret";
     private final String redirectUri = "http://sedragift.com";
@@ -51,23 +49,76 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cats=new ArrayList<>();
-        ids=new ArrayList<>();
-        products=new ArrayList<>();
-        pids=new ArrayList<>();
+        countrieList = (BetterSpinner) findViewById(R.id.countrydown);
+        citiesList=(BetterSpinner)findViewById(R.id.citydown);
+        countrieList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
+        citiesList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
 
 
-        //Test web service categories
         Generator.createService(SedraApi.class).getCategories().enqueue(new Callback<ResCategories>() {
             @Override
             public void onResponse(Call<ResCategories> call, Response<ResCategories> response) {
 
                 if (response.isSuccessful()) {
-
-                    for (int i=0;i<response.body().getCategories().size();i++){
+                    cats = new ArrayList<>();
+                    ids = new ArrayList<>();
+                    for (int i = 0; i < response.body().getCategories().size(); i++) {
                         cats.add(response.body().getCategories().get(i).getName());
                         ids.add(response.body().getCategories().get(i).getId());
                     }
+
+                    //City List
+                    ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, cats);
+                    cuntryadapter.notifyDataSetChanged();
+                    countrieList.setAdapter(cuntryadapter);
+                    countrieList.setHint("Select Country");
+
+
+                    countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Generator.createService(SedraApi.class).getCategoryProducts(ids.get(position)).enqueue(new Callback<ResProducts>() {
+                                @Override
+                                public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+                                    if (response.isSuccessful()) {
+                                        products = new ArrayList<>();
+                                        pids = new ArrayList<>();
+                                        for (int i = 0; i < response.body().getProducts().size(); i++) {
+                                            products.add(response.body().getProducts().get(i).getName());
+                                            pids.add(response.body().getProducts().get(i).getId());
+                                        }
+
+                                            ArrayAdapter<String> padapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, products);
+                                            padapter.notifyDataSetChanged();
+                                            citiesList.setAdapter(padapter);
+
+                                            citiesList.setHint("Select p");
+                                            citiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                    Toast.makeText(getApplicationContext(), pids.get(position).toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
+
+
+                                    } else {
+
+                                        Log.e("Erorr", "not sucsess");
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResProducts> call, Throwable t) {
+                                    Log.e("Erorr", t.getMessage());
+                                }
+                            });
+
+                            Toast.makeText(getApplicationContext(), ids.get(position).toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
 
 
                     Log.e("Categories : ", response.body().getCategories().get(0).getId() + " "
@@ -94,34 +145,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
-        //Test get product info
-        Generator.createService(SedraApi.class).getProductInfo("4").enqueue(new Callback<ResProducts>() {
-            @Override
-            public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
 
-                if(response.isSuccessful()){
-                    Log.e("productInfo : ", response.body().getProducts().get(0).getName() + "\n" +
-                            response.body().getProducts().get(0).getFullDescription() + "\n" +
-                            response.body().getProducts().get(0).getShortDescription() + "\n" +
-                            response.body().getProducts().get(0).getImages().get(0).getSrc() + "\n" +
-                            response.body().getProducts().get(0).getId());
-                }else {
 
-                    Log.e("ErorrInfo", "not sucsess");
 
-                }
 
 
 
 
 
-            }
 
-            @Override
-            public void onFailure(Call<ResProducts> call, Throwable t) {
-                Log.e("ErorrInfo", t.getMessage());
-            }
-        });
 
 
 
@@ -146,8 +178,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
-        citiesList = (BetterSpinner) findViewById(R.id.citydown);
-        countrieList=(BetterSpinner) findViewById(R.id.countrydown);
 
 
 
@@ -168,53 +198,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
-        //City List
-        ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(this,R.layout.drop_down_list_custome,cats);
-        countrieList.setAdapter(cuntryadapter);
-        countrieList.setHint("Select Country");
-        countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Generator.createService(SedraApi.class).getCategoryProducts(ids.get(position)).enqueue(new Callback<ResProducts>() {
-                    @Override
-                    public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
-                        if (response.isSuccessful()) {
-
-                            for(int i=0;i<response.body().getProducts().size();i++){
-                                products.add(response.body().getProducts().get(i).getName());
-                                pids.add(response.body().getProducts().get(i).getId());
-                            }
-
-                            Log.e("products : ", response.body().getProducts().get(0).getName() + "\n" +
-                                    response.body().getProducts().get(0).getFullDescription() + "\n" +
-                                    response.body().getProducts().get(0).getShortDescription() + "\n" +
-                                    response.body().getProducts().get(0).getImages().get(0).getSrc() + "\n" +
-                                    response.body().getProducts().get(0).getId());
-
-                        } else {
-
-                            Log.e("Erorr", "not sucsess");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResProducts> call, Throwable t) {
-                        Log.e("Erorr", t.getMessage());
-                    }
-                });
-
-
-
-                Toast.makeText(getApplicationContext(), ids.get(position).toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-
-        //Country List
-        citiesList.setAdapter(new ArrayAdapter<>(this, R.layout.drop_down_list_custome, products));
-        citiesList.setHint("Select City");
 
 
 
