@@ -1,10 +1,13 @@
 package sedra.appsmatic.com.sedra.Activites;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -25,6 +30,8 @@ import com.weiwangcn.betterspinner.library.BetterSpinner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +40,7 @@ import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.R;
+import sedra.appsmatic.com.sedra.SaveSharedPreference;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,6 +57,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //Check Os Ver For Set Status Bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        }
+
+
+
         countrieList = (BetterSpinner) findViewById(R.id.countrydown);
         citiesList=(BetterSpinner)findViewById(R.id.citydown);
         countrieList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
@@ -77,7 +95,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                             Generator.createService(SedraApi.class).getCategoryProducts(ids.get(position)).enqueue(new Callback<ResProducts>() {
                                 @Override
                                 public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
@@ -290,4 +307,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
