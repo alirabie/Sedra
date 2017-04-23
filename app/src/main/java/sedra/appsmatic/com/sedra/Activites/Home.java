@@ -39,6 +39,7 @@ import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.R;
 import sedra.appsmatic.com.sedra.SaveSharedPreference;
 
@@ -71,13 +72,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         citiesList=(BetterSpinner)findViewById(R.id.citydown);
         countrieList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
         citiesList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
-
-
         Generator.createService(SedraApi.class).getCategories().enqueue(new Callback<ResCategories>() {
             @Override
             public void onResponse(Call<ResCategories> call, Response<ResCategories> response) {
 
                 if (response.isSuccessful()) {
+
+                    //fill names and ids to spinner list from response
                     cats = new ArrayList<>();
                     ids = new ArrayList<>();
                     for (int i = 0; i < response.body().getCategories().size(); i++) {
@@ -85,20 +86,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         ids.add(response.body().getCategories().get(i).getId());
                     }
 
-                    //City List
+                    //add names to spinner list
                     ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, cats);
                     cuntryadapter.notifyDataSetChanged();
                     countrieList.setAdapter(cuntryadapter);
                     countrieList.setHint("Select Country");
-
-
+                    //Action when select item from list
                     countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            //get sub items by id from list of ids from selected item
                             Generator.createService(SedraApi.class).getCategoryProducts(ids.get(position)).enqueue(new Callback<ResProducts>() {
                                 @Override
                                 public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
                                     if (response.isSuccessful()) {
+                                        //fill names and ids from response
                                         products = new ArrayList<>();
                                         pids = new ArrayList<>();
                                         for (int i = 0; i < response.body().getProducts().size(); i++) {
@@ -106,18 +108,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                             pids.add(response.body().getProducts().get(i).getId());
                                         }
 
-                                            ArrayAdapter<String> padapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, products);
-                                            padapter.notifyDataSetChanged();
-                                            citiesList.setAdapter(padapter);
+                                        ArrayAdapter<String> padapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, products);
+                                        padapter.notifyDataSetChanged();
+                                        citiesList.setAdapter(padapter);
+                                        citiesList.setHint("Select p");
+                                        //action when select item
+                                        citiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                            citiesList.setHint("Select p");
-                                            citiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                    Toast.makeText(getApplicationContext(), pids.get(position).toString(), Toast.LENGTH_LONG).show();
-                                                }
-                                            });
+                                                //remove and add ( update ) products fragment and send item id with his bundle
+                                                Products products = new Products();
+                                                Bundle bundle = new Bundle();
+                                                //put here id to send to fragment
+                                                bundle.putString("Placeid",pids.get(position).toString());
+                                                products.setArguments(bundle);
+                                                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                                                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                                fragmentTransaction.replace(R.id.fragmentcontener, products);
+                                                fragmentTransaction.commit();
 
+
+                                                Toast.makeText(getApplicationContext(), pids.get(position).toString(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
 
 
                                     } else {
@@ -154,6 +168,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 Log.e("Erorr", t.getMessage().toString());
             }
         });
+
 
 
 
