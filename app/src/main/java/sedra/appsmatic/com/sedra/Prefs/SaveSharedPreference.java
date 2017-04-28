@@ -1,4 +1,4 @@
-package sedra.appsmatic.com.sedra;
+package sedra.appsmatic.com.sedra.Prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;

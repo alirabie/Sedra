@@ -5,5 +5,14 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">الاعدادت</string>
     <string name="title_activity_splash">Splash</string>
+    <string name="logintitle">تسجيل الدخول</string>
+    <string name="emailhint">البريد الالكترونى</string>
+    <string name="passwordhint">كلمة المرور</string>
+    <string name="forgetpass">نسيت كلمة المرور</string>
+    <string name="newaccount">إنشاء حساب جديد</string>
+    <string name="phonenum">رقم الجوال</string>
+    <string name="repassword">إعادة كلمة المرور</string>
+    <string name="signuptitle">تسجيل</string>
+    <string name="username">اسم المستخدم</string>
 
 </resources>
