@@ -2,24 +2,24 @@ package sedra.appsmatic.com.sedra.Activites;
 
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import sedra.appsmatic.com.sedra.R;
 
-public class SignInScreen extends AppCompatActivity {
+public class PwActivationScreen extends AppCompatActivity {
 
-    private TextView forgetPassBtn,createNewAccount;
+    ImageView activeDoneBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_screen);
+        setContentView(R.layout.activity_pw_activation_screen);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -28,29 +28,17 @@ public class SignInScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-        //Setup items
-        forgetPassBtn=(TextView)findViewById(R.id.forgetpassword_txt_btn);
-        createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
-
-
-
-
-        //forget password button
-        forgetPassBtn.setOnClickListener(new View.OnClickListener() {
+        //setup items
+        activeDoneBtn=(ImageView)findViewById(R.id.activation_done_btn);
+        activeDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignInScreen.this,ForgetPasswordScreen.class));
+                startActivity(new Intent(PwActivationScreen.this,NewPasswordScreen.class));
             }
         });
 
 
-        //new account button
-        createNewAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignInScreen.this,SignUpScreen.class));
-            }
-        });
+
 
 
 

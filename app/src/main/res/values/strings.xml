@@ -7,6 +7,8 @@
     <string name="title_activity_splash">Splash</string>
     <string name="logintitle">Login</string>
     <string name="signuptitle">SignUp</string>
+    <string name="forgetpasstitle">Reset Password</string>
+    <string name="activationtitle">Activation</string>
     <string name="emailhint">Email Address</string>
     <string name="passwordhint">Password</string>
     <string name="forgetpass">Forget Password</string>
@@ -14,6 +16,10 @@
     <string name="username">User Name</string>
     <string name="repassword">Re Password</string>
     <string name="phonenum">Phone Number</string>
+    <string name="typephonenum">Please type your phone number to reset password</string>
+    <string name="newpassword">New Password</string>
+    <string name="activationcode">Insert Activation Code</string>
+    <string name="code">Code</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

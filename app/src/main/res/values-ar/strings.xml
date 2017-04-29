@@ -14,5 +14,11 @@
     <string name="repassword">إعادة كلمة المرور</string>
     <string name="signuptitle">تسجيل</string>
     <string name="username">اسم المستخدم</string>
+    <string name="forgetpasstitle">إعادة تعيين كلمة المرور</string>
+    <string name="typephonenum">قم بإدخال رقم الجوال لإعادة تعيين كلمة المرور لحسابك</string>
+    <string name="newpassword">كلمة المرور الجديدة</string>
+    <string name="activationcode">قم بإدخال رقم التفعيل المرسل لك فى الجوال </string>
+    <string name="activationtitle">تفعيل التسجيل</string>
+    <string name="code">الرمز</string>
 
 </resources>

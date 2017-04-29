@@ -26,6 +26,12 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Activites.SignUpScreen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activites.ForgetPasswordScreen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activites.NewPasswordScreen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activites.PwActivationScreen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

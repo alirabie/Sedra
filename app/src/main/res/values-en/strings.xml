@@ -14,5 +14,11 @@
     <string name="repassword">Re Password</string>
     <string name="phonenum">Phone Number</string>
     <string name="username">User Name</string>
+    <string name="forgetpasstitle">Reset Password</string>
+    <string name="typephonenum">Please type your phone number to reset password</string>
+    <string name="newpassword">New Password</string>
+    <string name="activationcode">Insert Activation Code</string>
+    <string name="activationtitle">Activation</string>
+    <string name="code">Code</string>
 
 </resources>
