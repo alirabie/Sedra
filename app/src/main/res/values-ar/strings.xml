@@ -20,5 +20,7 @@
     <string name="activationcode">قم بإدخال رقم التفعيل المرسل لك فى الجوال </string>
     <string name="activationtitle">تفعيل التسجيل</string>
     <string name="code">الرمز</string>
+    <string name="selectcountry">اختر الدولة</string>
+    <string name="selectstate">اختر المحافظة</string>
 
 </resources>

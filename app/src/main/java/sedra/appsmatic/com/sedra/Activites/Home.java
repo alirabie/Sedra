@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.BetterSpinner;
@@ -46,6 +47,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private final String clientId = "70a96d7c-247c-4cd0-9737-937859e059a9";
     private final String clientSecret = "your-client-secret";
     private final String redirectUri = "http://sedragift.com";
+
+    private ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,74 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+        //setup top buttons
+        flwerBtn=(ImageView)findViewById(R.id.flower_btn);
+        giftBtn=(ImageView)findViewById(R.id.gift_btn);
+        cookiesBtn=(ImageView)findViewById(R.id.cookies_btn);
+        plantsBtn=(ImageView)findViewById(R.id.plants_btn);
+
+        flwerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flwerBtn.setImageResource(R.drawable.flowerbtnactive);
+                giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+                plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+            }
+        });
+
+        giftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                giftBtn.setImageResource(R.drawable.giftbtnactive);
+                cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+                plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+            }
+        });
+
+        cookiesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                cookiesBtn.setImageResource(R.drawable.cookiesbtnactive);
+                plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+            }
+        });
+
+        plantsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+                plantsBtn.setImageResource(R.drawable.plantsbtnactive);
+
+            }
+        });
+
+
+
+
+        Products products2 = new Products();
+        Bundle bundle = new Bundle();
+        //put here id to send to fragment
+
+        products2.setArguments(bundle);
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentcontener, products2);
+        fragmentTransaction.commit();
+
+
+
+
+
+
 
 
 
@@ -283,7 +355,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_carticon) {
             return true;
         }
 

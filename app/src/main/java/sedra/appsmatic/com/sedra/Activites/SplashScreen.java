@@ -102,7 +102,7 @@ public class SplashScreen extends AppCompatActivity {
         gustBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Home.class));
+                startActivity(new Intent(getApplicationContext(),CountriesScreen.class));
             }
         });
 

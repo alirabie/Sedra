@@ -20,6 +20,8 @@
     <string name="newpassword">New Password</string>
     <string name="activationcode">Insert Activation Code</string>
     <string name="code">Code</string>
+    <string name="selectcountry">Select Country</string>
+    <string name="selectstate">Select State</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -7,5 +7,5 @@
     android:ellipsize="marquee"
     android:textAlignment="center"
     android:textColor="@color/colorPrimary"
-    android:textSize="10dp"
+    android:textSize="20dp"
     android:text="nnnn" />

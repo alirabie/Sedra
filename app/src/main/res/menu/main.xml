@@ -2,8 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_carticon"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="always"
+        android:icon="@drawable/shoppingbasketicon"
+        android:title="Cart"/>
+    <item
+    android:id="@+id/action_filtericon"
+    android:orderInCategory="100"
+    app:showAsAction="always"
+    android:icon="@drawable/filteicon"
+    android:title="Filter"/>
+
 </menu>

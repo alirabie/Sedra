@@ -2,13 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sedra.appsmatic.com.sedra.Fragments.Products">
+    tools:context="sedra.appsmatic.com.sedra.Fragments.Products"
+    android:background="#e3ddd1">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/text"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/prouductslist"
+        android:padding="12dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

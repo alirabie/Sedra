@@ -20,5 +20,7 @@
     <string name="activationcode">Insert Activation Code</string>
     <string name="activationtitle">Activation</string>
     <string name="code">Code</string>
+    <string name="selectcountry">Select Country</string>
+    <string name="selectstate">Select Country</string>
 
 </resources>

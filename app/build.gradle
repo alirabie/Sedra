@@ -30,4 +30,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.weiwangcn.betterspinner:library:1.1.0'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
