@@ -19,7 +19,7 @@ public interface SedraApi {
     Call<ResCategories> getCategories();
 
     //Get Category Products by Id
-    @GET("api/products?fields=id,name,short_description,full_description,images")
+    @GET("api/products?fields=id,images,price,name")
     Call<ResProducts> getCategoryProducts(@Query("category_id") String id);
 
     //Get all products

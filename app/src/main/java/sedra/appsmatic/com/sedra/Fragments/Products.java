@@ -11,7 +11,9 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,9 +26,9 @@ import sedra.appsmatic.com.sedra.R;
 
 public class Products extends Fragment {
 
-    private TextView test;
-
+    private String id="";
     private RecyclerView proudctsList;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -38,38 +40,91 @@ public class Products extends Fragment {
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         //receive Id and use it
         Bundle b = this.getArguments();
-        String id = b.getString("Placeid");
 
 
-        Generator.createService(SedraApi.class).getAllProuducts().enqueue(new Callback<ResProducts>() {
-            @Override
-            public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
-                if(response.isSuccessful()){
-                    proudctsList=(RecyclerView)view.findViewById(R.id.prouductslist);
-                    proudctsList.setAdapter(new ProductsAdb(response.body(), getContext()));
+        if(b.isEmpty()) {
 
+            //Get all products
+            Generator.createService(SedraApi.class).getAllProuducts().enqueue(new Callback<ResProducts>() {
+                @Override
+                public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+                    if (response.isSuccessful()) {
+                        if(progressBar.isShown())
+                            progressBar.setVisibility(View.GONE);
 
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    DisplayMetrics outMetrics = new DisplayMetrics();
-                    display.getMetrics(outMetrics);
+                        try {
+                            proudctsList = (RecyclerView) view.findViewById(R.id.prouductslist);
+                            proudctsList.setAdapter(new ProductsAdb(response.body(), getContext()));
+                            Display display = getActivity().getWindowManager().getDefaultDisplay();
+                            DisplayMetrics outMetrics = new DisplayMetrics();
+                            display.getMetrics(outMetrics);
+                            float density = getResources().getDisplayMetrics().density;
+                            float dpWidth = outMetrics.widthPixels / density;
+                            int columns = Math.round(dpWidth / 130);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
+                            proudctsList.setLayoutManager(gridLayoutManager);
+                        } catch (Exception e) {
 
-                    float density  = getResources().getDisplayMetrics().density;
-                    float dpWidth  = outMetrics.widthPixels / density;
-                    int columns = Math.round(dpWidth/130);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),columns);
-                    proudctsList.setLayoutManager(gridLayoutManager);
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResProducts> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ResProducts> call, Throwable t) {
+                    Toast.makeText(getContext(), t.getMessage() + "connection error from products Fragment ", Toast.LENGTH_LONG).show();
+                }
+            });
 
-            }
-        });
+        }else {
+
+            id = b.getString("id");
+            Generator.createService(SedraApi.class).getCategoryProducts(id).enqueue(new Callback<ResProducts>() {
+                @Override
+                public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+                    if (response.isSuccessful()) {
+                          if(progressBar.isShown())
+                            progressBar.setVisibility(View.GONE);
+                        try {
+                            proudctsList = (RecyclerView) view.findViewById(R.id.prouductslist);
+                            proudctsList.setAdapter(new ProductsAdb(response.body(), getContext()));
+                            Display display = getActivity().getWindowManager().getDefaultDisplay();
+                            DisplayMetrics outMetrics = new DisplayMetrics();
+                            display.getMetrics(outMetrics);
+                            float density = getResources().getDisplayMetrics().density;
+                            float dpWidth = outMetrics.widthPixels / density;
+                            int columns = Math.round(dpWidth / 130);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
+                            proudctsList.setLayoutManager(gridLayoutManager);
+                        } catch (Exception e) {
+
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResProducts> call, Throwable t) {
+
+                }
+            });
+
+
+        }
+
+
+
 
 
 

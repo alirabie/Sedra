@@ -18,6 +18,7 @@ public class SignInScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_screen);
         Window window = this.getWindow();
@@ -32,6 +33,11 @@ public class SignInScreen extends AppCompatActivity {
         forgetPassBtn=(TextView)findViewById(R.id.forgetpassword_txt_btn);
         createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
 
+        //Check Os Ver
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            forgetPassBtn.setBackgroundResource(R.drawable.ripple);
+            createNewAccount.setBackgroundResource(R.drawable.ripple);
+        }
 
 
 

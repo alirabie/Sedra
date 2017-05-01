@@ -22,5 +22,17 @@
     <string name="code">الرمز</string>
     <string name="selectcountry">اختر الدولة</string>
     <string name="selectstate">اختر المحافظة</string>
+    <string name="aboutus">من نحن</string>
+    <string name="callus">اتصل بنا</string>
+    <string name="descounted">منتجات مخفضه</string>
+    <string name="enter">دخول</string>
+    <string name="exit">خروج</string>
+    <string name="fav">مفضلتى</string>
+    <string name="home">الرئيسية</string>
+    <string name="morerequsted">الاكثر طلبا</string>
+    <string name="myaccount">حسابى</string>
+    <string name="settings">الاعدادات</string>
+    <string name="shoppingbasket">سلة المشتريات</string>
+    <string name="sidemennewaccount">انشاء حساب جديد</string>
 
 </resources>

@@ -22,5 +22,17 @@
     <string name="code">Code</string>
     <string name="selectcountry">Select Country</string>
     <string name="selectstate">Select Country</string>
+    <string name="aboutus">About Us</string>
+    <string name="callus">Contact Us</string>
+    <string name="descounted">Discounted Products</string>
+    <string name="enter">Sign In</string>
+    <string name="exit">Sign Out</string>
+    <string name="fav">Favorites</string>
+    <string name="home">Home</string>
+    <string name="morerequsted">More Requested</string>
+    <string name="myaccount">My Account</string>
+    <string name="settings">Settings</string>
+    <string name="shoppingbasket">Shopping Basket</string>
+    <string name="sidemennewaccount">New Account</string>
 
 </resources>

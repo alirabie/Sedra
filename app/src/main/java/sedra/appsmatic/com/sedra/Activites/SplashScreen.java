@@ -26,6 +26,7 @@ public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         //set app lang
@@ -52,6 +53,13 @@ public class SplashScreen extends AppCompatActivity {
             langBtn.setImageResource(R.drawable.ic_menu_camera);
         }
 
+        //Check Os Ver
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            langBtn.setBackgroundResource(R.drawable.ripple);
+            loginBtn.setBackgroundResource(R.drawable.ripple);
+            signUpbtn.setBackgroundResource(R.drawable.ripple);
+            gustBtn.setBackgroundResource(R.drawable.ripple);
+        }
 
         //Lang switch button action
         langBtn.setOnClickListener(new View.OnClickListener() {

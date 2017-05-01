@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -33,10 +35,11 @@ import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
 import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.R;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Home extends AppCompatActivity  {
 
     private BetterSpinner citiesList;
     private BetterSpinner countrieList;
@@ -49,9 +52,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private final String redirectUri = "http://sedragift.com";
 
     private ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
+    private RecyclerView sideMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Window window = this.getWindow();
@@ -71,10 +76,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         flwerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Switch activation button
                 flwerBtn.setImageResource(R.drawable.flowerbtnactive);
                 giftBtn.setImageResource(R.drawable.giftbtnunactive);
                 cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                 plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+                //start flowers fragment
+                Products flowers = new Products();
+                Bundle bundle = new Bundle();
+                //put here id to send to fragment
+                bundle.putString("id","13");
+                flowers.setArguments(bundle);
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentcontener, flowers);
+                fragmentTransaction.commit();
+
+
 
             }
         });
@@ -82,10 +102,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         giftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Switch activation button
                 flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
                 giftBtn.setImageResource(R.drawable.giftbtnactive);
                 cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                 plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+                //start gifts fragment
+                Products gifts = new Products();
+                Bundle bundle = new Bundle();
+                //put here id to send to fragment
+                bundle.putString("id","14");
+                gifts.setArguments(bundle);
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentcontener, gifts);
+                fragmentTransaction.commit();
 
             }
         });
@@ -93,10 +126,23 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         cookiesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Switch activation button
                 flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
                 giftBtn.setImageResource(R.drawable.giftbtnunactive);
                 cookiesBtn.setImageResource(R.drawable.cookiesbtnactive);
                 plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+                //start cookies fragment
+                Products cookies = new Products();
+                Bundle bundle = new Bundle();
+                //put here id to send to fragment
+                bundle.putString("id","15");
+                cookies.setArguments(bundle);
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentcontener, cookies);
+                fragmentTransaction.commit();
             }
         });
 
@@ -108,6 +154,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                 plantsBtn.setImageResource(R.drawable.plantsbtnactive);
 
+                //start plants fragment
+                Products plants = new Products();
+                Bundle bundle = new Bundle();
+                //put here id to send to fragment
+                bundle.putString("id","16");
+                plants.setArguments(bundle);
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentcontener, plants);
+                fragmentTransaction.commit();
+
             }
         });
 
@@ -117,7 +174,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Products products2 = new Products();
         Bundle bundle = new Bundle();
         //put here id to send to fragment
-
         products2.setArguments(bundle);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -136,6 +192,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         citiesList=(BetterSpinner)findViewById(R.id.citydown);
         countrieList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
         citiesList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
+        citiesList.setHint("Select Product");
         Generator.createService(SedraApi.class).getCategories().enqueue(new Callback<ResCategories>() {
             @Override
             public void onResponse(Call<ResCategories> call, Response<ResCategories> response) {
@@ -154,7 +211,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, cats);
                     cuntryadapter.notifyDataSetChanged();
                     countrieList.setAdapter(cuntryadapter);
-                    countrieList.setHint("Select Country");
+                    countrieList.setHint("Select Category");
                     //Action when select item from list
                     countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -175,7 +232,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                         ArrayAdapter<String> padapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, products);
                                         padapter.notifyDataSetChanged();
                                         citiesList.setAdapter(padapter);
-                                        citiesList.setHint("Select p");
+                                        citiesList.setHint("Select Product");
                                         //action when select item
                                         citiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
@@ -185,7 +242,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                                 Products products = new Products();
                                                 Bundle bundle = new Bundle();
                                                 //put here id to send to fragment
-                                                bundle.putString("Placeid",pids.get(position).toString());
+                                                bundle.putString("Placeid", pids.get(position).toString());
                                                 products.setArguments(bundle);
                                                 android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
                                                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -241,6 +298,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
 
+
+        //setup side menuR
+        sideMenu=(RecyclerView)findViewById(R.id.sidemenulist);
+        sideMenu.setAdapter(new SideMenuAdb(Home.this));
+        sideMenu.setLayoutManager(new LinearLayoutManager(Home.this));
 
 
 
@@ -311,23 +373,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.sidemenuhome_icon);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -362,30 +431,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 
 
