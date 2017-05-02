@@ -34,5 +34,11 @@
     <string name="settings">الاعدادات</string>
     <string name="shoppingbasket">سلة المشتريات</string>
     <string name="sidemennewaccount">انشاء حساب جديد</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="applangtv">اللغة المستخدمة فى التطبيق</string>
+    <string name="loadimagestv">تحميل الصور بالتطبيق</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <string name="selectlang">أختر اللغة</string>
 
 </resources>

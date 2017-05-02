@@ -28,6 +28,7 @@ import java.util.List;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
 import sedra.appsmatic.com.sedra.Fragments.Products;
+import sedra.appsmatic.com.sedra.Fragments.Settngs;
 import sedra.appsmatic.com.sedra.R;
 
 /**
@@ -129,6 +130,12 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
 
                     case 1 :
 
+                        Settngs settngs=new Settngs();
+                        android.support.v4.app.FragmentManager fragmentManager2 =((FragmentActivity) context).getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+                        fragmentTransaction2.replace(R.id.fragmentcontener,settngs);
+                        fragmentTransaction2.commit();
+                        drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case 2 :

@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/sidemenu_icon"
         android:padding="10dp"
-        android:background="#e4ded2" />
+        android:background="#e4ded2"
+        android:layout_marginTop="20dp" />
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
