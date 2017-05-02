@@ -89,7 +89,8 @@ public class SplashScreen extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             startActivity(new Intent(getApplicationContext(),SignInScreen.class));
+                startActivity(new Intent(getApplicationContext(),SignInScreen.class));
+                SplashScreen.this.finish();
             }
         });
 
@@ -100,6 +101,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),SignUpScreen.class));
+                SplashScreen.this.finish();
             }
         });
 
@@ -111,6 +113,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),CountriesScreen.class));
+                SplashScreen.this.finish();
             }
         });
 
