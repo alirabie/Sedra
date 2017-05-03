@@ -1,15 +1,12 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,8 +27,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
-import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
@@ -41,15 +36,14 @@ import sedra.appsmatic.com.sedra.R;
 
 public class Home extends AppCompatActivity  {
 
-    private BetterSpinner citiesList;
-    private BetterSpinner countrieList;
-    private static List<String> cats;
-    private static List<String> ids;
+    private BetterSpinner vendors;
+    private BetterSpinner categoriesSp;
+    private static List<String> vendorsNames;
+    private static List<String> vendorsIds;
     private static List<String>products;
     private static List<String>pids;
-    private final String clientId = "70a96d7c-247c-4cd0-9737-937859e059a9";
-    private final String clientSecret = "your-client-secret";
-    private final String redirectUri = "http://sedragift.com";
+
+
 
     private ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     private RecyclerView sideMenu;
@@ -66,6 +60,12 @@ public class Home extends AppCompatActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+        //Receive vendorsIds from countries screen
+        String countryId=getIntent().getStringExtra("country_id");
+        String stateId=getIntent().getStringExtra("stateId");
+
+        Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
 
         //setup top buttons
         flwerBtn=(ImageView)findViewById(R.id.flower_btn);
@@ -188,107 +188,43 @@ public class Home extends AppCompatActivity  {
 
 
 
-        countrieList = (BetterSpinner) findViewById(R.id.countrydown);
-        citiesList=(BetterSpinner)findViewById(R.id.citydown);
-        countrieList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
-        citiesList.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
-        citiesList.setHint("Select Product");
-        Generator.createService(SedraApi.class).getCategories().enqueue(new Callback<ResCategories>() {
+        categoriesSp = (BetterSpinner) findViewById(R.id.countrydown);
+        vendors =(BetterSpinner)findViewById(R.id.citydown);
+        categoriesSp.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
+        vendors.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
+        categoriesSp.setHint(getResources().getString(R.string.selectcategorie));
+        Generator.createService(SedraApi.class).getVendors(countryId,stateId).enqueue(new Callback<ResVendors>() {
             @Override
-            public void onResponse(Call<ResCategories> call, Response<ResCategories> response) {
-
+            public void onResponse(Call<ResVendors> call, Response<ResVendors> response) {
                 if (response.isSuccessful()) {
-
-                    //fill names and ids to spinner list from response
-                    cats = new ArrayList<>();
-                    ids = new ArrayList<>();
-                    for (int i = 0; i < response.body().getCategories().size(); i++) {
-                        cats.add(response.body().getCategories().get(i).getName());
-                        ids.add(response.body().getCategories().get(i).getId());
+                    //fill names and vendorsIds to spinner list from response
+                    vendorsNames = new ArrayList<>();
+                    vendorsIds = new ArrayList<>();
+                    for (int i = 0; i < response.body().getVendors().size(); i++) {
+                        vendorsNames.add(response.body().getVendors().get(i).getName());
+                        vendorsIds.add(response.body().getVendors().get(i).getId());
                     }
-
                     //add names to spinner list
-                    ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, cats);
-                    cuntryadapter.notifyDataSetChanged();
-                    countrieList.setAdapter(cuntryadapter);
-                    countrieList.setHint("Select Category");
-                    //Action when select item from list
-                    countrieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            //get sub items by id from list of ids from selected item
-                            Generator.createService(SedraApi.class).getCategoryProducts(ids.get(position)).enqueue(new Callback<ResProducts>() {
-                                @Override
-                                public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
-                                    if (response.isSuccessful()) {
-                                        //fill names and ids from response
-                                        products = new ArrayList<>();
-                                        pids = new ArrayList<>();
-                                        for (int i = 0; i < response.body().getProducts().size(); i++) {
-                                            products.add(response.body().getProducts().get(i).getName());
-                                            pids.add(response.body().getProducts().get(i).getId());
-                                        }
-
-                                        ArrayAdapter<String> padapter = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, products);
-                                        padapter.notifyDataSetChanged();
-                                        citiesList.setAdapter(padapter);
-                                        citiesList.setHint("Select Product");
-                                        //action when select item
-                                        citiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                                //remove and add ( update ) products fragment and send item id with his bundle
-                                                Products products = new Products();
-                                                Bundle bundle = new Bundle();
-                                                //put here id to send to fragment
-                                                bundle.putString("Placeid", pids.get(position).toString());
-                                                products.setArguments(bundle);
-                                                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                                                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                                fragmentTransaction.replace(R.id.fragmentcontener, products);
-                                                fragmentTransaction.commit();
-
-
-                                                Toast.makeText(getApplicationContext(), pids.get(position).toString(), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-
-
-                                    } else {
-
-                                        Log.e("Erorr", "not sucsess");
-                                    }
-
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResProducts> call, Throwable t) {
-                                    Log.e("Erorr", t.getMessage());
-                                }
-                            });
-
-                            Toast.makeText(getApplicationContext(), ids.get(position).toString(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-
-                    Log.e("Categories : ", response.body().getCategories().get(0).getId() + " "
-                            + response.body().getCategories().get(0).getName() + " "
-                            + response.body().getCategories().get(0).getDescription()
-                            + " " + response.body().getCategories().get(0).getImage().getSrc());
-                } else {
-
-                    Log.e("notsucsess", "response");
+                    ArrayAdapter<String> vendorsAdabtor=new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, vendorsNames);
+                    vendorsAdabtor.notifyDataSetChanged();
+                    vendors.setAdapter(vendorsAdabtor);
+                    vendors.setHint(getResources().getString(R.string.selectvendor));
+                    vendors.setHintTextColor(Color.WHITE);
+                }else {
+                    Toast.makeText(getApplication(), "Response not success from vendors Home ", Toast.LENGTH_LONG).show();
+                }
 
                 }
-            }
 
             @Override
-            public void onFailure(Call<ResCategories> call, Throwable t) {
-                Log.e("Erorr", t.getMessage().toString());
+            public void onFailure(Call<ResVendors> call, Throwable t) {
+                Toast.makeText(getApplication(), t.getMessage()+" : connection error from vendors", Toast.LENGTH_LONG).show();
             }
         });
+
+
+
+
 
 
 

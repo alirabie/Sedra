@@ -36,6 +36,8 @@ public class CountriesScreen extends AppCompatActivity {
     private static List<String>statesNames= new ArrayList<>();
     private static List<String>statesIds= new ArrayList<>();
     private static LinearLayout statesBox,contriesBox;
+    private static final String SAUDI_ID="52";
+    private static final String KUWAIT_ID="69";
 
 
 
@@ -72,89 +74,86 @@ public class CountriesScreen extends AppCompatActivity {
         });
 
         //get countries by id
-        Generator.createService(SedraApi.class).getCountries("52,69").enqueue(new Callback<ResCountry>() {
+        Generator.createService(SedraApi.class).getCountries(KUWAIT_ID + "," + SAUDI_ID).enqueue(new Callback<ResCountry>() {
             @Override
             public void onResponse(Call<ResCountry> call, Response<ResCountry> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     contriesBox.setVisibility(View.VISIBLE);
                     //fill names and ids to spinner list from response
                     for (int i = 0; i < response.body().getCountries().size(); i++) {
                         countriesNames.add(response.body().getCountries().get(i).getName());
                         countriesIds.add(response.body().getCountries().get(i).getId());
                     }
-                        //add names to spinner list
-                        ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome,countriesNames);
-                        cuntryadapter.notifyDataSetChanged();
-                        countriesspinner.setAdapter(cuntryadapter);
-                        countriesspinner.setHint(getResources().getString(R.string.selectcountry));
-                        countriesspinner.setHintTextColor(Color.WHITE);
+                    //add names to spinner list
+                    ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome, countriesNames);
+                    cuntryadapter.notifyDataSetChanged();
+                    countriesspinner.setAdapter(cuntryadapter);
+                    countriesspinner.setHint(getResources().getString(R.string.selectcountry));
+                    countriesspinner.setHintTextColor(Color.WHITE);
                     //counters list selection action
-                        countriesspinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                //get states by id
-                                Generator.createService(SedraApi.class).getStates(countriesIds.get(position)).enqueue(new Callback<ResStates>() {
-                                    @Override
-                                    public void onResponse(Call<ResStates> call, Response<ResStates> response) {
-                                        if(response.isSuccessful()){
-                                            statesBox.setVisibility(View.VISIBLE);
-                                            //fill names and ids to spinner list from response
-                                            for (int i = 0; i < response.body().getStates().size(); i++) {
-                                                statesNames.add(response.body().getStates().get(i).getName());
-                                                statesIds.add(response.body().getStates().get(i).getId());
-                                            }
+                    countriesspinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                            //get states by id
+                            Generator.createService(SedraApi.class).getStates(countriesIds.get(position)).enqueue(new Callback<ResStates>() {
 
-                                            //add names to spinner list
-                                            final ArrayAdapter<String> statesadabter = new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome,statesNames);
-                                            statesadabter.notifyDataSetChanged();
-                                            statesspinner.setAdapter(statesadabter);
-                                            statesspinner.setHint(getResources().getString(R.string.selectstate));
-                                            statesspinner.setHintTextColor(Color.WHITE);
-                                            //states list selection item action start home activity and send state id
-                                            statesspinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                    startActivity(new Intent(CountriesScreen.this,Home.class).putExtra("stateId",statesIds.get(position)));
-                                                    CountriesScreen.this.finish();
-                                                    countriesNames.clear();
-                                                    countriesIds.clear();
-                                                    statesNames.clear();
-                                                    countriesIds.clear();
-                                                }
-                                            });
+                                int currentPosition = position;
 
-                                        }else {
-                                            Toast.makeText(getApplication(),"Response not sucsess from states ",Toast.LENGTH_LONG).show();
+                                @Override
+                                public void onResponse(Call<ResStates> call, Response<ResStates> response) {
+                                    if (response.isSuccessful()) {
+                                        statesBox.setVisibility(View.VISIBLE);
+                                        //fill names and ids to spinner list from response
+                                        for (int i = 0; i < response.body().getStates().size(); i++) {
+                                            statesNames.add(response.body().getStates().get(i).getName());
+                                            statesIds.add(response.body().getStates().get(i).getId());
                                         }
+
+                                        //add names to spinner list
+                                        final ArrayAdapter<String> statesadabter = new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome, statesNames);
+                                        statesadabter.notifyDataSetChanged();
+                                        statesspinner.setAdapter(statesadabter);
+                                        statesspinner.setHint(getResources().getString(R.string.selectstate));
+                                        statesspinner.setHintTextColor(Color.WHITE);
+                                        //states list selection item action start home activity and send state id
+                                        statesspinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                startActivity(new Intent(CountriesScreen.this, Home.class)
+                                                        .putExtra("country_id", countriesIds.get(currentPosition))
+                                                        .putExtra("stateId", statesIds.get(position)));
+                                                CountriesScreen.this.finish();
+                                                countriesNames.clear();
+                                                countriesIds.clear();
+                                                statesNames.clear();
+                                                countriesIds.clear();
+                                            }
+                                        });
+
+                                    } else {
+                                        Toast.makeText(getApplication(), "Response not sucsess from states ", Toast.LENGTH_LONG).show();
                                     }
+                                }
 
-                                    @Override
-                                    public void onFailure(Call<ResStates> call, Throwable t) {
-                                        Toast.makeText(getApplication(),t.getMessage()+":From states ",Toast.LENGTH_LONG).show();
-                                    }
-                                });
-
-
-
+                                @Override
+                                public void onFailure(Call<ResStates> call, Throwable t) {
+                                    Toast.makeText(getApplication(), t.getMessage() + ":From states ", Toast.LENGTH_LONG).show();
+                                }
+                            });
 
 
+                        }
+                    });
 
-
-
-
-
-                            }
-                        });
-
-                }else {
-                    Toast.makeText(getApplication(),"Response not sucsess from countries ",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplication(), "Response not sucsess from countries ", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResCountry> call, Throwable t) {
 
-                Toast.makeText(getApplication(),t.getMessage()+":From countries ",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), t.getMessage() + ":From countries ", Toast.LENGTH_LONG).show();
             }
         });
 

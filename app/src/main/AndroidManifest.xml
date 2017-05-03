@@ -3,6 +3,7 @@
     package="sedra.appsmatic.com.sedra">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +39,8 @@
             android:name=".Activites.PwActivationScreen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activites.CountriesScreen"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activites.ProductInfoScreen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

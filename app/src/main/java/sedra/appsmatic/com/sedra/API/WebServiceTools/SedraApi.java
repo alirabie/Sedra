@@ -3,11 +3,13 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import sedra.appsmatic.com.sedra.API.Models.Addresses.ResAddresses;
 import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
+import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 
 /**
  * Created by Eng Ali on 4/18/2017.
@@ -39,5 +41,14 @@ public interface SedraApi {
     @GET("api/states/{id}")
     Call<ResStates> getStates(@Path("id") String id);
 
+
+    //Get vendors
+    @GET("api/vendors/country/{countryid}/state/{stateid}")
+    Call<ResVendors> getVendors(@Path("countryid") String country_id,@Path("stateid") String state_id);
+
+
+    //Get Addresses
+    @GET("api/vendors/address/{addressid}")
+    Call<ResAddresses>getVendorAddresess(@Path("addressid") String addressId);
 
 }

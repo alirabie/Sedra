@@ -1,6 +1,7 @@
 package sedra.appsmatic.com.sedra.Adabters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.Activites.ProductInfoScreen;
 import sedra.appsmatic.com.sedra.R;
 
 /**
@@ -33,13 +35,21 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
     }
 
     @Override
-    public void onBindViewHolder(vh0 holder, int position) {
+    public void onBindViewHolder(vh0 holder, final int position) {
 
         holder.priceTv.setText(products.getProducts().get(position).getPrice()+" SR");
 
         Picasso.with(context).load(products.getProducts().get(position).getImages().get(0).getSrc().toString()).fit().into(holder.productImg);
 
 
+        holder.productImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, ProductInfoScreen.class)
+                        .putExtra("product_id",products.getProducts().get(position).getId()+"")
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            }
+        });
     }
 
     @Override

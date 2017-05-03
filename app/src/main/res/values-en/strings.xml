@@ -40,5 +40,8 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="selectlang">Select Language</string>
+    <string name="selectcategorie">Select Category</string>
+    <string name="selectvendor">Select Vendor</string>
+    <string name="count">Count</string>
 
 </resources>

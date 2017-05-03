@@ -40,5 +40,8 @@
     <string name="no">لا</string>
     <string name="yes">نعم</string>
     <string name="selectlang">أختر اللغة</string>
+    <string name="selectcategorie">اختر التصنيف</string>
+    <string name="selectvendor">اختر البائع</string>
+    <string name="count">العدد</string>
 
 </resources>
