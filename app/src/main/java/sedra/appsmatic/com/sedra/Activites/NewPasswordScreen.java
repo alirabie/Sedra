@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.security.PrivateKey;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class NewPasswordScreen extends AppCompatActivity {
@@ -34,8 +35,22 @@ public class NewPasswordScreen extends AppCompatActivity {
         }
 
 
+
         //Setup items
         resetBtn=(ImageView)findViewById(R.id.new_password_reset_btn);
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            resetBtn.setImageResource(R.drawable.resetbtn_ar);
+
+        }else{
+            resetBtn.setImageResource(R.drawable.resetbtn_en);
+        }
+
+
+
+
+
+
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

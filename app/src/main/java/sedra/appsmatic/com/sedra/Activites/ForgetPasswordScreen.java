@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class ForgetPasswordScreen extends AppCompatActivity {
@@ -32,6 +33,13 @@ public class ForgetPasswordScreen extends AppCompatActivity {
         sendBtn=(ImageView)findViewById(R.id.resetpassword_send_btn);
 
 
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            sendBtn.setImageResource(R.drawable.sendbtn_ar);
+
+        }else{
+            sendBtn.setImageResource(R.drawable.sendbtn_en);
+        }
 
 
 

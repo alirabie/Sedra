@@ -6,10 +6,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class SignUpScreen extends AppCompatActivity {
+
+    ImageView signUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +27,23 @@ public class SignUpScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+        signUpBtn=(ImageView)findViewById(R.id.signup_btn);
+
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            signUpBtn.setImageResource(R.drawable.signup_btn_arabic);
+        }else{
+            signUpBtn.setImageResource(R.drawable.signupsc_btn_en);
+        }
+
+
+
+
+
+
+
+
+
     }
 }

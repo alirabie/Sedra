@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class SignInScreen extends AppCompatActivity {
 
     private TextView forgetPassBtn,createNewAccount;
+    private ImageView signInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,16 @@ public class SignInScreen extends AppCompatActivity {
         //Setup items
         forgetPassBtn=(TextView)findViewById(R.id.forgetpassword_txt_btn);
         createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
+        signInBtn=(ImageView)findViewById(R.id.login_btn);
+
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            signInBtn.setImageResource(R.drawable.signin_btn);
+
+        }else{
+            signInBtn.setImageResource(R.drawable.signinbtn_en);
+        }
+
 
         //Check Os Ver
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

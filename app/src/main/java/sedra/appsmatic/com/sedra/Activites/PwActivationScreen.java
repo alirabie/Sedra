@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class PwActivationScreen extends AppCompatActivity {
@@ -31,6 +32,16 @@ public class PwActivationScreen extends AppCompatActivity {
 
         //setup items
         activeDoneBtn=(ImageView)findViewById(R.id.activation_done_btn);
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            activeDoneBtn.setImageResource(R.drawable.activationbtn_ar);
+
+        }else{
+            activeDoneBtn.setImageResource(R.drawable.activation_btn_en);
+        }
+
+
+
         activeDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

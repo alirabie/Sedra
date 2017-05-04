@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Locale;
@@ -22,6 +23,7 @@ import sedra.appsmatic.com.sedra.R;
 public class SplashScreen extends AppCompatActivity {
 
    private ImageView langBtn,loginBtn,signUpbtn,gustBtn;
+    private RelativeLayout bg;
 
 
     @Override
@@ -44,13 +46,23 @@ public class SplashScreen extends AppCompatActivity {
         loginBtn=(ImageView)findViewById(R.id.login_btn);
         signUpbtn=(ImageView)findViewById(R.id.signup_btn);
         gustBtn=(ImageView)findViewById(R.id.gust_btn);
+        bg=(RelativeLayout)findViewById(R.id.splash_bg);
 
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
-           langBtn.setImageResource(R.drawable.englishbtn);
+            langBtn.setImageResource(R.drawable.englishbtn);
+            loginBtn.setImageResource(R.drawable.signin_arabic);
+            signUpbtn.setImageResource(R.drawable.signup_arabic);
+            gustBtn.setImageResource(R.drawable.guestbtn_arabic);
+            bg.setBackground(getResources().getDrawable(R.drawable.splashscreen_arabic));
+
         }else{
-            langBtn.setImageResource(R.drawable.ic_menu_camera);
+            langBtn.setImageResource(R.drawable.arabicbtn);
+            loginBtn.setImageResource(R.drawable.signin_btn_en);
+            signUpbtn.setImageResource(R.drawable.signup_btn_en);
+            gustBtn.setImageResource(R.drawable.guest_btn_en);
+            bg.setBackground(getResources().getDrawable(R.drawable.backg_en));
         }
 
         //Check Os Ver

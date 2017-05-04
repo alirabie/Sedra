@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.BetterSpinner;
@@ -26,6 +27,7 @@ import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class CountriesScreen extends AppCompatActivity {
@@ -38,6 +40,7 @@ public class CountriesScreen extends AppCompatActivity {
     private static LinearLayout statesBox,contriesBox;
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
+    RelativeLayout bg;
 
 
 
@@ -57,10 +60,22 @@ public class CountriesScreen extends AppCompatActivity {
         contriesBox=(LinearLayout)findViewById(R.id.countries_contenr);
         statesspinner=(BetterSpinner)findViewById(R.id.statesspinner);
         statesBox=(LinearLayout)findViewById(R.id.states_countener);
+        bg=(RelativeLayout)findViewById(R.id.location_bg);
         countriesspinner.setAdapter(new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome));
         statesspinner.setAdapter(new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome));
         contriesBox.setVisibility(View.INVISIBLE);
         statesBox.setVisibility(View.INVISIBLE);
+
+
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            bg.setBackground(getResources().getDrawable(R.drawable.backg));
+
+        }else{
+            bg.setBackground(getResources().getDrawable(R.drawable.location_bg_en));
+        }
+
+
 
 
         //Hide states spinner when click on countries spinner

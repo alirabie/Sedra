@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     tools:context="sedra.appsmatic.com.sedra.Activites.SplashScreen"
     android:background="@drawable/splashscreen_arabic"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:id="@+id/splash_bg">
 
     <ImageView
         android:layout_width="wrap_content"
