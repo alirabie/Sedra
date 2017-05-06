@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -21,12 +22,14 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class ProductInfoScreen extends ActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private SliderLayout mDemoSlider;
     private TextView pName,pPrice,pDec,pReady;
+    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,27 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         pDec=(TextView)findViewById(R.id.desc_tv);
         pPrice=(TextView)findViewById(R.id.price_tv_info);
         pReady=(TextView)findViewById(R.id.time_to_redy);
+        addToCartBtn=(ImageView)findViewById(R.id.add_to_cart_tv);
+        deliveryAddressBtn=(ImageView)findViewById(R.id.deliver_btn);
+        deliveryTimeBtn=(ImageView)findViewById(R.id.time_deliver_btn);
+        giftMsgBtn=(ImageView)findViewById(R.id.gift_msg_btn);
+        sugTitle=(ImageView)findViewById(R.id.sug_title_id);
+
+
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            addToCartBtn.setImageResource(R.drawable.addtocart_btn);
+            deliveryAddressBtn.setImageResource(R.drawable.deliveryaddress);
+            deliveryTimeBtn.setImageResource(R.drawable.deliverytime);
+            giftMsgBtn.setImageResource(R.drawable.giftingmessage);
+            sugTitle.setImageResource(R.drawable.suggestedtitle);
+        }else{
+            addToCartBtn.setImageResource(R.drawable.add_to_cart_btn_en);
+            deliveryAddressBtn.setImageResource(R.drawable.delivery_address_btn_en);
+            deliveryTimeBtn.setImageResource(R.drawable.delivery_time_btn_en);
+            giftMsgBtn.setImageResource(R.drawable.gift_msg_btn_en);
+            sugTitle.setImageResource(R.drawable.suggested_title_en);
+        }
 
 
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
@@ -55,7 +79,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                    pName.setText(response.body().getProducts().get(0).getName()+"");
                    pDec.setText(response.body().getProducts().get(0).getShortDescription()+"");
-                   pPrice.setText(response.body().getProducts().get(0).getPrice()+"SR");
+                   pPrice.setText(response.body().getProducts().get(0).getPrice()+getResources().getString(R.string.sr));
 
                    for(int i=0;i<response.body().getProducts().get(0).getImages().size();i++) {
                        TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);

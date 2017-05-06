@@ -21,7 +21,7 @@
     <string name="activationtitle">Activation</string>
     <string name="code">Code</string>
     <string name="selectcountry">Select Country</string>
-    <string name="selectstate">Select Country</string>
+    <string name="selectstate">Select State</string>
     <string name="aboutus">About Us</string>
     <string name="callus">Contact Us</string>
     <string name="descounted">Discounted Products</string>
@@ -43,5 +43,6 @@
     <string name="selectcategorie">Select Category</string>
     <string name="selectvendor">Select Vendor</string>
     <string name="count">Count</string>
+    <string name="sr">SR</string>
 
 </resources>

@@ -42,6 +42,7 @@
     <string name="selectvendor">Select Vendor</string>
     <string name="selectcategorie">Select Category</string>
     <string name="count">Count</string>
+    <string name="sr">SR</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

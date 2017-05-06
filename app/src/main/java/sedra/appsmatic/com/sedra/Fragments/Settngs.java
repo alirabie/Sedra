@@ -55,6 +55,12 @@ public class Settngs extends Fragment {
         yes=(CheckBox)view.findViewById(R.id.yes_check);
         no=(CheckBox)view.findViewById(R.id.no_check);
         save=(ImageView)view.findViewById(R.id.save_settings);
+        //Set images languages
+        if(SaveSharedPreference.getLangId(getContext()).equals("ar")){
+            save.setImageResource(R.drawable.savebtn);
+        }else{
+            save.setImageResource(R.drawable.save_btn_en);
+        }
 
 
         if(SaveSharedPreference.getImgLoadingSatatus(getContext())){

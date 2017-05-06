@@ -37,7 +37,7 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
     @Override
     public void onBindViewHolder(vh0 holder, final int position) {
 
-        holder.priceTv.setText(products.getProducts().get(position).getPrice()+" SR");
+        holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
 
         Picasso.with(context).load(products.getProducts().get(position).getImages().get(0).getSrc().toString()).fit().into(holder.productImg);
 
