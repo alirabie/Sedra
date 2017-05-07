@@ -179,6 +179,14 @@ public class CountriesScreen extends AppCompatActivity {
 
 
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        countriesNames.clear();
+        countriesIds.clear();
+        statesNames.clear();
+        countriesIds.clear();
     }
 }

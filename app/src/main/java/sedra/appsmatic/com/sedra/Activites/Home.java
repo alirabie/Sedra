@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class Home extends AppCompatActivity  {
     private static List<String> vendorsIds;
     private static List<String>products;
     private static List<String>pids;
+    public static android.support.v4.app.FragmentManager fragmentManager;
+    public static android.support.v4.app.FragmentTransaction fragmentTransaction;
 
 
 
@@ -89,8 +92,8 @@ public class Home extends AppCompatActivity  {
                 //put here id to send to fragment
                 bundle.putString("id","13");
                 flowers.setArguments(bundle);
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentcontener, flowers);
                 fragmentTransaction.commit();
 
@@ -115,8 +118,8 @@ public class Home extends AppCompatActivity  {
                 //put here id to send to fragment
                 bundle.putString("id","14");
                 gifts.setArguments(bundle);
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentcontener, gifts);
                 fragmentTransaction.commit();
 
@@ -139,8 +142,8 @@ public class Home extends AppCompatActivity  {
                 //put here id to send to fragment
                 bundle.putString("id","15");
                 cookies.setArguments(bundle);
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentcontener, cookies);
                 fragmentTransaction.commit();
             }
@@ -160,8 +163,8 @@ public class Home extends AppCompatActivity  {
                 //put here id to send to fragment
                 bundle.putString("id","16");
                 plants.setArguments(bundle);
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentcontener, plants);
                 fragmentTransaction.commit();
 
@@ -175,8 +178,8 @@ public class Home extends AppCompatActivity  {
         Bundle bundle = new Bundle();
         //put here id to send to fragment
         products2.setArguments(bundle);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentcontener, products2);
         fragmentTransaction.commit();
 
@@ -360,9 +363,10 @@ public class Home extends AppCompatActivity  {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_carticon) {
+        if (id == R.id.action_filtericon) {
+           startActivity(new Intent(this,Filter.class));
             return true;
-        }
+        }else
 
         return super.onOptionsItemSelected(item);
     }

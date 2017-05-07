@@ -44,5 +44,11 @@
     <string name="selectvendor">Select Vendor</string>
     <string name="count">Count</string>
     <string name="sr">SR</string>
+    <string name="delivertime">Deliver in same Day ....</string>
+    <string name="filterbyprice">Filter By Price .....</string>
+    <string name="filtercat">Category</string>
+    <string name="priceselect">Select Price .....</string>
+    <string name="search">Search for .....</string>
+    <string name="msg">Message ......</string>
 
 </resources>

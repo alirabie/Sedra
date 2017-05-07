@@ -38,10 +38,20 @@
         <activity
             android:name=".Activites.PwActivationScreen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activites.CountriesScreen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activites.ProductInfoScreen"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activites.CountriesScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.ProductInfoScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activites.Filter"
+            android:theme="@style/Theme.AppCompat.Translucent"></activity>
+        <activity
+            android:name=".Activites.AboutUsScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.ContactUsScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -25,6 +25,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import sedra.appsmatic.com.sedra.Activites.AboutUsScreen;
+import sedra.appsmatic.com.sedra.Activites.ContactUsScreen;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
 import sedra.appsmatic.com.sedra.Fragments.Products;
@@ -162,10 +164,15 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
 
                     case 7 :
 
+                        //About Us
+                        context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case 8 :
-
+                        //Contact Us
+                        context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case 9 :

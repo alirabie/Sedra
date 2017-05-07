@@ -44,5 +44,11 @@
     <string name="selectvendor">اختر البائع</string>
     <string name="count">العدد</string>
     <string name="sr">رس</string>
+    <string name="delivertime">التوصيل فى نفس اليوم ......</string>
+    <string name="filterbyprice">الترتيب حسب السعر ......</string>
+    <string name="filtercat">التصنيف</string>
+    <string name="priceselect">تحديد السعر ......</string>
+    <string name="search">البحث عن .......</string>
+    <string name="msg">الرسالة ......</string>
 
 </resources>
