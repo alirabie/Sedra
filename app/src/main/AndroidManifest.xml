@@ -52,6 +52,12 @@
         <activity
             android:name=".Activites.ContactUsScreen"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.DeliveryDateScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.GiftMessageScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

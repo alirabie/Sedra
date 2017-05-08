@@ -48,7 +48,13 @@
     <string name="filtercat">Category</string>
     <string name="filterbyprice">Filter By Price .....</string>
     <string name="delivertime">Deliver in same Day ....</string>
-<string name="msg">Message ......</string>
+    <string name="msg">Message ......</string>
+    <string name="datescreen">Deliver Date</string>
+    <string name="sendername">Sender Name</string>
+    <string name="senderphone">Sender Phone</string>
+    <string name="recivername">Receiver Name</string>
+    <string name="giftmsg">Gift Message</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

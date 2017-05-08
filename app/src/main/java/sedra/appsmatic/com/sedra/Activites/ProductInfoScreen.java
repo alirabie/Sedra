@@ -1,10 +1,12 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -71,7 +73,21 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             sugTitle.setImageResource(R.drawable.suggested_title_en);
         }
 
+        //Delivery Date btn
+        deliveryTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this,DeliveryDateScreen.class));
+            }
+        });
 
+        //Gift Msg btn
+        giftMsgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this,GiftMessageScreen.class));
+            }
+        });
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
             @Override
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {

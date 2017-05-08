@@ -50,5 +50,10 @@
     <string name="priceselect">تحديد السعر ......</string>
     <string name="search">البحث عن .......</string>
     <string name="msg">الرسالة ......</string>
+    <string name="datescreen">موعد التوصيل</string>
+    <string name="recivername">اسم المستلم</string>
+    <string name="sendername">اسم المرسل</string>
+    <string name="senderphone">رقم المرسل</string>
+    <string name="giftmsg">رسالة الاهداء</string>
 
 </resources>
