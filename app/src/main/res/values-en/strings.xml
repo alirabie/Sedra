@@ -55,5 +55,17 @@
     <string name="sendername">Sender Name</string>
     <string name="senderphone">Sender Phone</string>
     <string name="giftmsg">Gift Message</string>
+    <string name="deliceraddress">Deliver Address</string>
+    <string name="hay">Neighborhood</string>
+    <string name="homephone">Home Number</string>
+    <string name="selectfrommap">Location On Map</string>
+    <string name="title_activity_delivery_address">map</string>
+    <string name="st">Street</string>
+    <string name="moreinfo">More Information</string>
+    <string name="rcevername">Receiver Name</string>
+    <string name="rceverphone">Receiver Phone</string>
+    <string name="gpsoff">Turn on GPS</string>
+    <string name="turnon">Turn On</string>
+    <string name="locationdet">Location Detected</string>
 
 </resources>

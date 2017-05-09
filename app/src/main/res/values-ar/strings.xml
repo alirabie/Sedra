@@ -55,5 +55,17 @@
     <string name="sendername">اسم المرسل</string>
     <string name="senderphone">رقم المرسل</string>
     <string name="giftmsg">رسالة الاهداء</string>
+    <string name="deliceraddress">عنوان التوصيل</string>
+    <string name="hay">الحى</string>
+    <string name="homephone">رقم المنزل</string>
+    <string name="selectfrommap">الموقع على الخريطة </string>
+    <string name="title_activity_delivery_address">map</string>
+    <string name="st">الشارع</string>
+    <string name="moreinfo">معلومات اضافية </string>
+    <string name="rcevername">أسم المستلم</string>
+    <string name="rceverphone">رقم جوال المستلم </string>
+    <string name="gpsoff">تشغيل خاصية تحديد المواقع</string>
+    <string name="turnon">تشغيل</string>
+    <string name="locationdet">تحديد الموقع</string>
 
 </resources>

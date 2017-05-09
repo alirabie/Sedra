@@ -4,12 +4,22 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     defaultConfig {
         applicationId "sedra.appsmatic.com.sedra"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+        generatedDensities = []
+    }
+    // This is handled for you by the 2.0+ Gradle Plugin
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
     buildTypes {
         release {
@@ -34,4 +44,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
+    compile 'com.google.android.gms:play-services:10.2.1'
+    compile 'com.google.firebase:firebase-messaging:9.2.0'
+    compile 'com.android.support:multidex:1.0.1'
+
+
 }
+

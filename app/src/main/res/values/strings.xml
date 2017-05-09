@@ -54,9 +54,21 @@
     <string name="senderphone">Sender Phone</string>
     <string name="recivername">Receiver Name</string>
     <string name="giftmsg">Gift Message</string>
+    <string name="hay">Neighborhood</string>
+    <string name="st">Street</string>
+    <string name="homephone">Home Number</string>
+    <string name="moreinfo">More Information</string>
+    <string name="selectfrommap">Location On Map</string>
+    <string name="deliceraddress">Deliver Address</string>
+    <string name="rcevername">Receiver Name</string>
+    <string name="rceverphone">Receiver Phone</string>
+    <string name="gpsoff">Turn on GPS</string>
+    <string name="turnon">Turn On</string>
+    <string name="locationdet">Location Detected</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_delivery_address">Map</string>
 
 </resources>

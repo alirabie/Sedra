@@ -88,6 +88,15 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 startActivity(new Intent(ProductInfoScreen.this,GiftMessageScreen.class));
             }
         });
+
+
+        //Delivery Address btn
+        deliveryAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this,DeliveryAddress.class));
+            }
+        });
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
             @Override
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
