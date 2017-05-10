@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class ContactUsScreen extends AppCompatActivity {
@@ -34,6 +35,14 @@ public class ContactUsScreen extends AppCompatActivity {
         
         home=(ImageView)findViewById(R.id.home_btn_contactus);
         send=(ImageView)findViewById(R.id.countact_send_btn);
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            send.setImageResource(R.drawable.sendbtn_ar);
+
+        }else{
+            send.setImageResource(R.drawable.sendbtn_en);
+        }
+
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

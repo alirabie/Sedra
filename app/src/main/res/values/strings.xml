@@ -65,6 +65,14 @@
     <string name="gpsoff">Turn on GPS</string>
     <string name="turnon">Turn On</string>
     <string name="locationdet">Location Detected</string>
+    <string name="total">Total Price</string>
+    <string name="delivercosts">Deliver Cost</string>
+    <string name="finaltotalprice">Final Total Price</string>
+    <string name="acceptrules">Accept Rules</string>
+    <string name="registermailcheck">Subscribe mail service</string>
+    <string name="deccode">Discount Code</string>
+    <string name="shoppingcart">Shopping Cart</string>
+    <string name="cridet">Credit Card</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

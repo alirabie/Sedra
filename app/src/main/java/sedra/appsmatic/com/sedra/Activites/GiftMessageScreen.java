@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class GiftMessageScreen extends AppCompatActivity {
@@ -33,7 +34,13 @@ public class GiftMessageScreen extends AppCompatActivity {
 
         saveMsg=(ImageView)findViewById(R.id.gift_msg_save_btn);
 
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            saveMsg.setImageResource(R.drawable.savebtn);
 
+        }else{
+            saveMsg.setImageResource(R.drawable.save_btn_en);
+        }
 
 
 

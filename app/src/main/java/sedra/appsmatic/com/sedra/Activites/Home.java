@@ -381,9 +381,12 @@ public class Home extends AppCompatActivity  {
         if (id == R.id.action_filtericon) {
            startActivity(new Intent(this,Filter.class));
             return true;
-        }else
+        }else if(id==R.id.action_carticon) {
+            startActivity(new Intent(this,ShoppingCart.class));
+            return true;
+        }
+            return super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
 

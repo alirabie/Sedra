@@ -67,5 +67,13 @@
     <string name="gpsoff">تشغيل خاصية تحديد المواقع</string>
     <string name="turnon">تشغيل</string>
     <string name="locationdet">تحديد الموقع</string>
+    <string name="acceptrules">الموافقة على الشروط والاحكام</string>
+    <string name="deccode">رمز الخصم</string>
+    <string name="delivercosts">رسوم التوصيل</string>
+    <string name="finaltotalprice">المجموع النهائى</string>
+    <string name="shoppingcart">سلة المشتريات</string>
+    <string name="total">المجموع</string>
+    <string name="registermailcheck">الاشتراك فى النشرة البريدية</string>
+    <string name="cridet">بطاقة الإتمان</string>
 
 </resources>

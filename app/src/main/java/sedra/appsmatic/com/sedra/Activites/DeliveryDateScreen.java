@@ -40,6 +40,13 @@ public class DeliveryDateScreen extends AppCompatActivity {
         saveBtn=(ImageView)findViewById(R.id.save_date_btn);
         simpleDatePicker.setSpinnersShown(false);
 
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+            saveBtn.setImageResource(R.drawable.savebtn);
+
+        }else{
+            saveBtn.setImageResource(R.drawable.save_btn_en);
+        }
 
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
