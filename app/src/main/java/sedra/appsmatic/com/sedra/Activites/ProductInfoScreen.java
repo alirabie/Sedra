@@ -120,13 +120,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                    mDemoSlider.setDuration(4000);
                }
 
-
-
-
-
-
-
-
             }
 
             @Override
@@ -134,6 +127,21 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
             }
         });
+
+        //add to cart button
+        addToCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this,DoneScreen.class));
+                ProductInfoScreen.this.finish();
+            }
+        });
+
+
+
+
+
+
 
 
 

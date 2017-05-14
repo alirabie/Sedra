@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/card_logo"
+        android:src="@drawable/v_isa"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/type_card"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:gravity="center_vertical|start"
+        android:textSize="20dp"
+        android:textColor="#000000" />
+</LinearLayout>

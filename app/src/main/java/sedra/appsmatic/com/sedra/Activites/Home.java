@@ -83,7 +83,7 @@ public class Home extends AppCompatActivity  {
         String countryId=getIntent().getStringExtra("country_id");
         String stateId=getIntent().getStringExtra("stateId");
 
-        Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
 
         //setup top buttons
         flwerBtn=(ImageView)findViewById(R.id.flower_btn);

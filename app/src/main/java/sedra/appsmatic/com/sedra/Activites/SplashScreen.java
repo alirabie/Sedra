@@ -79,7 +79,7 @@ public class SplashScreen extends AppCompatActivity {
             public void onClick(View v) {
                 if( SaveSharedPreference.getLangId(getApplicationContext()).equals("ar")) {
                     SaveSharedPreference.setLangId(getApplicationContext(), "en");
-                    langBtn.setImageResource(R.drawable.ic_menu_camera);
+                    langBtn.setImageResource(R.drawable.arabicbtn);
                     SplashScreen.this.finish();
                     startActivity(new Intent(getApplicationContext(), SplashScreen.class));
                 }else {
