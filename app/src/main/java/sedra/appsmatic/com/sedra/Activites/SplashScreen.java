@@ -3,6 +3,7 @@ package sedra.appsmatic.com.sedra.Activites;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class SplashScreen extends AppCompatActivity {
 
    private ImageView langBtn,loginBtn,signUpbtn,gustBtn;
     private RelativeLayout bg;
+    private boolean doubleBackToExitPressedOnce = false;
 
 
     @Override
@@ -133,6 +135,30 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // .... other stuff in my onResume ....
+        this.doubleBackToExitPressedOnce = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
 
 
     // Change language method

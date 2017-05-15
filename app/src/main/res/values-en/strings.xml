@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sedra</string>
+    <string name="app_name">SEDRA</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -75,5 +75,6 @@
     <string name="total">Total Price</string>
     <string name="registermailcheck">Subscribe mail service</string>
     <string name="cridet">Credit Card</string>
+    <string name="pressagain">Press Back Again To Exit App ..</string>
 
 </resources>

@@ -19,20 +19,20 @@ import sedra.appsmatic.com.sedra.R;
 /**
  * Created by Eng Ali on 4/30/2017.
  */
-public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
+public class DiscountedProductsAdb extends RecyclerView.Adapter<DiscountedProductsAdb.vh0> {
 
     private ResProducts products;
     private Context context;
 
 
-    public ProductsAdb(ResProducts products, Context context) {
+    public DiscountedProductsAdb(ResProducts products, Context context) {
         this.products = products;
         this.context = context;
     }
 
     @Override
     public vh0 onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new vh0(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_prouduct,parent,false));
+        return new vh0(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_disc_prouduct,parent,false));
     }
 
     @Override

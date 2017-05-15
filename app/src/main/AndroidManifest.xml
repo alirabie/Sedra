@@ -17,7 +17,7 @@
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -90,6 +90,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activites.DoneScreen"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity
+            android:name=".Activites.DiscountedScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

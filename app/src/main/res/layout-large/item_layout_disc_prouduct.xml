@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="2dp"
+        android:background="#333333">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/prouductimage"
+            android:src="@drawable/imagessize" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="50 SR"
+            android:id="@+id/pricelable"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/pricelabel"
+            android:padding="6dp"
+            android:textSize="10dp"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sail_sign"
+            android:layout_gravity="left|top"
+            android:src="@drawable/sale_s" />
+    </FrameLayout>
+</LinearLayout>

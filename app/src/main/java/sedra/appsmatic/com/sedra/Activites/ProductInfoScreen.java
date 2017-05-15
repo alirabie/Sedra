@@ -17,6 +17,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -106,13 +107,42 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                    pDec.setText(response.body().getProducts().get(0).getShortDescription()+"");
                    pPrice.setText(response.body().getProducts().get(0).getPrice()+getResources().getString(R.string.sr));
 
-                   for(int i=0;i<response.body().getProducts().get(0).getImages().size();i++) {
-                       TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
-                       textSliderView
-                               .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
-                               .setScaleType(BaseSliderView.ScaleType.Fit);
-                                mDemoSlider.addSlider(textSliderView);
+
+                   //Check Settings For Load images
+                   if(SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)){
+                       for(int i=0;i<response.body().getProducts().get(0).getImages().size();i++) {
+                           TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                           textSliderView
+                                   .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
+                                   .setScaleType(BaseSliderView.ScaleType.Fit);
+                           mDemoSlider.addSlider(textSliderView);
+                       }
+                   }else {
+                       for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
+                           TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                           textSliderView
+                                   .image(R.drawable.placeholder)
+                                   .setScaleType(BaseSliderView.ScaleType.Fit);
+                           mDemoSlider.addSlider(textSliderView);
+
+                       }
+
                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);

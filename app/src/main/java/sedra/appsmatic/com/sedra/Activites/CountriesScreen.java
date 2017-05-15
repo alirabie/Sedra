@@ -3,6 +3,7 @@ package sedra.appsmatic.com.sedra.Activites;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class CountriesScreen extends AppCompatActivity {
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
     RelativeLayout bg;
+    private boolean doubleBackToExitPressedOnce = false;
 
 
 
@@ -188,5 +190,26 @@ public class CountriesScreen extends AppCompatActivity {
         countriesIds.clear();
         statesNames.clear();
         countriesIds.clear();
+        // .... other stuff in my onResume ....
+        this.doubleBackToExitPressedOnce = false;
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 }

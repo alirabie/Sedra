@@ -75,5 +75,7 @@
     <string name="total">المجموع</string>
     <string name="registermailcheck">الاشتراك فى النشرة البريدية</string>
     <string name="cridet">بطاقة الإتمان</string>
+    <string name="discounted"></string>
+    <string name="pressagain">اضغط رجوع مره اخرى للخروج من التطبيق ....</string>
 
 </resources>

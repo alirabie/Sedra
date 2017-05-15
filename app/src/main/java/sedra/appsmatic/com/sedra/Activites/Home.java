@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,10 +61,11 @@ public class Home extends AppCompatActivity  {
     private static List<String>pids;
     public static android.support.v4.app.FragmentManager fragmentManager;
     public static android.support.v4.app.FragmentTransaction fragmentTransaction;
+    private boolean doubleBackToExitPressedOnce = false;
 
 
 
-    private ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
+    public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     private RecyclerView sideMenu;
 
     @Override
@@ -353,14 +355,36 @@ public class Home extends AppCompatActivity  {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // .... other stuff in my onResume ....
+        this.doubleBackToExitPressedOnce = false;
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
+
     }
 
     @Override
@@ -396,7 +420,7 @@ public class Home extends AppCompatActivity  {
     //Turn GPS ON Method
     public static void turnLocationOn(final Context ctx){
 
-        isGooglePlayServicesAvailable((Activity)ctx);
+        isGooglePlayServicesAvailable((Activity) ctx);
 
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(ctx)
                 .addApi(LocationServices.API).build();
@@ -435,6 +459,8 @@ public class Home extends AppCompatActivity  {
                 }
             }
         });
+
+
     }
 
 

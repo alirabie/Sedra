@@ -27,6 +27,8 @@ import java.util.List;
 
 import sedra.appsmatic.com.sedra.Activites.AboutUsScreen;
 import sedra.appsmatic.com.sedra.Activites.ContactUsScreen;
+import sedra.appsmatic.com.sedra.Activites.DiscountedScreen;
+import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
@@ -128,6 +130,11 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.fragmentcontener, products);
                         fragmentTransaction.commit();
+                        //un active all buttons
+                        Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                        Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                        Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                        Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                         drawer.closeDrawer(GravityCompat.START);
                         break;
 
@@ -154,7 +161,9 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         break;
 
                     case 4 :
-
+                        //Discounted screen
+                        context.startActivity(new Intent(context, DiscountedScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        drawer.closeDrawer(GravityCompat.START);
                         break;
 
                     case 5 :
