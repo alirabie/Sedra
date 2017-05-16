@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -73,6 +74,12 @@ public class ShoppingCart extends AppCompatActivity {
 
 
 
+        payBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShoppingCart.this,PaymentScreen.class));
+            }
+        });
 
 
 

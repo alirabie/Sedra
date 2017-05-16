@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
@@ -154,7 +156,16 @@ public class CountriesScreen extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call<ResStates> call, Throwable t) {
-                                    Toast.makeText(getApplication(), t.getMessage() + ":From states ", Toast.LENGTH_LONG).show();
+                                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(CountriesScreen.this);
+                                    dialogBuilder
+                                            .withTitle(getResources().getString(R.string.conectionerrorr))
+                                            .withDialogColor(R.color.colorPrimary)
+                                            .withTitleColor("#FFFFFF")
+                                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                                            .withDuration(700)                                          //def
+                                            .withEffect(Effectstype.RotateBottom)
+                                            .withMessage(t.getMessage() + " : From states ")
+                                            .show();
                                 }
                             });
 
@@ -170,7 +181,17 @@ public class CountriesScreen extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResCountry> call, Throwable t) {
 
-                Toast.makeText(getApplication(), t.getMessage() + ":From countries ", Toast.LENGTH_LONG).show();
+                NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(CountriesScreen.this);
+                dialogBuilder
+                        .withTitle(getResources().getString(R.string.conectionerrorr))
+                        .withDialogColor(R.color.colorPrimary)
+                        .withTitleColor("#FFFFFF")
+                        .withIcon(getResources().getDrawable(R.drawable.icon))
+                        .withDuration(700)                                          //def
+                        .withEffect(Effectstype.RotateBottom)
+                        .withMessage(t.getMessage() + ":From countries ")
+                        .show();
+
             }
         });
 
@@ -190,26 +211,13 @@ public class CountriesScreen extends AppCompatActivity {
         countriesIds.clear();
         statesNames.clear();
         countriesIds.clear();
-        // .... other stuff in my onResume ....
-        this.doubleBackToExitPressedOnce = false;
     }
 
 
 
     @Override
     public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
+        CountriesScreen.this.finish();
+        startActivity(new Intent(CountriesScreen.this,SplashScreen.class));
     }
 }

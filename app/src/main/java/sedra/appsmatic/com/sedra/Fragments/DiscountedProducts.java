@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,13 +75,24 @@ public class DiscountedProducts extends Fragment {
                         }
 
                     } else {
-                        Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "No response from Dis products Fragment ", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage() + "connection error from products Fragment ", Toast.LENGTH_LONG).show();
+
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.conectionerrorr))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(t.getMessage() + "connection error from Dis products Fragment ")
+                            .show();
+
                 }
             });
 
@@ -110,13 +124,24 @@ public class DiscountedProducts extends Fragment {
                         }
 
                     } else {
-                        Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "No response from Dis products Fragment ", Toast.LENGTH_LONG).show();
                     }
 
                 }
 
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
+
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.conectionerrorr))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(t.getMessage() + "connection error from Dis products Fragment ")
+                            .show();
 
                 }
             });

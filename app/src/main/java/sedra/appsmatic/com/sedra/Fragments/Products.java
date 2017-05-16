@@ -15,6 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,7 +83,20 @@ public class Products extends Fragment {
 
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage() + "connection error from products Fragment ", Toast.LENGTH_LONG).show();
+
+
+
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.conectionerrorr))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(t.getMessage() + "connection error from products Fragment ")
+                            .show();
+
                 }
             });
 
@@ -116,7 +132,16 @@ public class Products extends Fragment {
 
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
-
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.conectionerrorr))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(t.getMessage() + "connection error from products Fragment ")
+                            .show();
                 }
             });
 

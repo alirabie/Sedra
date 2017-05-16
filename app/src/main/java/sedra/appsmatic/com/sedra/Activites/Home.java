@@ -26,6 +26,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -369,6 +371,31 @@ public class Home extends AppCompatActivity  {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(Home.this);
+            dialogBuilder
+                    .withTitle(getResources().getString(R.string.sedra))
+                    .withDialogColor(R.color.colorPrimary)
+                    .withTitleColor("#FFFFFF")
+                    .withIcon(getResources().getDrawable(R.drawable.icon))
+                    .withDuration(700)                                          //def
+                    .withEffect(Effectstype.RotateBottom)
+                    .withMessage(getResources().getString(R.string.exitfromapp))
+                    .withButton1Text(getResources().getString(R.string.yes))
+                    .withButton2Text(getResources().getString(R.string.no))
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Home.this.finish();
+                        }
+                    })
+                    .setButton2Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {dialogBuilder.dismiss();
+                        }
+                    })
+                    .show();
+
+/*
 
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -383,7 +410,9 @@ public class Home extends AppCompatActivity  {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
+            */
         }
+
 
     }
 

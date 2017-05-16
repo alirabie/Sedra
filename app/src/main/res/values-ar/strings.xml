@@ -77,5 +77,9 @@
     <string name="cridet">بطاقة الإتمان</string>
     <string name="discounted"></string>
     <string name="pressagain">اضغط رجوع مره اخرى للخروج من التطبيق ....</string>
+    <string name="conectionerrorr">خطأ فى الاتصال !</string>
+    <string name="exitfromapp">هل تريد الخروج من التطبيق ؟</string>
+    <string name="sedra">سيدرا للهدايا</string>
+    <string name="payment">الدفع</string>
 
 </resources>

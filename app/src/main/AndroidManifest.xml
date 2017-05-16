@@ -93,6 +93,9 @@
         <activity
             android:name=".Activites.DiscountedScreen"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.PaymentScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

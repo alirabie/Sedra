@@ -8,16 +8,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.craftman.cardform.Card;
+import com.craftman.cardform.CardForm;
+import com.craftman.cardform.OnPayBtnClickListner;
 
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class PaymentScreen extends AppCompatActivity {
 
-    private TextView forgetPassBtn,createNewAccount;
-    private ImageView signInBtn;
+    CardForm cardForm;
+    TextView txtDes;
+    Button pay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,44 +39,26 @@ public class PaymentScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-        //Setup items
-        forgetPassBtn=(TextView)findViewById(R.id.forgetpassword_txt_btn);
-        createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
-        signInBtn=(ImageView)findViewById(R.id.login_btn);
-
-        //Set images languages
-        if(SaveSharedPreference.getLangId(this).equals("ar")){
-            signInBtn.setImageResource(R.drawable.signin_btn);
-
-        }else{
-            signInBtn.setImageResource(R.drawable.signinbtn_en);
-        }
+        //setup items
+        cardForm=(CardForm)findViewById(R.id.cardform);
+        txtDes=(TextView)findViewById(R.id.payment_amount);
+        pay=(Button)findViewById(R.id.btn_pay);
 
 
-        //Check Os Ver
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            forgetPassBtn.setBackgroundResource(R.drawable.ripple);
-            createNewAccount.setBackgroundResource(R.drawable.ripple);
-        }
+        txtDes.setText("0.0 SR");
+        pay.setText(String.format("Payer %s",txtDes.getText()));
 
 
 
-        //forget password button
-        forgetPassBtn.setOnClickListener(new View.OnClickListener() {
+        cardForm.setPayBtnClickListner(new OnPayBtnClickListner() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PaymentScreen.this,ForgetPasswordScreen.class));
+            public void onClick(Card card) {
+                Toast.makeText(PaymentScreen.this,"Name : "+card.getName()+" | Last 4 digits : "+card.getLast4(),Toast.LENGTH_LONG).show();
             }
         });
 
 
-        //new account button
-        createNewAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PaymentScreen.this,SignUpScreen.class));
-            }
-        });
+
 
 
 

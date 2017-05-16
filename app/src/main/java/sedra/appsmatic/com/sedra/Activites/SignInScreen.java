@@ -11,13 +11,16 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class SignInScreen extends AppCompatActivity {
 
     private TextView forgetPassBtn,createNewAccount;
-    private ImageView signInBtn;
+    private ImageView signInBtn,home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class SignInScreen extends AppCompatActivity {
         forgetPassBtn=(TextView)findViewById(R.id.forgetpassword_txt_btn);
         createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
         signInBtn=(ImageView)findViewById(R.id.login_btn);
+        home=(ImageView)findViewById(R.id.home_btn_login);
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
@@ -73,6 +77,46 @@ public class SignInScreen extends AppCompatActivity {
 
 
 
+        //Home button action
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignInScreen.this.finish();
+                startActivity(new Intent(SignInScreen.this,SplashScreen.class));
+            }
+        });
 
+    }
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(SignInScreen.this);
+        dialogBuilder
+                .withTitle(getResources().getString(R.string.sedra))
+                .withDialogColor(R.color.colorPrimary)
+                .withTitleColor("#FFFFFF")
+                .withIcon(getResources().getDrawable(R.drawable.icon))
+                .withDuration(700)                                          //def
+                .withEffect(Effectstype.RotateBottom)
+                .withMessage(getResources().getString(R.string.exitfromapp))
+                .withButton1Text(getResources().getString(R.string.yes))
+                .withButton2Text(getResources().getString(R.string.no))
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SignInScreen.this.finish();
+                    }
+                })
+                .setButton2Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                })
+                .show();
     }
 }

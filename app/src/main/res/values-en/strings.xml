@@ -76,5 +76,9 @@
     <string name="registermailcheck">Subscribe mail service</string>
     <string name="cridet">Credit Card</string>
     <string name="pressagain">Press Back Again To Exit App ..</string>
+    <string name="conectionerrorr">Connection Error !</string>
+    <string name="exitfromapp">Do you Want to Exit from App ?</string>
+    <string name="sedra">SEDRA Gifts</string>
+    <string name="payment">Payment</string>
 
 </resources>
