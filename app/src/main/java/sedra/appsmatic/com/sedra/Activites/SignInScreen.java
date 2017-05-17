@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class SignInScreen extends AppCompatActivity {
 
     private TextView forgetPassBtn,createNewAccount;
     private ImageView signInBtn,home;
+    private EditText user,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class SignInScreen extends AppCompatActivity {
         createNewAccount=(TextView)findViewById(R.id.newaccount_txt_btn);
         signInBtn=(ImageView)findViewById(R.id.login_btn);
         home=(ImageView)findViewById(R.id.home_btn_login);
+        user=(EditText)findViewById(R.id.email_input);
+        pass=(EditText)findViewById(R.id.password_input);
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
@@ -83,6 +87,19 @@ public class SignInScreen extends AppCompatActivity {
             public void onClick(View v) {
                 SignInScreen.this.finish();
                 startActivity(new Intent(SignInScreen.this,SplashScreen.class));
+            }
+        });
+
+
+
+        //login btn action
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( user.getText().toString().length() == 0 || pass.getText().toString().length()==0) {
+                    user.setError("Email is required!");
+                    pass.setError("Password is required!");
+                }
             }
         });
 

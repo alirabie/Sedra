@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +52,7 @@ import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
+import sedra.appsmatic.com.sedra.CountBadge.BadgeDrawable;
 import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.R;
 
@@ -420,6 +423,13 @@ public class Home extends AppCompatActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+       //set badge count
+        MenuItem itemCart = menu.findItem(R.id.action_carticon);
+        LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
+        setBadgeCount(this, icon, "10");
+
+
         return true;
     }
 
@@ -510,6 +520,21 @@ public class Home extends AppCompatActivity  {
 
 
 
+    //set cart number badge
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+        BadgeDrawable badge;
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+    }
 
 
 

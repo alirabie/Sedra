@@ -5,7 +5,7 @@
         android:id="@+id/action_carticon"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:icon="@drawable/shoppingbasketicon"
+        android:icon="@drawable/ic_menu_cart"
         android:title="Cart"/>
     <item
     android:id="@+id/action_filtericon"
