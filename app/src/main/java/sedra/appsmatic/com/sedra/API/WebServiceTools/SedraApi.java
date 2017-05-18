@@ -51,4 +51,14 @@ public interface SedraApi {
     @GET("api/vendors/address/{addressid}")
     Call<ResAddresses>getVendorAddresess(@Path("addressid") String addressId);
 
+
+    //Filter Api
+    @GET("api/products?fields=id,images,price,name")
+    Call<ResProducts> getFilter(@Query("country")String country,
+                                @Query("state")String state,
+                                @Query("category_id")String id,
+                                @Query("vendor_name") String vendorName,
+                                @Query("min_price")String minPrice);
+
+
 }

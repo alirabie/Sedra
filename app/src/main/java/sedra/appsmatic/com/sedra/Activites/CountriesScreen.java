@@ -44,7 +44,7 @@ public class CountriesScreen extends AppCompatActivity {
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
     RelativeLayout bg;
-    private boolean doubleBackToExitPressedOnce = false;
+
 
 
 

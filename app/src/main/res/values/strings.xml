@@ -78,6 +78,12 @@
     <string name="exitfromapp">Do you Want to Exit from App ?</string>
     <string name="sedra">SEDRA Gifts</string>
     <string name="payment">Payment</string>
+    <string name="cardname">Name Of Card</string>
+    <string name="exdate">Expiry Date</string>
+    <string name="cardnum">Card Number</string>
+    <string name="sameday">Deliver in the same Day</string>
+    <string name="emptyproducts">Oops No Products !</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

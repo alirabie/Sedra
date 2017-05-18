@@ -22,4 +22,13 @@
         android:visibility="gone"
         android:layout_gravity="center" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/emptyproducts"
+        android:id="@+id/empty_tv"
+        android:layout_gravity="center"
+        android:textSize="38dp" />
+
 </FrameLayout>

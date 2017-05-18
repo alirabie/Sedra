@@ -442,6 +442,10 @@ public class Home extends AppCompatActivity  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filtericon) {
+            flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+            giftBtn.setImageResource(R.drawable.giftbtnunactive);
+            cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+            plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
            startActivity(new Intent(this,Filter.class));
             return true;
         }else if(id==R.id.action_carticon) {
