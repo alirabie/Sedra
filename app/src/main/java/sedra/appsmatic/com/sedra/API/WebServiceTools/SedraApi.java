@@ -55,6 +55,7 @@ public interface SedraApi {
     //Filter Api
     @GET("api/products?fields=id,images,price,name")
     Call<ResProducts> getFilter(@Query("country")String country,
+                                @Query("searchKeyword")String keyword,
                                 @Query("state")String state,
                                 @Query("category_id")String id,
                                 @Query("vendor_name") String vendorName,

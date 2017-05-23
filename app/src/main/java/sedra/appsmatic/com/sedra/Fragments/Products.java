@@ -32,7 +32,7 @@ public class Products extends Fragment {
     private String id="";
     private RecyclerView proudctsList;
     private ProgressBar progressBar;
-    private static String categoryKey,countryKey,stateKey,vendorKey,minPriceKey,flag;
+    private static String categoryKey,countryKey,stateKey,vendorKey,minPriceKey,flag,searchKeyword;
     private static Bundle b;
     private static TextView emptySign;
 
@@ -115,6 +115,7 @@ public class Products extends Fragment {
 
                 Generator.createService(SedraApi.class).getFilter(
                         countryKey=b.getString("countryKey"),
+                        searchKeyword=b.getString("serachKeyword"),
                         stateKey=b.getString("stateKey"),
                         categoryKey=b.getString("categoryKey"),
                         vendorKey=b.getString("vendorKey"),

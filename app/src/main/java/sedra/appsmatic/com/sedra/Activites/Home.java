@@ -112,7 +112,7 @@ public class Home extends AppCompatActivity  {
                 Products flowers = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","13");
+                bundle.putString("id","1");
                 flowers.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -162,7 +162,7 @@ public class Home extends AppCompatActivity  {
                 Products cookies = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","15");
+                bundle.putString("id","3");
                 cookies.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -183,7 +183,7 @@ public class Home extends AppCompatActivity  {
                 Products plants = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","16");
+                bundle.putString("id","4");
                 plants.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();

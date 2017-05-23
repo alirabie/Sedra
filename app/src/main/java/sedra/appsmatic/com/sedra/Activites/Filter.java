@@ -312,6 +312,7 @@ public class Filter extends AppCompatActivity {
                 bundle.putString("stateKey",stateKey);
                 bundle.putString("vendorKey", vendorKey);
                 bundle.putString("priceKey", minPriceKey);
+                bundle.putString("serachKeyword",searcInput.getText().toString()+"");
 
                 products2.setArguments(bundle);
                 //put here id to send to fragment
