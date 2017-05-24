@@ -173,7 +173,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
 
-        //up down actions
+        ////up down actions
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
