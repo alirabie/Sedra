@@ -62,4 +62,10 @@ public interface SedraApi {
                                 @Query("min_price")String minPrice);
 
 
+
+    //Get districts
+    //@GET("api/districts/country/{country}/state/{state}")
+
+
+
 }

@@ -29,8 +29,9 @@ import sedra.appsmatic.com.sedra.R;
 public class ProductInfoScreen extends ActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private SliderLayout mDemoSlider;
-    private TextView pName,pPrice,pDec,pReady;
-    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle;
+    private TextView pName,pPrice,pDec,pReady,countTv;
+    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down;
+    private static int count =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,14 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         pDec=(TextView)findViewById(R.id.desc_tv);
         pPrice=(TextView)findViewById(R.id.price_tv_info);
         pReady=(TextView)findViewById(R.id.time_to_redy);
+        countTv=(TextView)findViewById(R.id.count_tv);
         addToCartBtn=(ImageView)findViewById(R.id.add_to_cart_tv);
         deliveryAddressBtn=(ImageView)findViewById(R.id.deliver_btn);
         deliveryTimeBtn=(ImageView)findViewById(R.id.time_deliver_btn);
         giftMsgBtn=(ImageView)findViewById(R.id.gift_msg_btn);
         sugTitle=(ImageView)findViewById(R.id.sug_title_id);
+        up=(ImageView)findViewById(R.id.up_count);
+        down=(ImageView)findViewById(R.id.dwon_count);
 
 
         //Set images languages
@@ -84,7 +88,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         giftMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProductInfoScreen.this,GiftMessageScreen.class));
+                startActivity(new Intent(ProductInfoScreen.this, GiftMessageScreen.class));
             }
         });
 
@@ -99,54 +103,40 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
             @Override
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
-               if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
-                   pName.setText(response.body().getProducts().get(0).getName()+"");
-                   pDec.setText(response.body().getProducts().get(0).getShortDescription()+"");
-                   pPrice.setText(response.body().getProducts().get(0).getPrice()+getResources().getString(R.string.sr));
-
-
-                   //Check Settings For Load images
-                   if(SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)){
-                       for(int i=0;i<response.body().getProducts().get(0).getImages().size();i++) {
-                           TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
-                           textSliderView
-                                   .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
-                                   .setScaleType(BaseSliderView.ScaleType.Fit);
-                           mDemoSlider.addSlider(textSliderView);
-                       }
-                   }else {
-                       for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
-                           TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
-                           textSliderView
-                                   .image(R.drawable.placeholder)
-                                   .setScaleType(BaseSliderView.ScaleType.Fit);
-                           mDemoSlider.addSlider(textSliderView);
-
-                       }
-
-                   }
+                    pName.setText(response.body().getProducts().get(0).getName() + "");
+                    pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
+                    pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
 
 
+                    //Check Settings For Load images
+                    if (SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)) {
+                        for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
+                            TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                            textSliderView
+                                    .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
+                                    .setScaleType(BaseSliderView.ScaleType.Fit);
+                            mDemoSlider.addSlider(textSliderView);
+                        }
+                    } else {
+                        for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
+                            TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                            textSliderView
+                                    .image(R.drawable.placeholder)
+                                    .setScaleType(BaseSliderView.ScaleType.Fit);
+                            mDemoSlider.addSlider(textSliderView);
+
+                        }
+
+                    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                   mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-                   mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                   mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-                   mDemoSlider.setDuration(4000);
-               }
+                    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+                    mDemoSlider.setDuration(4000);
+                }
 
             }
 
@@ -160,10 +150,39 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count=0;
                 startActivity(new Intent(ProductInfoScreen.this,DoneScreen.class));
                 ProductInfoScreen.this.finish();
             }
         });
+
+
+
+
+        //up down actions
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                count++;
+                countTv.setText(count + "");
+            }
+        });
+
+
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(count==0){
+                    return;
+                }else {
+                    count--;
+                    countTv.setText(count+"");
+                }
+            }
+        });
+
+
+
 
 
 
@@ -194,5 +213,12 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     @Override
     public void onSliderClick(BaseSliderView slider) {
 
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        count=0;
     }
 }

@@ -85,5 +85,6 @@
     <string name="cardnum">رقم الكارت</string>
     <string name="sameday">التوصيل فى نفس اليوم</string>
     <string name="emptyproducts">لا توجد منتجات </string>
+    <string name="distrects">أختر الحى</string>
 
 </resources>

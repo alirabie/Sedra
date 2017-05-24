@@ -37,6 +37,7 @@ public class Filter extends AppCompatActivity {
     private EditText searcInput,priceInput;
     private BetterSpinner filterCountries;
     private BetterSpinner filterStates;
+    private BetterSpinner filterdistructs;
     private BetterSpinner filterVendors;
     private BetterSpinner filterCategoriy;
     private BetterSpinner filterSameday;
@@ -52,6 +53,7 @@ public class Filter extends AppCompatActivity {
     private static List<String> vendorsIds= new ArrayList<>();
     private static String categoryKey,countryKey,stateKey,vendorKey,minPriceKey;
     private static List<String> options;
+    private static List<String>distructsNames=new ArrayList<>();
 
 
 
@@ -88,11 +90,14 @@ public class Filter extends AppCompatActivity {
         filterVendors =(BetterSpinner)findViewById(R.id.filter_vendor_spinner);
         filterCategoriy=(BetterSpinner)findViewById(R.id.filter_category_spinner);
         filterSameday=(BetterSpinner)findViewById(R.id.filter_time);
+        filterdistructs=(BetterSpinner)findViewById(R.id.filter_district_spinner);
+
 
 
         filterCategoriy.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterCountries.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterStates.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
+        filterdistructs.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterVendors.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterSameday.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,options));
         filterSameday.setHint(getResources().getString(R.string.sameday));
@@ -102,6 +107,8 @@ public class Filter extends AppCompatActivity {
         filterCountries.setHint(getResources().getString(R.string.selectcountry));
         filterCountries.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterStates.setHint(getResources().getString(R.string.selectstate));
+        filterdistructs.setHintTextColor(getResources().getColor(R.color.colorPrimary));
+        filterdistructs.setHint(getResources().getString(R.string.distrects));
         filterStates.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterVendors.setHint(getResources().getString(R.string.selectvendor));
         filterVendors.setHintTextColor(getResources().getColor(R.color.colorPrimary));
