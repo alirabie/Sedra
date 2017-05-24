@@ -16,6 +16,8 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -142,6 +144,18 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
             @Override
             public void onFailure(Call<ResProducts> call, Throwable t) {
+
+                NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                dialogBuilder
+                        .withTitle(getResources().getString(R.string.conectionerrorr))
+                        .withDialogColor(R.color.colorPrimary)
+                        .withTitleColor("#FFFFFF")
+                        .withIcon(getResources().getDrawable(R.drawable.icon))
+                        .withDuration(700)                                          //def
+                        .withEffect(Effectstype.RotateBottom)
+                        .withMessage(t.getMessage() + " : From product info ")
+                        .show();
+
 
             }
         });
