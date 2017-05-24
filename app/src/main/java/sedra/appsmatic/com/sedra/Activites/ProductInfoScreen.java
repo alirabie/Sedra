@@ -146,7 +146,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             }
         });
 
-        //add to cart button
+        ////add to cart button
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
