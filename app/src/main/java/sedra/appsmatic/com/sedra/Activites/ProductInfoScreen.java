@@ -32,7 +32,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
     private SliderLayout mDemoSlider;
     private TextView pName,pPrice,pDec,pReady,countTv;
-    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down;
+    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down,favBtn;
     private static int count =0;
 
     @Override
@@ -61,6 +61,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         sugTitle=(ImageView)findViewById(R.id.sug_title_id);
         up=(ImageView)findViewById(R.id.up_count);
         down=(ImageView)findViewById(R.id.dwon_count);
+        favBtn=(ImageView)findViewById(R.id.fav_btn);
 
 
         //Set images languages
@@ -111,6 +112,18 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                     pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
                     pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
 
+                    if(!response.body().getProducts().get(0).getAttributes().isEmpty()){
+
+                        if(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")){
+                            pReady.setText(getResources().getString(R.string.sameday));
+                        }else {
+                            pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue()+" "+getResources().getString(R.string.day));
+                        }
+
+                    }else {
+                        pReady.setText(getResources().getString(R.string.notset));
+                    }
+
 
                     //Check Settings For Load images
                     if (SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)) {
@@ -140,6 +153,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                     mDemoSlider.setDuration(4000);
                 }
 
+
             }
 
             @Override
@@ -164,6 +178,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //reset count
                 count=0;
                 startActivity(new Intent(ProductInfoScreen.this,DoneScreen.class));
                 ProductInfoScreen.this.finish();
@@ -197,6 +212,14 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
 
+
+        //fav btn action
+        favBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favBtn.setImageResource(R.drawable.favoriteheart);
+            }
+        });
 
 
 

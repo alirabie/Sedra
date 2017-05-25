@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.squareup.picasso.Picasso;
 
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
@@ -42,10 +44,24 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
 
         //Check Settings For Load images
         if(SaveSharedPreference.getImgLoadingSatatus(context)){
-            Picasso.with(context)
-                    .load(products.getProducts().get(position).getImages().get(0).getSrc().toString())
-                    .fit()
-                    .into(holder.productImg);
+            try {
+                Picasso.with(context)
+                        .load(products.getProducts().get(position).getImages().get(0).getSrc().toString())
+                        .fit()
+                        .into(holder.productImg);
+            }catch (Exception e){
+                NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(context);
+                dialogBuilder
+                        .withTitle(context.getResources().getString(R.string.conectionerrorr))
+                        .withDialogColor(R.color.colorPrimary)
+                        .withTitleColor("#FFFFFF")
+                        .withIcon(context.getResources().getDrawable(R.drawable.icon))
+                        .withDuration(700)                                          //def
+                        .withEffect(Effectstype.RotateBottom)
+                        .withMessage(e.getMessage() + "connection error from products adb ")
+                        .show();
+            }
+
         }else {
             Picasso.with(context)
                     .load(R.drawable.placeholder)
@@ -60,7 +76,7 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, ProductInfoScreen.class)
-                        .putExtra("product_id",products.getProducts().get(position).getId()+"")
+                        .putExtra("product_id", products.getProducts().get(position).getId() + "")
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });

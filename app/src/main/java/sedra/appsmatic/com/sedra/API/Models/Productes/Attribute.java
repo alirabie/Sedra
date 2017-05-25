@@ -32,13 +32,13 @@ public class Attribute {
     private Integer displayOrder;
     @SerializedName("default_value")
     @Expose
-    private Object defaultValue;
+    private String defaultValue;
     @SerializedName("attribute_control_type_name")
     @Expose
     private String attributeControlTypeName;
     @SerializedName("attribute_values")
     @Expose
-    private List<AttributeValue> attributeValues = null;
+    private List<Object> attributeValues = null;
 
     public Integer getId() {
         return id;
@@ -96,11 +96,11 @@ public class Attribute {
         this.displayOrder = displayOrder;
     }
 
-    public Object getDefaultValue() {
+    public String getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(Object defaultValue) {
+    public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
@@ -112,11 +112,12 @@ public class Attribute {
         this.attributeControlTypeName = attributeControlTypeName;
     }
 
-    public List<AttributeValue> getAttributeValues() {
+    public List<Object> getAttributeValues() {
         return attributeValues;
     }
 
-    public void setAttributeValues(List<AttributeValue> attributeValues) {
+    public void setAttributeValues(List<Object> attributeValues) {
         this.attributeValues = attributeValues;
     }
+
 }

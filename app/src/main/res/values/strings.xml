@@ -84,6 +84,9 @@
     <string name="sameday">Deliver in the same Day</string>
     <string name="emptyproducts">Oops No Products !</string>
     <string name="distrects">Select District</string>
+    <string name="day">Day</string>
+    <string name="notset">Not Set</string>
+
 
 
 

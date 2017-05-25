@@ -345,6 +345,25 @@ public class Filter extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        countriesNames.clear();
+        countriesIds.clear();
+        statesNames.clear();
+        countriesIds.clear();
+        categoriesIds.clear();
+        categoriesNames.clear();
+        vendorsNames.clear();
+        vendorsIds.clear();
+        countryKey="";
+        categoryKey="";
+        stateKey="";
+        vendorKey="";
+        minPriceKey="0";
 
 
 
