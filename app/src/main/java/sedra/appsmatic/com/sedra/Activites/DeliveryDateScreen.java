@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
@@ -22,6 +24,7 @@ public class DeliveryDateScreen extends AppCompatActivity {
     private ImageView saveBtn;
     private DatePicker simpleDatePicker;
     private int day,month,year;
+    Calendar c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,11 @@ public class DeliveryDateScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+        c = Calendar.getInstance();
         simpleDatePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
         saveBtn=(ImageView)findViewById(R.id.save_date_btn);
         simpleDatePicker.setSpinnersShown(false);
+        simpleDatePicker.setMinDate(System.currentTimeMillis());
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
@@ -52,11 +57,18 @@ public class DeliveryDateScreen extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar pick=Calendar.getInstance();
                 day = simpleDatePicker.getDayOfMonth();
                 month = simpleDatePicker.getMonth()+1;
                 year = simpleDatePicker.getYear();
-                String date = "Selected Date : " + day + "-" + month + "-" + year;
-                Toast.makeText(DeliveryDateScreen.this, date, Toast.LENGTH_LONG).show();
+                pick.set(day, month, year);
+
+                if(pick.before(c)){
+                    Toast.makeText(DeliveryDateScreen.this, "You cannot select previous date !", Toast.LENGTH_LONG).show();
+                }else {
+                    String date = "Selected Date : " + day + "-" + month + "-" + year;
+                    Toast.makeText(DeliveryDateScreen.this, date, Toast.LENGTH_LONG).show();
+                }
 
             }
         });

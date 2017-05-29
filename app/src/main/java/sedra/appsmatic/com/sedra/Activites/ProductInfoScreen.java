@@ -108,52 +108,58 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
                 if (response.isSuccessful()) {
 
-                    pName.setText(response.body().getProducts().get(0).getName() + "");
-                    pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
-                    pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
-
-                    if(!response.body().getProducts().get(0).getAttributes().isEmpty()){
-
-                        if(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")){
-                            pReady.setText(getResources().getString(R.string.sameday));
+                    try {
+                        pName.setText(response.body().getProducts().get(0).getName() + "");
+                        pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
+                        pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
+                        if(!response.body().getProducts().get(0).getAttributes().isEmpty()){
+                            if(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue()!=null) {
+                                if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")) {
+                                    pReady.setText(getResources().getString(R.string.sameday));
+                                } else {
+                                    pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() + " " + getResources().getString(R.string.day));
+                                }
+                            }else {pReady.setText(getResources().getString(R.string.notset));}
                         }else {
-                            pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue()+" "+getResources().getString(R.string.day));
+                            pReady.setText(getResources().getString(R.string.notset));
                         }
 
-                    }else {
-                        pReady.setText(getResources().getString(R.string.notset));
+                        //Check Settings For Load images
+                        if (SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)) {
+                            for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
+                                TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                                textSliderView
+                                        .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
+                                        .setScaleType(BaseSliderView.ScaleType.Fit);
+                                mDemoSlider.addSlider(textSliderView);
+                            }
+                        } else {
+                            for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
+                                TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
+                                textSliderView
+                                        .image(R.drawable.placeholder)
+                                        .setScaleType(BaseSliderView.ScaleType.Fit);
+                                mDemoSlider.addSlider(textSliderView);
+                            }
+                        }
+                        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+                        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+                        mDemoSlider.setDuration(4000);
+                }catch (Exception e){
+                        NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                        dialogBuilder
+                                .withTitle(getResources().getString(R.string.conectionerrorr))
+                                .withDialogColor(R.color.colorPrimary)
+                                .withTitleColor("#FFFFFF")
+                                .withIcon(getResources().getDrawable(R.drawable.icon))
+                                .withDuration(700)                                          //def
+                                .withEffect(Effectstype.RotateBottom)
+                                .withMessage(e.getMessage() + " : Error from loading images from server ")
+                                .show();
                     }
 
-
-                    //Check Settings For Load images
-                    if (SaveSharedPreference.getImgLoadingSatatus(ProductInfoScreen.this)) {
-                        for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
-                            TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
-                            textSliderView
-                                    .image(response.body().getProducts().get(0).getImages().get(i).getSrc())
-                                    .setScaleType(BaseSliderView.ScaleType.Fit);
-                            mDemoSlider.addSlider(textSliderView);
-                        }
-                    } else {
-                        for (int i = 0; i < response.body().getProducts().get(0).getImages().size(); i++) {
-                            TextSliderView textSliderView = new TextSliderView(ProductInfoScreen.this);
-                            textSliderView
-                                    .image(R.drawable.placeholder)
-                                    .setScaleType(BaseSliderView.ScaleType.Fit);
-                            mDemoSlider.addSlider(textSliderView);
-
-                        }
-
-                    }
-
-
-                    mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                    mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-                    mDemoSlider.setDuration(4000);
                 }
-
-
             }
 
             @Override

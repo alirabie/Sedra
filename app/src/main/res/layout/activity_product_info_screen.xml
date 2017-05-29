@@ -42,7 +42,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="270dp"
         android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -51,7 +51,7 @@
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="match_parent"/>
 
 
         <TextView
@@ -127,7 +127,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout2"
-        android:background="@drawable/floarbg">
+        android:background="@drawable/floarbg"
+        android:layout_alignParentEnd="false">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -184,7 +185,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
@@ -225,7 +226,8 @@
                 android:id="@+id/count_tv"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:textColor="#000000" />
+                android:textColor="#000000"
+                android:textSize="10dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
