@@ -223,12 +223,21 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
 
+        //Fav button logic
+        favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
+        favBtn.setTag("1");
 
         //fav btn action
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(favBtn.getTag().equals("1")){
                 favBtn.setImageResource(R.drawable.favoriteheart);
+                    favBtn.setTag("2");
+                }else {
+                 favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
+                    favBtn.setTag("1");
+                }
             }
         });
 
