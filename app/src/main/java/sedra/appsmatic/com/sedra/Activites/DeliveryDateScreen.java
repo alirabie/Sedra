@@ -13,7 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
@@ -24,7 +29,9 @@ public class DeliveryDateScreen extends AppCompatActivity {
     private ImageView saveBtn;
     private DatePicker simpleDatePicker;
     private int day,month,year;
-    Calendar c;
+
+    Date currentDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +46,15 @@ public class DeliveryDateScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-        c = Calendar.getInstance();
+        currentDate=new Date();
+        currentDate.setTime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(Integer.parseInt(getIntent().getStringExtra("dayes"))));
         simpleDatePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
         saveBtn=(ImageView)findViewById(R.id.save_date_btn);
         simpleDatePicker.setSpinnersShown(false);
-        simpleDatePicker.setMinDate(System.currentTimeMillis());
+        simpleDatePicker.setMinDate(currentDate.getTime());
+
+
+
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
@@ -57,20 +68,21 @@ public class DeliveryDateScreen extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar pick=Calendar.getInstance();
+
                 day = simpleDatePicker.getDayOfMonth();
                 month = simpleDatePicker.getMonth()+1;
                 year = simpleDatePicker.getYear();
-                pick.set(day, month, year);
+                Date date=new Date();
+                date.setDate(day);
+                date.setMonth(simpleDatePicker.getMonth());
+              if(date.before(currentDate)){
+                          Toast.makeText(DeliveryDateScreen.this, "You cannot select previous date !", Toast.LENGTH_LONG).show();
+                      }else {
+                          String date2 = "Selected Date : " + day + "-" + month + "-" + year;
+                          Toast.makeText(DeliveryDateScreen.this, date2, Toast.LENGTH_LONG).show();
+                      }
+                  }
 
-                if(pick.before(c)){
-                    Toast.makeText(DeliveryDateScreen.this, "You cannot select previous date !", Toast.LENGTH_LONG).show();
-                }else {
-                    String date = "Selected Date : " + day + "-" + month + "-" + year;
-                    Toast.makeText(DeliveryDateScreen.this, date, Toast.LENGTH_LONG).show();
-                }
-
-            }
         });
 
 

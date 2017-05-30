@@ -34,6 +34,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     private TextView pName,pPrice,pDec,pReady,countTv;
     private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down,favBtn;
     private static int count =0;
+    private static String dayCount="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,30 +80,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             sugTitle.setImageResource(R.drawable.suggested_title_en);
         }
 
-        //Delivery Date btn
-        deliveryTimeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProductInfoScreen.this,DeliveryDateScreen.class));
-            }
-        });
 
-        //Gift Msg btn
-        giftMsgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProductInfoScreen.this, GiftMessageScreen.class));
-            }
-        });
-
-
-        //Delivery Address btn
-        deliveryAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProductInfoScreen.this,DeliveryAddress.class));
-            }
-        });
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
             @Override
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
@@ -118,6 +96,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                     pReady.setText(getResources().getString(R.string.sameday));
                                 } else {
                                     pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() + " " + getResources().getString(R.string.day));
+                                    dayCount=response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue();
                                 }
                             }else {pReady.setText(getResources().getString(R.string.notset));}
                         }else {
@@ -192,6 +171,32 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         });
 
 
+        //Delivery Date btn
+        deliveryTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this,DeliveryDateScreen.class).putExtra("dayes",dayCount));
+                //Reset Day Count
+                dayCount="0";
+            }
+        });
+
+        //Gift Msg btn
+        giftMsgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this, GiftMessageScreen.class));
+            }
+        });
+
+
+        //Delivery Address btn
+        deliveryAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProductInfoScreen.this, DeliveryAddress.class));
+            }
+        });
 
 
         ////up down actions
