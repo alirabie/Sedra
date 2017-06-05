@@ -1,8 +1,15 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -14,32 +21,63 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.payfort.fort.android.sdk.base.FortSdk;
-import com.payfort.fort.android.sdk.base.callbacks.FortCallBackManager;
-import com.payfort.fort.android.sdk.base.callbacks.FortCallback;
-import com.payfort.sdk.android.dependancies.base.FortInterfaces;
-import com.payfort.sdk.android.dependancies.models.FortRequest;
+import com.craftman.cardform.Card;
+import com.craftman.cardform.CardForm;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
+import com.oppwa.mobile.connect.checkout.dialog.PaymentButtonFragment;
+import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
+import com.oppwa.mobile.connect.exception.PaymentError;
+import com.oppwa.mobile.connect.exception.PaymentException;
+import com.oppwa.mobile.connect.provider.Connect;
+import com.oppwa.mobile.connect.service.ConnectService;
+import com.oppwa.mobile.connect.service.IProviderBinder;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.net.URL;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
+import javax.net.ssl.HttpsURLConnection;
+
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
 import sedra.appsmatic.com.sedra.Adabters.PaymentTypeAdapter;
-import sedra.appsmatic.com.sedra.PayFort.IPaymentRequestCallBack;
-import sedra.appsmatic.com.sedra.PayFort.PayFortData;
-import sedra.appsmatic.com.sedra.PayFort.PayFortPayment;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
+import sedra.appsmatic.com.sedra.RequestPayment;
 
-public class ShoppingCart extends AppCompatActivity implements IPaymentRequestCallBack {
+public class ShoppingCart extends AppCompatActivity  {
 
     ImageView payBtn,activeDis,emptycart;
     private BetterSpinner cridetCards;
     private String[] contentArray ={"VISA","MasterCard"};
     private int cardTypeFlag=-1;
-    private FortCallBackManager fortCallback= null;
-    final FortRequest fortRequest=new FortRequest();
     String price ="100.0";
+    private ResPaymentAction requestPayment;
+    private IProviderBinder binder;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = (IProviderBinder) service;
+        /* we have a connection to the service */
+            try {
+                binder.initializeProvider(Connect.ProviderMode.TEST);
+            } catch (PaymentException ee) {
+	    /* error occurred */
+            }
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            binder = null;
+        }
+    };
 
 
 
@@ -50,7 +88,7 @@ public class ShoppingCart extends AppCompatActivity implements IPaymentRequestCa
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart_screen);
-        fortCallback = FortCallback.Factory.create();
+        requestPayment=new ResPaymentAction();
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -74,6 +112,18 @@ public class ShoppingCart extends AppCompatActivity implements IPaymentRequestCa
         });
 
 
+        //Request Payment Checkout id
+        try {
+            String json=RequestPayment.request(Double.parseDouble(price),"SAR");
+            Log.e("jjjjjj",json);
+            Type type = new TypeToken<ResPaymentAction>() {}.getType();
+            Gson gson = new Gson();
+            requestPayment= gson.fromJson(json, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         //Set images languages
         if (SaveSharedPreference.getLangId(this).equals("ar")) {
             payBtn.setImageResource(R.drawable.paybtn_ar);
@@ -87,58 +137,67 @@ public class ShoppingCart extends AppCompatActivity implements IPaymentRequestCa
         }
 
 
+        //pay action
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestForPayfortPayment();;
+                Set<String> paymentBrands = new LinkedHashSet<String>();
+                paymentBrands.add("VISA");
+                paymentBrands.add("MASTER");
+                CheckoutSettings checkoutSettings = new CheckoutSettings(requestPayment.getId(), paymentBrands);
+                Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+                intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
+                startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+
+                Log.e("hhhhh",requestPayment.getId());
+
+
+
             }
         });
 
 
     }
 
-
-        private void requestForPayfortPayment() {
-            PayFortData payFortData = new PayFortData();
-            if (!TextUtils.isEmpty(price) ){
-                payFortData.amount = String.valueOf((int) (Float.parseFloat(price) * 100));// Multiplying with 100, bcz amount should not be in decimal format
-                payFortData.command = PayFortPayment.PURCHASE;
-                payFortData.currency = PayFortPayment.CURRENCY_TYPE;
-                payFortData.customerEmail = "readyandroid@gmail.com";
-                payFortData.language = PayFortPayment.LANGUAGE_TYPE;
-                payFortData.merchantReference = String.valueOf(System.currentTimeMillis());
-                PayFortPayment payFortPayment = new PayFortPayment(this, this.fortCallback, this);
-                payFortPayment.requestForPayment(payFortData);
-            }
-        }
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, ConnectService.class);
+        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PayFortPayment.RESPONSE_PURCHASE) {
-            fortCallback.onActivityResult(requestCode, resultCode, data);
-        }
+    protected void onStop() {
+        super.onStop();
+
+        unbindService(serviceConnection);
+        stopService(new Intent(this, ConnectService.class));
     }
 
     @Override
-    public void onPaymentRequestResponse(int responseType, PayFortData responseData) {
-
-        if (responseType == PayFortPayment.RESPONSE_GET_TOKEN) {
-            Toast.makeText(this, "Token not generated", Toast.LENGTH_SHORT).show();
-            Log.e("onPaymentResponse", "Token not generated");
-        } else if (responseType == PayFortPayment.RESPONSE_PURCHASE_CANCEL) {
-            Toast.makeText(this, "Payment cancelled", Toast.LENGTH_SHORT).show();
-            Log.e("onPaymentResponse", "Payment cancelled");
-        } else if (responseType == PayFortPayment.RESPONSE_PURCHASE_FAILURE) {
-            Toast.makeText(this, "Payment failed", Toast.LENGTH_SHORT).show();
-            Log.e("onPaymentResponse", "Payment failed");
-        } else {
-            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
-            Log.e("onPaymentResponse", "Payment successful");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case CheckoutActivity.RESULT_OK:
+            /* transaction successful */
+                Toast.makeText(getApplication(),"transaction successful",Toast.LENGTH_LONG).show();
+                break;
+            case CheckoutActivity.RESULT_CANCELED:
+            /* shopper canceled the checkout process */
+                Toast.makeText(getApplication(),"shopper canceled the checkout process",Toast.LENGTH_LONG).show();
+                break;
+            case CheckoutActivity.RESULT_ERROR:
+            /* error occurred */
+                PaymentError error = data.getExtras().getParcelable(CheckoutActivity.CHECKOUT_RESULT_ERROR);
+                Toast.makeText(getApplication(),"No checkout Id",Toast.LENGTH_LONG).show();
         }
-
     }
+
+
+
+
+
+
+
 }

@@ -61,6 +61,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:padding="10dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -69,7 +70,7 @@
                 android:orientation="horizontal"
                 android:layout_margin="5dp">
                 <com.weiwangcn.betterspinner.library.BetterSpinner
-                    android:id="@+id/citydown"
+                    android:id="@+id/countrydown"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp"
@@ -87,7 +88,7 @@
                 android:orientation="horizontal"
                 android:layout_margin="5dp">
                 <com.weiwangcn.betterspinner.library.BetterSpinner
-                    android:id="@+id/countrydown"
+                    android:id="@+id/citydown"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp"

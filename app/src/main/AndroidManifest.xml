@@ -99,6 +99,28 @@
         <activity
             android:name=".Activites.PaymentScreen"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name="com.oppwa.mobile.connect.service.ConnectService"
+            android:exported="false"/>
+
+        <activity
+            android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
+            android:theme="@style/Theme.Checkout.Light"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false"
+            android:launchMode="singleTop"/>
+
+        <receiver
+            android:name=".CheckoutBroadcastReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.oppwa.mobile.connect.checkout.ACTION_PAYMENT_METHOD_SELECTED"/>
+            </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>

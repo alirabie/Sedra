@@ -75,9 +75,10 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
         holder.productImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 context.startActivity(new Intent(context, ProductInfoScreen.class)
-                        .putExtra("product_id", products.getProducts().get(position).getId() + "")
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                      .putExtra("product_id", products.getProducts().get(position).getId() + "")
+                      .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
     }

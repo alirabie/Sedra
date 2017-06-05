@@ -16,6 +16,7 @@ import sedra.appsmatic.com.sedra.R;
 
 public class AboutUsScreen extends AppCompatActivity {
 
+
     private TextView aboutStore;
     private ImageView home;
 

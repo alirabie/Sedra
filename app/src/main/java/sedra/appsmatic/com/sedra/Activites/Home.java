@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +59,7 @@ import sedra.appsmatic.com.sedra.R;
 public class Home extends AppCompatActivity  {
 
     private BetterSpinner vendors;
-    private BetterSpinner categoriesSp;
+    private BetterSpinner districtsSp;
     private static List<String> vendorsNames;
     private static List<String> vendorsIds;
     private static List<String>products;
@@ -84,6 +84,12 @@ public class Home extends AppCompatActivity  {
         //Check Os Ver For Set Status Bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        }
+
+        //Check location permissions for Marshmallow
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
         }
 
         //Receive vendorsIds from countries screen
@@ -213,11 +219,11 @@ public class Home extends AppCompatActivity  {
 
 
 
-        categoriesSp = (BetterSpinner) findViewById(R.id.countrydown);
+        districtsSp = (BetterSpinner) findViewById(R.id.countrydown);
         vendors =(BetterSpinner)findViewById(R.id.citydown);
-        categoriesSp.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
+        districtsSp.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
         vendors.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
-        categoriesSp.setHint(getResources().getString(R.string.selectcategorie));
+        districtsSp.setHint(getResources().getString(R.string.distrects));
         Generator.createService(SedraApi.class).getVendors(countryId,stateId).enqueue(new Callback<ResVendors>() {
             @Override
             public void onResponse(Call<ResVendors> call, Response<ResVendors> response) {
