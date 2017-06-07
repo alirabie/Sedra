@@ -8,7 +8,7 @@
     <string name="logintitle">Login</string>
     <string name="emailhint">Email Address</string>
     <string name="passwordhint">Password</string>
-    <string name="forgetpass">Forget Password</string>
+    <string name="forgetpass">Forgot Password</string>
     <string name="newaccount">Create New Account</string>
     <string name="signuptitle">SignUp</string>
     <string name="repassword">Re Password</string>

@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class SplashScreen extends AppCompatActivity {
 
    private ImageView langBtn,loginBtn,signUpbtn,gustBtn;
     private RelativeLayout bg;
+    private LinearLayout btnsBox;
     private boolean doubleBackToExitPressedOnce = false;
 
 
@@ -33,6 +37,7 @@ public class SplashScreen extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
         //set app lang
         setLang(R.layout.activity_splash_screen);
         Window window = this.getWindow();
@@ -49,6 +54,13 @@ public class SplashScreen extends AppCompatActivity {
         signUpbtn=(ImageView)findViewById(R.id.signup_btn);
         gustBtn=(ImageView)findViewById(R.id.gust_btn);
         bg=(RelativeLayout)findViewById(R.id.splash_bg);
+        btnsBox=(LinearLayout)findViewById(R.id.buttons_container);
+
+
+        //Animate buttons box
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.toptodown);
+        btnsBox.clearAnimation();
+        btnsBox.setAnimation(anim);
 
 
         //Set images languages

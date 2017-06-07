@@ -127,12 +127,12 @@ public class ShoppingCart extends AppCompatActivity  {
         //Set images languages
         if (SaveSharedPreference.getLangId(this).equals("ar")) {
             payBtn.setImageResource(R.drawable.paybtn_ar);
-            activeDis.setImageResource(R.drawable.activationbtn_ar);
+            activeDis.setImageResource(R.drawable.active_btn_ar);
             emptycart.setImageResource(R.drawable.emptybasketicon_ar);
 
         } else {
             payBtn.setImageResource(R.drawable.paybtn_en);
-            activeDis.setImageResource(R.drawable.activation_btn_en);
+            activeDis.setImageResource(R.drawable.activecodeshoppingcartbtn_en);
             emptycart.setImageResource(R.drawable.emptybasketicon_en);
         }
 
@@ -181,16 +181,19 @@ public class ShoppingCart extends AppCompatActivity  {
         switch (resultCode) {
             case CheckoutActivity.RESULT_OK:
             /* transaction successful */
-                Toast.makeText(getApplication(),"transaction successful",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"transaction successful"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
+                ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_CANCELED:
             /* shopper canceled the checkout process */
-                Toast.makeText(getApplication(),"shopper canceled the checkout process",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"shopper canceled the checkout process"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
+                ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_ERROR:
             /* error occurred */
                 PaymentError error = data.getExtras().getParcelable(CheckoutActivity.CHECKOUT_RESULT_ERROR);
-                Toast.makeText(getApplication(),"No checkout Id",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"No checkout Id"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
+                ShoppingCart.this.finish();
         }
     }
 

@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:padding="15dp">
+        android:padding="15dp"
+        android:id="@+id/buttons_container">
 
         <ImageView
             android:layout_width="wrap_content"
