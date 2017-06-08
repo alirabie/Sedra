@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -163,6 +165,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                addToCartBtn.clearAnimation();
+                addToCartBtn.setAnimation(anim);
                 //reset count
                 count=0;
                 startActivity(new Intent(ProductInfoScreen.this,DoneScreen.class));
@@ -175,6 +180,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         deliveryTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                deliveryTimeBtn.clearAnimation();
+                deliveryTimeBtn.setAnimation(anim);
                 startActivity(new Intent(ProductInfoScreen.this,DeliveryDateScreen.class).putExtra("dayes",dayCount));
                 //Reset Day Count
                 dayCount="0";
@@ -185,6 +193,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         giftMsgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                giftMsgBtn.clearAnimation();
+                giftMsgBtn.setAnimation(anim);
                 startActivity(new Intent(ProductInfoScreen.this, GiftMessageScreen.class));
             }
         });
@@ -194,6 +205,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         deliveryAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                deliveryAddressBtn.clearAnimation();
+                deliveryAddressBtn.setAnimation(anim);
                 startActivity(new Intent(ProductInfoScreen.this, DeliveryAddress.class));
             }
         });
@@ -203,6 +217,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                up.clearAnimation();
+                up.setAnimation(anim);
                 count++;
                 countTv.setText(count + "");
             }
@@ -212,6 +229,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                down.clearAnimation();
+                down.setAnimation(anim);
                 if(count==0){
                     return;
                 }else {

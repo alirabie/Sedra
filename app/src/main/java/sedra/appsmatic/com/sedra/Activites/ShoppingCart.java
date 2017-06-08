@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -141,6 +143,9 @@ public class ShoppingCart extends AppCompatActivity  {
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                payBtn.clearAnimation();
+                payBtn.setAnimation(anim);
                 Set<String> paymentBrands = new LinkedHashSet<String>();
                 paymentBrands.add("VISA");
                 paymentBrands.add("MASTER");

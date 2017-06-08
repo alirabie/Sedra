@@ -2,10 +2,13 @@ package sedra.appsmatic.com.sedra.Adabters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,9 +41,10 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
     }
 
     @Override
-    public void onBindViewHolder(vh0 holder, final int position) {
+    public void onBindViewHolder(final vh0 holder, final int position) {
 
         holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
+
 
         //Check Settings For Load images
         if(SaveSharedPreference.getImgLoadingSatatus(context)){
@@ -76,6 +80,9 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
             @Override
             public void onClick(View v) {
 
+                Animation animFadein = AnimationUtils.loadAnimation(context, R.anim.alpha);
+                holder.productImg.clearAnimation();
+                holder.productImg.startAnimation(animFadein);
                 context.startActivity(new Intent(context, ProductInfoScreen.class)
                       .putExtra("product_id", products.getProducts().get(position).getId() + "")
                       .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

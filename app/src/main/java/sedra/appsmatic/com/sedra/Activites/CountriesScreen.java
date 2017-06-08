@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -98,6 +100,11 @@ public class CountriesScreen extends AppCompatActivity {
             public void onResponse(Call<ResCountry> call, Response<ResCountry> response) {
                 if (response.isSuccessful()) {
                     contriesBox.setVisibility(View.VISIBLE);
+                    //Animate Spinner box
+                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+                    contriesBox.clearAnimation();
+                    contriesBox.setAnimation(anim);
+
                     //fill names and ids to spinner list from response
                     for (int i = 0; i < response.body().getCountries().size(); i++) {
                         countriesNames.add(response.body().getCountries().get(i).getName());
@@ -122,6 +129,10 @@ public class CountriesScreen extends AppCompatActivity {
                                 public void onResponse(Call<ResStates> call, Response<ResStates> response) {
                                     if (response.isSuccessful()) {
                                         statesBox.setVisibility(View.VISIBLE);
+                                        //Animate Spinner box
+                                        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+                                        statesBox.clearAnimation();
+                                        statesBox.setAnimation(anim);
                                         //fill names and ids to spinner list from response
                                         for (int i = 0; i < response.body().getStates().size(); i++) {
                                             statesNames.add(response.body().getStates().get(i).getName());
