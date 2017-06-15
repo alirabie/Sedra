@@ -257,5 +257,13 @@
             android:padding="5dp" />
 
     </LinearLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/emptyproducts"
+        android:id="@+id/cartimptyflag"
+        android:textSize="35dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

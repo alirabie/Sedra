@@ -1,6 +1,12 @@
 package sedra.appsmatic.com.sedra.API.WebServiceTools;
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import sedra.appsmatic.com.sedra.API.Models.Addresses.ResAddresses;
@@ -8,6 +14,7 @@ import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 
@@ -68,6 +75,17 @@ public interface SedraApi {
 
 
 
+    //Add to shopping cart
+    @POST("api/shopping_cart_items")
+    Call<ResCartItems> addItemToCart(@Body Object item);
+
+    //get shopping cart items
+    @GET("api/shopping_cart_items?/")
+    Call<ResCartItems> getCartItems(@Query("id") String id,@Query("limit") int li);
+
+    //get shopping cart items
+    @DELETE("api/shopping_cart_items/{id}")
+    Call<ResCartItems> deleteCartItems(@Path("id") String id);
 
 
 

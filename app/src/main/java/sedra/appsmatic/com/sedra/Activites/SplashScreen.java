@@ -140,6 +140,7 @@ public class SplashScreen extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),CountriesScreen.class));
                 SplashScreen.this.finish();
+                SaveSharedPreference.setCustomerId(SplashScreen.this,"2");
             }
         });
 

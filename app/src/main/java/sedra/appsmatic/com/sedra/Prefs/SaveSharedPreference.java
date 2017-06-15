@@ -13,6 +13,7 @@ public class SaveSharedPreference {
     static final String PREF_USER_PASS = "password";
     static final String LANG_ID="langId";
     static final String lOAD_IMG_ID="imagesStatus";
+    static final String CUSTOMER_ID="customerid";
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -51,6 +52,15 @@ public class SaveSharedPreference {
     }
 
 
+    public static void setCustomerId(Context context,String id){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(CUSTOMER_ID,id);
+        editor.commit();
+    }
+
+    public static String getCustomerId(Context context){
+        return getSharedPreferences(context).getString(CUSTOMER_ID, "");
+    }
 
     public static String getUserName(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");

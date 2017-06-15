@@ -12,6 +12,8 @@ import android.os.IBinder;
 import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.craftman.cardform.Card;
@@ -48,7 +51,14 @@ import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
+import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Adabters.CartAdb;
 import sedra.appsmatic.com.sedra.Adabters.PaymentTypeAdapter;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
@@ -61,8 +71,10 @@ public class ShoppingCart extends AppCompatActivity  {
     private String[] contentArray ={"VISA","MasterCard"};
     private int cardTypeFlag=-1;
     String price ="100.0";
+    private RecyclerView itemsList;
     private ResPaymentAction requestPayment;
     private IProviderBinder binder;
+    private TextView emptyFlag;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -99,6 +111,43 @@ public class ShoppingCart extends AppCompatActivity  {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+
+        emptyFlag=(TextView)findViewById(R.id.cartimptyflag);
+        emptyFlag.setVisibility(View.INVISIBLE);
+
+
+        if(SaveSharedPreference.getCustomerId(ShoppingCart.this).isEmpty()){
+            emptyFlag.setVisibility(View.VISIBLE);
+            emptyFlag.setText(getResources().getString(R.string.loginplease));
+        }else{
+
+            //get list of customer cart items
+            Generator.createService(SedraApi.class).getCartItems(SaveSharedPreference.getCustomerId(ShoppingCart.this),250).enqueue(new Callback<ResCartItems>() {
+                @Override
+                public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
+
+                    if(response.isSuccessful()){
+                        if(response.body().getShoppingCarts().isEmpty()){
+                            emptyFlag.setVisibility(View.VISIBLE);
+                        }else {
+                            emptyFlag.setVisibility(View.INVISIBLE);
+                            itemsList=(RecyclerView)findViewById(R.id.shopping_cart_list);
+                            itemsList.setLayoutManager(new LinearLayoutManager(ShoppingCart.this));
+                            itemsList.setAdapter(new CartAdb(response.body(),ShoppingCart.this));
+                        }
+
+                    }else {
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResCartItems> call, Throwable t) {
+
+                }
+            });
+
+        }
 
         payBtn = (ImageView) findViewById(R.id.pay_btn);
         activeDis = (ImageView) findViewById(R.id.active_desc_code_activ_btn);
@@ -160,6 +209,13 @@ public class ShoppingCart extends AppCompatActivity  {
 
             }
         });
+
+
+
+
+
+
+
 
 
     }

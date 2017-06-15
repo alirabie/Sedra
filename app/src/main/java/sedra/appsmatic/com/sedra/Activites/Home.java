@@ -48,6 +48,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
@@ -67,6 +68,9 @@ public class Home extends AppCompatActivity  {
     public static android.support.v4.app.FragmentManager fragmentManager;
     public static android.support.v4.app.FragmentTransaction fragmentTransaction;
     private boolean doubleBackToExitPressedOnce = false;
+    public static MenuItem itemCart;
+    public static  LayerDrawable icon;
+
 
 
 
@@ -91,6 +95,7 @@ public class Home extends AppCompatActivity  {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
         }
+
 
         //Receive vendorsIds from countries screen
         String countryId=getIntent().getStringExtra("country_id");
@@ -372,6 +377,13 @@ public class Home extends AppCompatActivity  {
         super.onResume();
         // .... other stuff in my onResume ....
         this.doubleBackToExitPressedOnce = false;
+        getCartItemsCount(Home.this,"2");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getCartItemsCount(Home.this,"2");
     }
 
     @Override
@@ -394,6 +406,7 @@ public class Home extends AppCompatActivity  {
                     .setButton1Click(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            dialogBuilder.dismiss();
                             Home.this.finish();
                         }
                     })
@@ -431,9 +444,10 @@ public class Home extends AppCompatActivity  {
         getMenuInflater().inflate(R.menu.main, menu);
 
        //set badge count
-        MenuItem itemCart = menu.findItem(R.id.action_carticon);
-        LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
-        setBadgeCount(this, icon, "10");
+        itemCart = menu.findItem(R.id.action_carticon);
+        icon = (LayerDrawable) itemCart.getIcon();
+        //update Cart Counter
+        getCartItemsCount(Home.this,"2");
 
 
         return true;
@@ -546,6 +560,23 @@ public class Home extends AppCompatActivity  {
         icon.setDrawableByLayerId(R.id.ic_badge, badge);
     }
 
+
+    public static void getCartItemsCount (final Context context,String customerId){
+        Generator.createService(SedraApi.class).getCartItems(customerId,250).enqueue(new Callback<ResCartItems>() {
+            @Override
+            public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
+                if(response.isSuccessful()){
+                    setBadgeCount(context, icon, response.body().getShoppingCarts().size()+"");
+                }else {
+                    Log.e("erorr","cart not set num");
+                }
+            }
+            @Override
+            public void onFailure(Call<ResCartItems> call, Throwable t) {
+                Log.e("cartNum fail",t.getMessage());
+            }
+        });
+    }
 
 
 

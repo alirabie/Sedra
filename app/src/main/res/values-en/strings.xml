@@ -88,5 +88,9 @@
     <string name="distrects">Select District</string>
     <string name="day">Day</string>
     <string name="notset">Not Set</string>
+    <string name="countitem">Please Select Item Count !</string>
+    <string name="erorr">Item Not added successfully !</string>
+    <string name="pleasew">Please Wait ...</string>
+    <string name="loginplease">Please SignIn to add to cart !</string>
 
 </resources>

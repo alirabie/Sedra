@@ -88,5 +88,9 @@
     <string name="distrects">أختر الحى</string>
     <string name="day">يوم</string>
     <string name="notset">لم يحدد بعد</string>
+    <string name="countitem">من فضلك قم بتحديد الكمية !</string>
+    <string name="erorr">لم يتم اضافة المنتج الى سلة الشراء ! </string>
+    <string name="pleasew">من فضلك انتظر ....</string>
+    <string name="loginplease">من فضلك قم بتسجيل الدخول اولا !</string>
 
 </resources>
