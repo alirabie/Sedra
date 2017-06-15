@@ -32,8 +32,10 @@ import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
+import sedra.appsmatic.com.sedra.Activites.SplashScreen;
 import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.Fragments.Settngs;
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 /**
@@ -107,109 +109,223 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
     @Override
     public void onBindViewHolder(vh1 holder, final int position) {
 
-        animate(holder);
-        holder.lable.setText(lablesLoggedOut[position]);
-        //Check Os Ver
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            holder.lable.setBackgroundResource(R.drawable.ripple);
-        }
-        Picasso.with(context).load(logosLoggedOut[position]).into(holder.logo);
-        drawer = (DrawerLayout)((Activity) context).findViewById(R.id.drawer_layout);
-        Typeface face= Typeface.createFromAsset(context.getAssets(), "arabic.ttf");
-        holder.lable.setTypeface(face);
-        holder.lable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (position){
-                    case 0 :
-                        //Home
-                        Products products=new Products();
-                        Bundle bundle = new Bundle();
-                        products.setArguments(bundle);
-                        android.support.v4.app.FragmentManager fragmentManager =((FragmentActivity) context).getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.fragmentcontener, products);
-                        fragmentTransaction.commit();
-                        //un active all buttons
-                        Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
-                        Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
-                        Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
-                        Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
+        if(SaveSharedPreference.getCustomerId(context).isEmpty()) {
 
-                    case 1 :
-
-                        Settngs settngs=new Settngs();
-                        android.support.v4.app.FragmentManager fragmentManager2 =((FragmentActivity) context).getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                        fragmentTransaction2.replace(R.id.fragmentcontener,settngs);
-                        fragmentTransaction2.commit();
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 2 :
-                        //Create new account
-                        context.startActivity(new Intent(context, SignUpScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 3 :
-                        //Shopping cart
-                        context.startActivity(new Intent(context, ShoppingCart.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 4 :
-                        //Discounted screen
-                        context.startActivity(new Intent(context, DiscountedScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 5 :
-
-                        break;
-
-                    case 6 :
-
-                        break;
-
-                    case 7 :
-
-                        //About Us
-                        context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 8 :
-                        //Contact Us
-                        context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case 9 :
-                        //Sign in
-                        context.startActivity(new Intent(context, SignInScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
+            // In case of customer is logged out and customer id empty
+            animate(holder);
+            holder.lable.setText(lablesLoggedOut[position]);
+            //Check Os Ver
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.lable.setBackgroundResource(R.drawable.ripple);
             }
-        });
+            Picasso.with(context).load(logosLoggedOut[position]).into(holder.logo);
+            drawer = (DrawerLayout) ((Activity) context).findViewById(R.id.drawer_layout);
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "arabic.ttf");
+            holder.lable.setTypeface(face);
+            holder.lable.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (position) {
+                        case 0:
+                            //Home
+                            Products products = new Products();
+                            Bundle bundle = new Bundle();
+                            products.setArguments(bundle);
+                            android.support.v4.app.FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, products);
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 1:
+                            Settngs settngs = new Settngs();
+                            android.support.v4.app.FragmentManager fragmentManager2 = ((FragmentActivity) context).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+                            fragmentTransaction2.replace(R.id.fragmentcontener, settngs);
+                            fragmentTransaction2.commit();
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 2:
+                            //Create new account
+                            context.startActivity(new Intent(context, SignUpScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+
+                        case 3:
+                            //Shopping cart
+                            context.startActivity(new Intent(context, ShoppingCart.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+
+                        case 4:
+                            //Discounted screen
+                            context.startActivity(new Intent(context, DiscountedScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+
+                        case 5:
+
+                            break;
+
+                        case 6:
+
+                            break;
+
+                        case 7:
+
+                            //About Us
+                            context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 8:
+                            //Contact Us
+                            context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 9:
+                            //Sign in
+                            context.startActivity(new Intent(context, SignInScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                    }
 
 
+                }
+            });
+
+        }else {
+
+            // in case of customer logged in and customer id not Empty
+            animate(holder);
+            holder.lable.setText(lablesLoggedIn[position]);
+            //Check Os Ver
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.lable.setBackgroundResource(R.drawable.ripple);
+            }
+            Picasso.with(context).load(logosLoggedIn[position]).into(holder.logo);
+            drawer = (DrawerLayout) ((Activity) context).findViewById(R.id.drawer_layout);
+            Typeface face = Typeface.createFromAsset(context.getAssets(), "arabic.ttf");
+            holder.lable.setTypeface(face);
+            holder.lable.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (position) {
+                        case 0:
+                            //Home
+                            Products products = new Products();
+                            Bundle bundle = new Bundle();
+                            products.setArguments(bundle);
+                            android.support.v4.app.FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, products);
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 1:
+                            Settngs settngs = new Settngs();
+                            android.support.v4.app.FragmentManager fragmentManager2 = ((FragmentActivity) context).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
+                            fragmentTransaction2.replace(R.id.fragmentcontener, settngs);
+                            fragmentTransaction2.commit();
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 2:
+                            //My account
+
+                            break;
+
+                        case 3:
+                            //Shopping cart
+                            context.startActivity(new Intent(context, ShoppingCart.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+
+                        case 4:
+                            //Discounted screen
+                            context.startActivity(new Intent(context, DiscountedScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+
+                        case 5:
+
+                            break;
+
+                        case 6:
+
+                            break;
+
+                        case 7:
+
+                            //About Us
+                            context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 8:
+                            //Contact Us
+                            context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        case 9:
+                            //Sign out
+
+                            SaveSharedPreference.setCustomerId(context,"");
+                            context.startActivity(new Intent(context, SplashScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            ((Activity) context).finish();
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                    }
+
+
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
 
 
 

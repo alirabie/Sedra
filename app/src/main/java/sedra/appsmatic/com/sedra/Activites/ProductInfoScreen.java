@@ -55,6 +55,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     NiftyDialogBuilder dialogBuildercard;
     private FrameLayout bg;
     private ImageView contin,finishShopping;
+    private Boolean isRental;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+        isRental=false;
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         pName=(TextView)findViewById(R.id.product_name_tv);
         pDec=(TextView)findViewById(R.id.desc_tv);
@@ -107,6 +109,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 if (response.isSuccessful()) {
 
                     try {
+                        isRental=response.body().getProducts().get(0).getIsRental();
                         pName.setText(response.body().getProducts().get(0).getName() + "");
                         pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
                         pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
@@ -230,6 +233,10 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         final String localTime = date.format(currentLocalTime);
                         ReqCartItems reqCartItems = new ReqCartItems();
                         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+                        if(isRental){
+                            shoppingCartItem.setRentalStartDateUtc("2030-06-23T16:15:47-04:00");
+                            shoppingCartItem.setRentalEndDateUtc("2030-07-23T16:15:47-06:00");
+                        }
                         shoppingCartItem.setId(null);
                         shoppingCartItem.setCustomerEnteredPrice(null);
                         shoppingCartItem.setQuantity(count + "");
@@ -237,7 +244,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         shoppingCartItem.setUpdatedOnUtc(localTime);
                         shoppingCartItem.setShoppingCartType("1");
                         shoppingCartItem.setProductId(getIntent().getStringExtra("product_id"));
-                        //Note : get customer id from prefs
                         shoppingCartItem.setCustomerId(SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
                         reqCartItems.setShoppingCartItem(shoppingCartItem);
                         Generator.createService(SedraApi.class).addItemToCart(reqCartItems).enqueue(new Callback<ResCartItems>() {
@@ -302,6 +308,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                     Log.e("Success", response.body().getShoppingCarts().size() + "");
                                     //reset count
                                     count = 0;
+                                    isRental=false;
                                 } else {
 
 

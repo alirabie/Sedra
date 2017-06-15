@@ -48,6 +48,7 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
 
     @Override
     public void onBindViewHolder(final Vh10025 holder, final int position) {
+        animate(holder);
 
         holder.pName.setText(resCartItems.getShoppingCarts().get(position).getProduct().getName()+" # "+resCartItems.getShoppingCarts().get(position).getQuantity());
         holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice()+context.getResources().getString(R.string.sr));
@@ -110,6 +111,12 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
     @Override
     public int getItemCount() {
         return resCartItems.getShoppingCarts().size();
+    }
+
+    //Animate Adapter
+    public void animate(RecyclerView.ViewHolder viewHolder) {
+        final Animation animAnticipateOvershoot = AnimationUtils.loadAnimation(context, R.anim.fadein);
+        viewHolder.itemView.setAnimation(animAnticipateOvershoot);
     }
 
     public static class Vh10025 extends RecyclerView.ViewHolder{

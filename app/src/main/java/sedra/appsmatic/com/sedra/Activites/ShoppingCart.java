@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.craftman.cardform.Card;
 import com.craftman.cardform.CardForm;
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
@@ -75,6 +77,7 @@ public class ShoppingCart extends AppCompatActivity  {
     private ResPaymentAction requestPayment;
     private IProviderBinder binder;
     private TextView emptyFlag;
+    private Boolean isReadyToPay;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -111,6 +114,7 @@ public class ShoppingCart extends AppCompatActivity  {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+        isReadyToPay=false;
 
         emptyFlag=(TextView)findViewById(R.id.cartimptyflag);
         emptyFlag.setVisibility(View.INVISIBLE);
@@ -129,11 +133,13 @@ public class ShoppingCart extends AppCompatActivity  {
                     if(response.isSuccessful()){
                         if(response.body().getShoppingCarts().isEmpty()){
                             emptyFlag.setVisibility(View.VISIBLE);
+                            isReadyToPay=false;
                         }else {
                             emptyFlag.setVisibility(View.INVISIBLE);
                             itemsList=(RecyclerView)findViewById(R.id.shopping_cart_list);
                             itemsList.setLayoutManager(new LinearLayoutManager(ShoppingCart.this));
                             itemsList.setAdapter(new CartAdb(response.body(),ShoppingCart.this));
+                            isReadyToPay=true;
                         }
 
                     }else {
@@ -195,15 +201,28 @@ public class ShoppingCart extends AppCompatActivity  {
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
-                Set<String> paymentBrands = new LinkedHashSet<String>();
-                paymentBrands.add("VISA");
-                paymentBrands.add("MASTER");
-                CheckoutSettings checkoutSettings = new CheckoutSettings(requestPayment.getId(), paymentBrands);
-                Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
-                intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
-                startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+                if(isReadyToPay){
+                    Set<String> paymentBrands = new LinkedHashSet<String>();
+                    paymentBrands.add("VISA");
+                    paymentBrands.add("MASTER");
+                    CheckoutSettings checkoutSettings = new CheckoutSettings(requestPayment.getId(), paymentBrands);
+                    Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
+                    intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
+                    startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+                    Log.e("hhhhh",requestPayment.getId());
+                }else {
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ShoppingCart.this);
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.sedra))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(getResources().getString(R.string.paynotallaw))
+                            .show();
+                }
 
-                Log.e("hhhhh",requestPayment.getId());
 
 
 

@@ -92,5 +92,6 @@
     <string name="erorr">Item Not added successfully !</string>
     <string name="pleasew">Please Wait ...</string>
     <string name="loginplease">Please SignIn to add to cart !</string>
+    <string name="paynotallaw">You cannot Pay , Cart is Empty !</string>
 
 </resources>
