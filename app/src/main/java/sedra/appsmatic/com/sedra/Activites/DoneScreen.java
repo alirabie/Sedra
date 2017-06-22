@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -12,7 +13,7 @@ import sedra.appsmatic.com.sedra.R;
 
 public class DoneScreen extends AppCompatActivity {
 
-    private RelativeLayout bg;
+    private FrameLayout bg;
     private ImageView contin,finishShopping;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class DoneScreen extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_done_screen);
 
-        bg=(RelativeLayout)findViewById(R.id.donebox);
+        bg=(FrameLayout)findViewById(R.id.donebox);
         contin=(ImageView)findViewById(R.id.contin_shopping_btn);
         finishShopping=(ImageView)findViewById(R.id.done_shopping_btn);
 

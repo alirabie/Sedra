@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class CountriesScreen extends AppCompatActivity {
     private static List<String>statesNames= new ArrayList<>();
     private static List<String>statesIds= new ArrayList<>();
     private static LinearLayout statesBox,contriesBox;
+    private ProgressBar progressBar;
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
     RelativeLayout bg;
@@ -62,6 +65,11 @@ public class CountriesScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+        progressBar = (ProgressBar)findViewById(R.id.countries_progressbar);
+        progressBar.setVisibility(View.VISIBLE);
+
+
+
         countriesspinner = (BetterSpinner) findViewById(R.id.countryspinner);
         contriesBox=(LinearLayout)findViewById(R.id.countries_contenr);
         statesspinner=(BetterSpinner)findViewById(R.id.statesspinner);
@@ -99,6 +107,7 @@ public class CountriesScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResCountry> call, Response<ResCountry> response) {
                 if (response.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
                     contriesBox.setVisibility(View.VISIBLE);
                     //Animate Spinner box
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
@@ -191,7 +200,7 @@ public class CountriesScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResCountry> call, Throwable t) {
-
+                progressBar.setVisibility(View.GONE);
                 NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(CountriesScreen.this);
                 dialogBuilder
                         .withTitle(getResources().getString(R.string.conectionerrorr))

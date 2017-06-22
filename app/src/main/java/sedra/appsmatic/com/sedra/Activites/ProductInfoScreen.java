@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -25,7 +26,10 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,6 +40,7 @@ import java.util.TimeZone;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Error.ResErrors;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ReqCartItems;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
@@ -231,7 +236,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
                         date.setTimeZone(TimeZone.getTimeZone("UTC"));
                         final String localTime = date.format(currentLocalTime);
-                        ReqCartItems reqCartItems = new ReqCartItems();
+                        final ReqCartItems reqCartItems = new ReqCartItems();
                         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
                         if(isRental){
                             shoppingCartItem.setRentalStartDateUtc("2030-06-23T16:15:47-04:00");
@@ -250,85 +255,106 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                             @Override
                             public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
 
+
                                 if (response.isSuccessful()) {
-                                    Home.getCartItemsCount(ProductInfoScreen.this, "2");
-                                    //Initialize Done Dialog
-                                    dialogBuildercard = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
-                                    dialogBuildercard
-                                            .withDuration(700)//def
-                                            .withDialogColor(getResources().getColor(R.color.colorPrimary))
-                                            .withEffect(Effectstype.Newspager)
-                                            .withTitleColor(getResources().getColor(R.color.colorPrimary))
-                                            .isCancelableOnTouchOutside(false)                           //def    | isCancelable(true)
-                                            .setCustomView(R.layout.activity_done_screen, addToCartBtn.getContext())
-                                            .show();
 
-
-                                    dialogBuildercard.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                                        @Override
-                                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                                            return keyCode == KeyEvent.KEYCODE_BACK;
+                                        Home.getCartItemsCount(ProductInfoScreen.this, "2");
+                                        //Initialize Done Dialog
+                                        dialogBuildercard = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                                        dialogBuildercard
+                                                .withDuration(700)//def
+                                                .withDialogColor(getResources().getColor(R.color.colorPrimary))
+                                                .withEffect(Effectstype.Newspager)
+                                                .withTitleColor(getResources().getColor(R.color.colorPrimary))
+                                                .isCancelableOnTouchOutside(false)                           //def    | isCancelable(true)
+                                                .setCustomView(R.layout.activity_done_screen, addToCartBtn.getContext())
+                                                .show();
+                                        dialogBuildercard.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                                            @Override
+                                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                                return keyCode == KeyEvent.KEYCODE_BACK;
+                                            }
+                                        });
+                                        bg = (FrameLayout) dialogBuildercard.findViewById(R.id.donebox);
+                                        contin = (ImageView) dialogBuildercard.findViewById(R.id.contin_shopping_btn);
+                                        finishShopping = (ImageView) dialogBuildercard.findViewById(R.id.done_shopping_btn);
+                                        //Set images languages
+                                        if (SaveSharedPreference.getLangId(ProductInfoScreen.this).equals("ar")) {
+                                            contin.setImageResource(R.drawable.continueshoppingbtn_ar);
+                                            finishShopping.setImageResource(R.drawable.completepurchasebtn_ar);
+                                            bg.setBackground(getResources().getDrawable(R.drawable.donemessage_ar));
+                                        } else {
+                                            contin.setImageResource(R.drawable.continueshoppingbtn_en);
+                                            finishShopping.setImageResource(R.drawable.completepurchasebtn_en);
+                                            bg.setBackground(getResources().getDrawable(R.drawable.donemessage_en));
                                         }
-                                    });
 
+                                        contin.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuildercard.dismiss();
+                                                ProductInfoScreen.this.finish();
+                                            }
+                                        });
 
+                                        finishShopping.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialogBuildercard.dismiss();
+                                                startActivity(new Intent(ProductInfoScreen.this, ShoppingCart.class));
+                                                ProductInfoScreen.this.finish();
+                                            }
+                                        });
 
+                                        Log.e("Success", response.body().getShoppingCarts().size() + "");
+                                        //reset count
+                                        count = 0;
+                                        isRental = false;
 
-                                    bg = (FrameLayout) dialogBuildercard.findViewById(R.id.donebox);
-                                    contin = (ImageView) dialogBuildercard.findViewById(R.id.contin_shopping_btn);
-                                    finishShopping = (ImageView) dialogBuildercard.findViewById(R.id.done_shopping_btn);
-                                    //Set images languages
-                                    if (SaveSharedPreference.getLangId(ProductInfoScreen.this).equals("ar")) {
-                                        contin.setImageResource(R.drawable.continueshoppingbtn_ar);
-                                        finishShopping.setImageResource(R.drawable.completepurchasebtn_ar);
-                                        bg.setBackground(getResources().getDrawable(R.drawable.donemessage_ar));
-                                    } else {
-                                        contin.setImageResource(R.drawable.continueshoppingbtn_en);
-                                        finishShopping.setImageResource(R.drawable.completepurchasebtn_en);
-                                        bg.setBackground(getResources().getDrawable(R.drawable.donemessage_en));
+                                    }else{
+
+                                    //Handel Error
+                                    Gson gson = new GsonBuilder().create();
+                                    ResErrors resErrors = new ResErrors();
+                                    try {
+                                        resErrors = gson.fromJson(response.errorBody().string(), ResErrors.class);
+                                        if(resErrors.getErrors().getShoppingCartItem()!=null) {
+                                            //Collect Error  Data
+                                            String error = "";
+                                            StringBuilder stringBuilder = new StringBuilder();
+                                            if(!resErrors.getErrors().getShoppingCartItem().isEmpty()) {
+                                                //Put errors count
+                                                stringBuilder.append(resErrors.getErrors().getShoppingCartItem().size()+" Errors"+"\n");
+                                                for (int i = 0; i < resErrors.getErrors().getShoppingCartItem().size(); i++) {
+                                                    stringBuilder.append(resErrors.getErrors().getShoppingCartItem().get(i) + "\n");
+                                                }
+                                            }
+
+                                            error=stringBuilder.toString();
+                                            NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                                            dialogBuilder
+                                                    .withTitle(getResources().getString(R.string.sedra))
+                                                    .withDialogColor(R.color.colorPrimary)
+                                                    .withTitleColor("#FFFFFF")
+                                                    .withIcon(getResources().getDrawable(R.drawable.icon))
+                                                    .withDuration(700)                                          //def
+                                                    .withEffect(Effectstype.RotateBottom)
+                                                    .withMessage(error+ "")
+                                                    .show();
+
+                                            Toast.makeText(getApplicationContext(), resErrors.getErrors().getShoppingCartItem().size() + "", Toast.LENGTH_LONG).show();
+                                        }
+                                    } catch (IOException e) {
                                     }
 
-                                    contin.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuildercard.dismiss();
-                                            ProductInfoScreen.this.finish();
-                                        }
-                                    });
-
-                                    finishShopping.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialogBuildercard.dismiss();
-                                            startActivity(new Intent(ProductInfoScreen.this, ShoppingCart.class));
-                                            ProductInfoScreen.this.finish();
-                                        }
-                                    });
-
-                                    Log.e("Success", response.body().getShoppingCarts().size() + "");
-                                    //reset count
-                                    count = 0;
-                                    isRental=false;
-                                } else {
 
 
-                                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
-                                    dialogBuilder
-                                            .withTitle(getResources().getString(R.string.sedra))
-                                            .withDialogColor(R.color.colorPrimary)
-                                            .withTitleColor("#FFFFFF")
-                                            .withIcon(getResources().getDrawable(R.drawable.icon))
-                                            .withDuration(700)                                          //def
-                                            .withEffect(Effectstype.RotateBottom)
-                                            .withMessage(getResources().getString(R.string.erorr))
-                                            .show();
+                                        Log.e("NotSuccess", localTime + " " + getIntent().getStringExtra("product_id"));
 
-                                    Log.e("NotSuccess", localTime + " " + getIntent().getStringExtra("product_id"));
+                                    }
 
-                                }
 
                             }
-
                             @Override
                             public void onFailure(Call<ResCartItems> call, Throwable t) {
                                 Log.e("fail", t.getMessage());
