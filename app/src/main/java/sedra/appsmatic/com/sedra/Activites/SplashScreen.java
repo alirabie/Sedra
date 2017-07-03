@@ -38,6 +38,16 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        //Check login status
+        if(!SaveSharedPreference.getCustomerId(SplashScreen.this).isEmpty()){
+            startActivity(new Intent(SplashScreen.this,CountriesScreen.class));
+            SplashScreen.this.finish();
+        }
+
+
+
+
+
         //set app lang
         setLang(R.layout.activity_splash_screen);
         Window window = this.getWindow();
@@ -138,9 +148,8 @@ public class SplashScreen extends AppCompatActivity {
         gustBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),CountriesScreen.class));
+                startActivity(new Intent(getApplicationContext(), CountriesScreen.class));
                 SplashScreen.this.finish();
-                SaveSharedPreference.setCustomerId(SplashScreen.this,"2");
             }
         });
 

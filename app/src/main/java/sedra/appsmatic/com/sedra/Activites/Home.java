@@ -1,7 +1,9 @@
 package sedra.appsmatic.com.sedra.Activites;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,7 +28,10 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -43,11 +49,13 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
@@ -55,6 +63,7 @@ import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
 import sedra.appsmatic.com.sedra.CountBadge.BadgeDrawable;
 import sedra.appsmatic.com.sedra.Fragments.Products;
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 public class Home extends AppCompatActivity  {
@@ -70,18 +79,21 @@ public class Home extends AppCompatActivity  {
     private boolean doubleBackToExitPressedOnce = false;
     public static MenuItem itemCart;
     public static  LayerDrawable icon;
+    public static SideMenuAdb sideMenuAdb;
+
 
 
 
 
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
-    private RecyclerView sideMenu;
+    public static RecyclerView sideMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sideMenuAdb=new SideMenuAdb(Home.this);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -273,8 +285,9 @@ public class Home extends AppCompatActivity  {
 
         //setup side menuR
         sideMenu=(RecyclerView)findViewById(R.id.sidemenulist);
-        sideMenu.setAdapter(new SideMenuAdb(Home.this));
+        sideMenu.setAdapter(sideMenuAdb);
         sideMenu.setLayoutManager(new LinearLayoutManager(Home.this));
+
 
 
 
@@ -377,13 +390,24 @@ public class Home extends AppCompatActivity  {
         super.onResume();
         // .... other stuff in my onResume ....
         this.doubleBackToExitPressedOnce = false;
-        getCartItemsCount(Home.this,"2");
+
+
+        if(SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
+
+        }else {
+            getCartItemsCount(Home.this,SaveSharedPreference.getCustomerId(Home.this));
+        }
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getCartItemsCount(Home.this,"2");
+        if(SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
+
+        }else {
+            getCartItemsCount(Home.this, SaveSharedPreference.getCustomerId(Home.this));
+        }
     }
 
     @Override
@@ -447,7 +471,11 @@ public class Home extends AppCompatActivity  {
         itemCart = menu.findItem(R.id.action_carticon);
         icon = (LayerDrawable) itemCart.getIcon();
         //update Cart Counter
-        getCartItemsCount(Home.this,"2");
+        if(SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
+
+        }else {
+            getCartItemsCount(Home.this,SaveSharedPreference.getCustomerId(Home.this));
+        }
 
 
         return true;
@@ -469,7 +497,17 @@ public class Home extends AppCompatActivity  {
            startActivity(new Intent(this,Filter.class));
             return true;
         }else if(id==R.id.action_carticon) {
-            startActivity(new Intent(this,ShoppingCart.class));
+
+            if(SaveSharedPreference.getCustomerId(Home.this).isEmpty()) {
+
+                //start login dialog code >>>
+
+                  FloatingLoginDialog.startShow(Home.this);
+
+                ///end login dialog code
+
+
+            }else{startActivity(new Intent(this, ShoppingCart.class));}
             return true;
         }
             return super.onOptionsItemSelected(item);
@@ -562,7 +600,7 @@ public class Home extends AppCompatActivity  {
 
 
     public static void getCartItemsCount (final Context context,String customerId){
-        Generator.createService(SedraApi.class).getCartItems(customerId,250).enqueue(new Callback<ResCartItems>() {
+        Generator.createService(SedraApi.class).getCartItems(customerId).enqueue(new Callback<ResCartItems>() {
             @Override
             public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
                 if(response.isSuccessful()){

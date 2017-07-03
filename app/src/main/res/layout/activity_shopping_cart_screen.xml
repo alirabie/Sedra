@@ -268,5 +268,13 @@
         android:layout_alignTop="@+id/shopping_cart_list"
         android:layout_centerHorizontal="true"
         android:textSize="25dp" />
+    <ProgressBar
+        android:id="@+id/progressbar_cart"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -65,29 +65,6 @@ public class SignUpScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(SignUpScreen.this);
-        dialogBuilder
-                .withTitle(getResources().getString(R.string.sedra))
-                .withDialogColor(R.color.colorPrimary)
-                .withTitleColor("#FFFFFF")
-                .withIcon(getResources().getDrawable(R.drawable.icon))
-                .withDuration(700)                                          //def
-                .withEffect(Effectstype.RotateBottom)
-                .withMessage(getResources().getString(R.string.exitfromapp))
-                .withButton1Text(getResources().getString(R.string.yes))
-                .withButton2Text(getResources().getString(R.string.no))
-                .setButton1Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SignUpScreen.this.finish();
-                    }
-                })
-                .setButton2Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                    }
-                })
-                .show();
+       SignUpScreen.this.finish();
     }
 }

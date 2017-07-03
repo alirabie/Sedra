@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class ShoppingCart extends AppCompatActivity  {
     private RecyclerView itemsList;
     private ResPaymentAction requestPayment;
     private IProviderBinder binder;
+    private ProgressBar progressBar;
     private TextView emptyFlag;
     private Boolean isReadyToPay;
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -105,6 +107,7 @@ public class ShoppingCart extends AppCompatActivity  {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart_screen);
+        progressBar = (ProgressBar)findViewById(R.id.progressbar_cart);
         requestPayment=new ResPaymentAction();
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -118,6 +121,7 @@ public class ShoppingCart extends AppCompatActivity  {
 
         emptyFlag=(TextView)findViewById(R.id.cartimptyflag);
         emptyFlag.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         if(SaveSharedPreference.getCustomerId(ShoppingCart.this).isEmpty()){
@@ -126,11 +130,12 @@ public class ShoppingCart extends AppCompatActivity  {
         }else{
 
             //get list of customer cart items
-            Generator.createService(SedraApi.class).getCartItems(SaveSharedPreference.getCustomerId(ShoppingCart.this),250).enqueue(new Callback<ResCartItems>() {
+            Generator.createService(SedraApi.class).getCartItems(SaveSharedPreference.getCustomerId(ShoppingCart.this)).enqueue(new Callback<ResCartItems>() {
                 @Override
                 public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
 
                     if(response.isSuccessful()){
+                        progressBar.setVisibility(View.GONE);
                         if(response.body().getShoppingCarts().isEmpty()){
                             emptyFlag.setVisibility(View.VISIBLE);
                             isReadyToPay=false;
@@ -143,12 +148,18 @@ public class ShoppingCart extends AppCompatActivity  {
                         }
 
                     }else {
-
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Response not Success from Shopping cart List  ", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResCartItems> call, Throwable t) {
+
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "Response Failure from Shopping cart List  ", Toast.LENGTH_LONG).show();
+
+
 
                 }
             });

@@ -197,23 +197,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                 if(SaveSharedPreference.getCustomerId(ProductInfoScreen.this).isEmpty()){
 
-                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
-                    dialogBuilder
-                            .withTitle(getResources().getString(R.string.sedra))
-                            .withDialogColor(R.color.colorPrimary)
-                            .withTitleColor("#FFFFFF")
-                            .withIcon(getResources().getDrawable(R.drawable.icon))
-                            .withDuration(700)                                          //def
-                            .withEffect(Effectstype.RotateBottom)
-                            .withMessage(getResources().getString(R.string.loginplease))
-                            .withButton1Text(getResources().getString(R.string.logintitle))
-                            .setButton1Click(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(ProductInfoScreen.this,SignInScreen.class));
-                                }
-                            })
-                            .show();
+                  FloatingLoginDialog.startShow(ProductInfoScreen.this);
 
                 }else {
                     if (count == 0) {
@@ -257,8 +241,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
                                 if (response.isSuccessful()) {
-
-                                        Home.getCartItemsCount(ProductInfoScreen.this, "2");
+                                    //Update cart badge count
+                                        Home.getCartItemsCount(ProductInfoScreen.this, SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
                                         //Initialize Done Dialog
                                         dialogBuildercard = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
                                         dialogBuildercard

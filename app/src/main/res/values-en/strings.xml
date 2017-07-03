@@ -93,5 +93,7 @@
     <string name="pleasew">Please Wait ...</string>
     <string name="loginplease">Please SignIn to add to cart !</string>
     <string name="paynotallaw">You cannot Pay , Cart is Empty !</string>
+    <string name="loginvalemail">Email is required!</string>
+    <string name="loginvalpassword">"Password is required!"</string>
 
 </resources>

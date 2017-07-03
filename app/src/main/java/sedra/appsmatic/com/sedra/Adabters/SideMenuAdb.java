@@ -28,6 +28,7 @@ import java.util.List;
 import sedra.appsmatic.com.sedra.Activites.AboutUsScreen;
 import sedra.appsmatic.com.sedra.Activites.ContactUsScreen;
 import sedra.appsmatic.com.sedra.Activites.DiscountedScreen;
+import sedra.appsmatic.com.sedra.Activites.FloatingLoginDialog;
 import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
@@ -158,8 +159,12 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
 
                         case 3:
                             //Shopping cart
-                            context.startActivity(new Intent(context, ShoppingCart.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                            drawer.closeDrawer(GravityCompat.START);
+                            if(SaveSharedPreference.getCustomerId(context).isEmpty()){
+                                FloatingLoginDialog.startShow(context);
+                            }else {
+                                context.startActivity(new Intent(context, ShoppingCart.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                drawer.closeDrawer(GravityCompat.START);
+                            }
                             break;
 
                         case 4:

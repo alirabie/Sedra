@@ -93,5 +93,7 @@
     <string name="pleasew">من فضلك انتظر ....</string>
     <string name="loginplease">من فضلك قم بتسجيل الدخول اولا !</string>
     <string name="paynotallaw">لا يمكنك اتمام عملية الدفع , سلة المشتريات فارغة !</string>
+    <string name="loginvalemail">أدخل البريد الالكترونى!</string>
+    <string name="loginvalpassword">أدخل كلمة المرور!</string>
 
 </resources>

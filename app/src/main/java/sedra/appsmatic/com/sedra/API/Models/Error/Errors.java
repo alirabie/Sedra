@@ -10,6 +10,10 @@ import java.util.List;
  */
 public class Errors {
 
+
+    @SerializedName("Account")
+    @Expose
+    private String account;
     @SerializedName("rootProperty")
     @Expose
     private List<String> rootProperty = null;
@@ -31,6 +35,13 @@ public class Errors {
 
     public void setShoppingCartItem(List<String> shoppingCartItem) {
         this.shoppingCartItem = shoppingCartItem;
+    }
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
 }

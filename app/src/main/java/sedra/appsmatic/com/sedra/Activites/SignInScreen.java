@@ -1,20 +1,36 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+import sedra.appsmatic.com.sedra.API.Models.Error.ResErrors;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
@@ -23,6 +39,7 @@ public class SignInScreen extends AppCompatActivity {
     private TextView forgetPassBtn,createNewAccount;
     private ImageView signInBtn,home;
     private EditText user,pass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +61,9 @@ public class SignInScreen extends AppCompatActivity {
         home=(ImageView)findViewById(R.id.home_btn_login);
         user=(EditText)findViewById(R.id.email_input);
         pass=(EditText)findViewById(R.id.password_input);
+
+
+
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
@@ -96,9 +116,83 @@ public class SignInScreen extends AppCompatActivity {
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( user.getText().toString().length() == 0 || pass.getText().toString().length()==0) {
-                    user.setError("Email is required!");
-                    pass.setError("Password is required!");
+                if( user.getText().toString().length() == 0 ){
+                    user.setError(getResources().getString(R.string.loginvalemail));
+
+                }else if (pass.getText().toString().length()==0) {
+                    pass.setError(getResources().getString(R.string.loginvalpassword));
+
+                }else {
+
+
+                    //Loading Dialog
+                    final ProgressDialog mProgressDialog = new ProgressDialog(SignInScreen.this);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.show();
+
+                    HashMap loginData = new HashMap();
+                    loginData.put("email", user.getText().toString() + "");
+                    loginData.put("password", pass.getText().toString() + "");
+
+                    //request login from server
+                  Generator.createService(SedraApi.class).login(loginData).enqueue(new Callback<RegResponse>() {
+                      @Override
+                      public void onResponse(Call<RegResponse> call, Response<RegResponse> response) {
+                          if(response.isSuccessful()){
+
+                              if (mProgressDialog.isShowing())
+                                  mProgressDialog.dismiss();
+
+                              if(response.body().getCustomers()!=null){
+                                  SaveSharedPreference.setCustomerId(SignInScreen.this,response.body().getCustomers().get(0).getId()+"");
+                                  startActivity(new Intent(SignInScreen.this, CountriesScreen.class));
+                                  SignInScreen.this.finish();
+                                  Log.e("Done : ",response.body().getCustomers().get(0).getId()+"");
+                              }else if(response.body().getErrors().getAccount()!=null) {
+                                  //Show Error
+                                  NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(SignInScreen.this);
+                                  dialogBuilder
+                                          .withTitle(getResources().getString(R.string.sedra))
+                                          .withDialogColor(R.color.colorPrimary)
+                                          .withTitleColor("#FFFFFF")
+                                          .withIcon(getResources().getDrawable(R.drawable.icon))
+                                          .withDuration(700)                                          //def
+                                          .withEffect(Effectstype.RotateBottom)
+                                          .withMessage(response.body().getErrors().getAccount()+ "")
+                                          .show();
+                              }
+
+
+                          }else {
+
+                              if (mProgressDialog.isShowing())
+                                  mProgressDialog.dismiss();
+
+                              Toast.makeText(SignInScreen.this,"not success from sign in",Toast.LENGTH_LONG).show();
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<RegResponse> call, Throwable t) {
+
+                          if (mProgressDialog.isShowing())
+                              mProgressDialog.dismiss();
+
+                          Toast.makeText(SignInScreen.this,t.getMessage()+" from sign in",Toast.LENGTH_LONG).show();
+                      }
+                  });
+
+
+
+
+
+
+
+
+
+
+
                 }
             }
         });
@@ -111,29 +205,7 @@ public class SignInScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(SignInScreen.this);
-        dialogBuilder
-                .withTitle(getResources().getString(R.string.sedra))
-                .withDialogColor(R.color.colorPrimary)
-                .withTitleColor("#FFFFFF")
-                .withIcon(getResources().getDrawable(R.drawable.icon))
-                .withDuration(700)                                          //def
-                .withEffect(Effectstype.RotateBottom)
-                .withMessage(getResources().getString(R.string.exitfromapp))
-                .withButton1Text(getResources().getString(R.string.yes))
-                .withButton2Text(getResources().getString(R.string.no))
-                .setButton1Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SignInScreen.this.finish();
-                    }
-                })
-                .setButton2Click(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogBuilder.dismiss();
-                    }
-                })
-                .show();
+        SignInScreen.this.finish();
+        startActivity(new Intent(SignInScreen.this,SplashScreen.class));
     }
 }
