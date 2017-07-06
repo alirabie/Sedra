@@ -29,7 +29,6 @@ public class DeliveryDateScreen extends AppCompatActivity {
     private ImageView saveBtn;
     private DatePicker simpleDatePicker;
     private int day,month,year;
-
     Date currentDate;
 
 
@@ -46,6 +45,7 @@ public class DeliveryDateScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+
         currentDate=new Date();
         currentDate.setTime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(Integer.parseInt(getIntent().getStringExtra("dayes"))));
         simpleDatePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
@@ -59,16 +59,15 @@ public class DeliveryDateScreen extends AppCompatActivity {
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
             saveBtn.setImageResource(R.drawable.savebtn);
-
         }else{
             saveBtn.setImageResource(R.drawable.save_btn_en);
         }
 
 
+        //save buton action
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 day = simpleDatePicker.getDayOfMonth();
                 month = simpleDatePicker.getMonth()+1;
                 year = simpleDatePicker.getYear();

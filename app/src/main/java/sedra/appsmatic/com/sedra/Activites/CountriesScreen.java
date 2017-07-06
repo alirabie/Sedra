@@ -40,17 +40,15 @@ import sedra.appsmatic.com.sedra.R;
 public class CountriesScreen extends AppCompatActivity {
     private BetterSpinner countriesspinner;
     private BetterSpinner statesspinner;
+    private ProgressBar progressBar;
+    private RelativeLayout bg;
     private static List<String> countriesNames= new ArrayList<>();
     private static List<String> countriesIds= new ArrayList<>();
     private static List<String>statesNames= new ArrayList<>();
     private static List<String>statesIds= new ArrayList<>();
     private static LinearLayout statesBox,contriesBox;
-    private ProgressBar progressBar;
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
-    RelativeLayout bg;
-
-
 
 
     @Override
@@ -58,6 +56,7 @@ public class CountriesScreen extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_countries_screen);
+
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -65,31 +64,31 @@ public class CountriesScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+        //setup items
         progressBar = (ProgressBar)findViewById(R.id.countries_progressbar);
-        progressBar.setVisibility(View.VISIBLE);
-
-
-
         countriesspinner = (BetterSpinner) findViewById(R.id.countryspinner);
         contriesBox=(LinearLayout)findViewById(R.id.countries_contenr);
         statesspinner=(BetterSpinner)findViewById(R.id.statesspinner);
         statesBox=(LinearLayout)findViewById(R.id.states_countener);
         bg=(RelativeLayout)findViewById(R.id.location_bg);
+
+        //spanners default adaptors
         countriesspinner.setAdapter(new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome));
         statesspinner.setAdapter(new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome));
+
+        //items visibility
         contriesBox.setVisibility(View.INVISIBLE);
         statesBox.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
             bg.setBackground(getResources().getDrawable(R.drawable.backg));
-
         }else{
             bg.setBackground(getResources().getDrawable(R.drawable.location_bg_en));
         }
-
-
 
 
         //Hide states spinner when click on countries spinner
@@ -102,13 +101,15 @@ public class CountriesScreen extends AppCompatActivity {
             }
         });
 
-        //get countries by id
+
+        //request countries by id from server
         Generator.createService(SedraApi.class).getCountries(KUWAIT_ID + "," + SAUDI_ID).enqueue(new Callback<ResCountry>() {
             @Override
             public void onResponse(Call<ResCountry> call, Response<ResCountry> response) {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     contriesBox.setVisibility(View.VISIBLE);
+
                     //Animate Spinner box
                     Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
                     contriesBox.clearAnimation();
@@ -119,21 +120,22 @@ public class CountriesScreen extends AppCompatActivity {
                         countriesNames.add(response.body().getCountries().get(i).getName());
                         countriesIds.add(response.body().getCountries().get(i).getId());
                     }
+
                     //add names to spinner list
                     ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(CountriesScreen.this, R.layout.drop_down_list_custome, countriesNames);
                     cuntryadapter.notifyDataSetChanged();
                     countriesspinner.setAdapter(cuntryadapter);
                     countriesspinner.setHint(getResources().getString(R.string.selectcountry));
                     countriesspinner.setHintTextColor(Color.WHITE);
+
                     //counters list selection action
                     countriesspinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                            //get states by id
+
+                            //request states by id from server
                             Generator.createService(SedraApi.class).getStates(countriesIds.get(position)).enqueue(new Callback<ResStates>() {
-
                                 int currentPosition = position;
-
                                 @Override
                                 public void onResponse(Call<ResStates> call, Response<ResStates> response) {
                                     if (response.isSuccessful()) {
@@ -170,7 +172,7 @@ public class CountriesScreen extends AppCompatActivity {
                                         });
 
                                     } else {
-                                        Toast.makeText(getApplication(), "Response not sucsess from states ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplication(), "Response not success from states ", Toast.LENGTH_LONG).show();
                                     }
                                 }
 
@@ -188,13 +190,11 @@ public class CountriesScreen extends AppCompatActivity {
                                             .show();
                                 }
                             });
-
-
                         }
                     });
 
                 } else {
-                    Toast.makeText(getApplication(), "Response not sucsess from countries ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), "Response not success from countries ", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -214,14 +214,6 @@ public class CountriesScreen extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
     }
 
     @Override
@@ -237,8 +229,6 @@ public class CountriesScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-
         final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(CountriesScreen.this);
         dialogBuilder
                 .withTitle(getResources().getString(R.string.sedra))

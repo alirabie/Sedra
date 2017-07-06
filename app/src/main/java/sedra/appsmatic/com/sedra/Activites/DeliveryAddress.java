@@ -50,10 +50,10 @@ public class DeliveryAddress extends FragmentActivity implements OnMapReadyCallb
         lang=0.0;
         gpsTracker = new GPSTracker(getApplicationContext());
         saveLocationBtn=(ImageView)findViewById(R.id.save_delivery_location_btn);
+
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){
             saveLocationBtn.setImageResource(R.drawable.savebtn);
-
         }else{
             saveLocationBtn.setImageResource(R.drawable.save_btn_en);
         }
@@ -63,7 +63,6 @@ public class DeliveryAddress extends FragmentActivity implements OnMapReadyCallb
         //Check GPS status
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryAddress.this);
             builder.setMessage(R.string.gpsoff)
                     .setCancelable(false)
@@ -74,16 +73,7 @@ public class DeliveryAddress extends FragmentActivity implements OnMapReadyCallb
                     }).setIcon(android.R.drawable.alert_light_frame);
             AlertDialog alert = builder.create();
             alert.show();
-
-
         }
-
-
-
-
-
-
-
 
 
 
@@ -94,9 +84,6 @@ public class DeliveryAddress extends FragmentActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-
-
 
 
 

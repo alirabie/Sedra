@@ -125,6 +125,9 @@ public class SplashScreen extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.alpha);
+                loginBtn.clearAnimation();
+                loginBtn.setAnimation(anim);
                 startActivity(new Intent(getApplicationContext(),SignInScreen.class));
                 SplashScreen.this.finish();
             }
@@ -136,6 +139,9 @@ public class SplashScreen extends AppCompatActivity {
         signUpbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.alpha);
+                signUpbtn.clearAnimation();
+                signUpbtn.setAnimation(anim);
                 startActivity(new Intent(getApplicationContext(),SignUpScreen.class));
                 SplashScreen.this.finish();
             }
@@ -148,6 +154,9 @@ public class SplashScreen extends AppCompatActivity {
         gustBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SplashScreen.this, R.anim.alpha);
+                gustBtn.clearAnimation();
+                gustBtn.setAnimation(anim);
                 startActivity(new Intent(getApplicationContext(), CountriesScreen.class));
                 SplashScreen.this.finish();
             }

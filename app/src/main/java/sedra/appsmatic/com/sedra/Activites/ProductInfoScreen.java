@@ -45,6 +45,7 @@ import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ReqCartItems;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ShoppingCartItem;
+import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
@@ -430,9 +431,45 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                Generator.createService(SedraApi.class).addToWishList(getIntent().getStringExtra("product_id"),"2","1",SaveSharedPreference.getCustomerId(ProductInfoScreen.this)).enqueue(new Callback<ResAddingWishList>() {
+                    @Override
+                    public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
+
+                        if(response.isSuccessful()){
+
+
+                        }else {
+
+
+
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResAddingWishList> call, Throwable t) {
+
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
                 if(favBtn.getTag().equals("1")){
                 favBtn.setImageResource(R.drawable.favoriteheart);
                     favBtn.setTag("2");
+
                 }else {
                  favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
                     favBtn.setTag("1");

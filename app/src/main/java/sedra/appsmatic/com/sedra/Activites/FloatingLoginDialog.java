@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,8 +36,6 @@ public class FloatingLoginDialog {
     private static EditText user,pass;
 
 public static void startShow(final Context context){
-
-
 
     dialogBuildercard = NiftyDialogBuilder.getInstance(context);
     dialogBuildercard
@@ -71,6 +71,9 @@ public static void startShow(final Context context){
     forgetPassBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
+            forgetPassBtn.clearAnimation();
+            forgetPassBtn.setAnimation(anim);
             context.startActivity(new Intent(context,ForgetPasswordScreen.class));
         }
     });
@@ -78,13 +81,19 @@ public static void startShow(final Context context){
     createNewAccount.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-           context.startActivity(new Intent(context,SignUpScreen.class));
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
+            createNewAccount.clearAnimation();
+            createNewAccount.setAnimation(anim);
+            context.startActivity(new Intent(context,SignUpScreen.class));
         }
     });
     //Home button action
     home.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
+            home.clearAnimation();
+            home.setAnimation(anim);
             dialogBuildercard.dismiss();
         }
     });
@@ -92,6 +101,11 @@ public static void startShow(final Context context){
     signInBtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
+            signInBtn.clearAnimation();
+            signInBtn.setAnimation(anim);
+
             if( user.getText().toString().length() == 0 ){
                 user.setError(context.getResources().getString(R.string.loginvalemail));
 

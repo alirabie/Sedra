@@ -16,7 +16,6 @@ import sedra.appsmatic.com.sedra.R;
 
 public class AboutUsScreen extends AppCompatActivity {
 
-
     private TextView aboutStore;
     private ImageView home;
 
@@ -33,8 +32,6 @@ public class AboutUsScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
-
-
         home=(ImageView)findViewById(R.id.home_btn_abotus);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +39,5 @@ public class AboutUsScreen extends AppCompatActivity {
                 AboutUsScreen.this.finish();
             }
         });
-
-
-
-
     }
 }

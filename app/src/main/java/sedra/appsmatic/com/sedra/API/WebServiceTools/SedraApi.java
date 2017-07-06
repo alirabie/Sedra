@@ -18,6 +18,7 @@ import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
+import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 
 /**
  * Created by Eng Ali on 4/18/2017.
@@ -91,5 +92,12 @@ public interface SedraApi {
     //Login
     @POST("api/customers/login")
     Call<RegResponse> login(@Body Object item);
+
+    //Add to wish List
+    @POST("api/wishlist/add?")
+    Call<ResAddingWishList> addToWishList(@Query("productId") String id,
+                                          @Query("shoppingCartTypeId") String type_id,
+                                          @Query("quantity")String qty,
+                                          @Query("customerId")String customerId);
 
 }

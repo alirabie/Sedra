@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -86,6 +88,9 @@ public class SignInScreen extends AppCompatActivity {
         forgetPassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SignInScreen.this, R.anim.alpha);
+                forgetPassBtn.clearAnimation();
+                forgetPassBtn.setAnimation(anim);
                 startActivity(new Intent(SignInScreen.this,ForgetPasswordScreen.class));
             }
         });
@@ -95,6 +100,9 @@ public class SignInScreen extends AppCompatActivity {
         createNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SignInScreen.this, R.anim.alpha);
+                createNewAccount.clearAnimation();
+                createNewAccount.setAnimation(anim);
                 startActivity(new Intent(SignInScreen.this,SignUpScreen.class));
             }
         });
@@ -105,6 +113,9 @@ public class SignInScreen extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SignInScreen.this, R.anim.alpha);
+                home.clearAnimation();
+                home.setAnimation(anim);
                 SignInScreen.this.finish();
                 startActivity(new Intent(SignInScreen.this,SplashScreen.class));
             }
@@ -116,6 +127,10 @@ public class SignInScreen extends AppCompatActivity {
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(SignInScreen.this, R.anim.alpha);
+                signInBtn.clearAnimation();
+                signInBtn.setAnimation(anim);
+
                 if( user.getText().toString().length() == 0 ){
                     user.setError(getResources().getString(R.string.loginvalemail));
 

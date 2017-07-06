@@ -22,7 +22,6 @@ public class DiscountedScreen extends AppCompatActivity {
 
     public static android.support.v4.app.FragmentManager fragmentManager;
     public static android.support.v4.app.FragmentTransaction fragmentTransaction;
-
     private ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn,home;
 
 
