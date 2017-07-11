@@ -489,14 +489,45 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                         //remove locally for testing waiting delete api working to active deleting on server
 
-                        for(int i=0;i<Home.wishListProductsIds.size();i++){
-                            if(Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))){
-                                Home.wishListProductsIds.remove(i);
-                                Home.saveWishListToPrefs(ProductInfoScreen.this);
 
-                                break;
+
+                        Generator.createService(SedraApi.class).deleteWishlistItem(Home.itemsIds.get(getIntent().getStringExtra("product_id")), SaveSharedPreference.getCustomerId(ProductInfoScreen.this)).enqueue(new Callback<ResAddingWishList>() {
+                            @Override
+                            public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
+
+                                if (response.isSuccessful()) {
+                                    if (response.body() == null) {
+
+                                    } else {
+                                        Home.fillWishListFromServer(ProductInfoScreen.this);
+                                        Toast.makeText(ProductInfoScreen.this, getResources().getString(R.string.removewishlist), Toast.LENGTH_LONG).show();
+                                        Log.e("addsuc", Home.wishListProductsIds.size() + "");
+                                    }
+
+                                } else {
+                                    try {
+                                        Toast.makeText(ProductInfoScreen.this, "Product not removed " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+
                             }
-                        }
+
+                            @Override
+                            public void onFailure(Call<ResAddingWishList> call, Throwable t) {
+
+                                Toast.makeText(ProductInfoScreen.this,"Product remove wishlist failure "+t.getMessage(),Toast.LENGTH_LONG).show();
+                                Log.e("removewish", "fali" + t.getMessage());
+                            }
+                        });
+
+
+
+
+
+
 
 
                     }

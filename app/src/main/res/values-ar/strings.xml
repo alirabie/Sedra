@@ -97,5 +97,6 @@
     <string name="loginvalpassword">أدخل كلمة المرور!</string>
     <string name="favorit"></string>
     <string name="adddonewish">تم اضافة هذا المنتج الى مفضلتك </string>
+    <string name="removewishlist">تم حذف هذا المنتج من مفضلتك</string>
 
 </resources>

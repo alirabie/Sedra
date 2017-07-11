@@ -83,6 +83,7 @@ public class Home extends AppCompatActivity  {
     public static SideMenuAdb sideMenuAdb;
 
     public static List<String>wishListProductsIds=new ArrayList<>();
+    public static HashMap <String,String> itemsIds=new HashMap();
 
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
@@ -657,8 +658,11 @@ public class Home extends AppCompatActivity  {
             public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
                 if (response.isSuccessful()) {
                     wishListProductsIds.clear();
+                    itemsIds.clear();
                     for (int i = 0; i < response.body().getItems().size(); i++) {
-                        wishListProductsIds.add(response.body().getItems().get(i).getProductId() + "");
+                        wishListProductsIds.add(response.body().getItems().get(i).getProductId()+"");
+                        itemsIds.put(response.body().getItems().get(i).getProductId()+"",response.body().getItems().get(i).getId()+"");
+
                     }
                     //   saveWishListToPrefs(context);
                     Log.e("sucsess wish", wishListProductsIds.size() + "");

@@ -108,6 +108,11 @@ public interface SedraApi {
 
 
 
+    //Delete from wish list
+    @POST("api/wishlist/delete")
+    Call<ResAddingWishList>deleteWishlistItem(@Query("itemId")String id,@Query("customerId") String custId);
+
+
 
     //Get All WishList
     @GET("api/wishlist/{customerId}")

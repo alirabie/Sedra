@@ -94,6 +94,7 @@
     <string name="loginvalemail">Email is required!</string>
     <string name="loginvalpassword">"Password is required!"</string>
     <string name="adddonewish">Product has been added to your Favorites</string>
+    <string name="removewishlist">Product has been removed from your Favorites</string>
 
 
 
