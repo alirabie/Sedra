@@ -5,6 +5,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -98,10 +99,19 @@ public interface SedraApi {
     Call<RegResponse> login(@Body Object item);
 
     //Add to wish List
-    @POST("api/wishlist/add?")
+    @POST("api/wishlist/add")
     Call<ResAddingWishList> addToWishList(@Query("productId") String id,
-                                          @Query("shoppingCartTypeId") String type_id,
-                                          @Query("quantity")String qty,
-                                          @Query("customerId")String customerId);
+                                          @Query("shoppingCartTypeId") Integer type_id,
+                                          @Query("quantity")Integer qty,
+                                          @Query("customerId")Integer customerId);
+
+
+
+
+
+    //Get All WishList
+    @GET("api/wishlist/{customerId}")
+    Call<ResAddingWishList>getAllWishList(@Path("customerId") String id);
+
 
 }

@@ -58,6 +58,7 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
+import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
@@ -91,7 +92,27 @@ public class Home extends AppCompatActivity  {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        wishListProductsIds=SaveSharedPreference.getWishListOrders(Home.this);
+
+
+
+        if(!SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
+            fillWishListFromServer(Home.this);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         sideMenuAdb=new SideMenuAdb(Home.this);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -286,6 +307,7 @@ public class Home extends AppCompatActivity  {
         sideMenu=(RecyclerView)findViewById(R.id.sidemenulist);
         sideMenu.setAdapter(sideMenuAdb);
         sideMenu.setLayoutManager(new LinearLayoutManager(Home.this));
+
 
 
 
@@ -619,7 +641,38 @@ public class Home extends AppCompatActivity  {
 
 
     public static void saveWishListToPrefs (Context context){
-        SaveSharedPreference.setWishListOrders(context,wishListProductsIds);
+        SaveSharedPreference.setWishListOrders(context, wishListProductsIds);
+    }
+
+
+
+
+
+
+    //fill wish list from server
+    public static void fillWishListFromServer(final Context context){
+
+        Generator.createService(SedraApi.class).getAllWishList(SaveSharedPreference.getCustomerId(context)).enqueue(new Callback<ResAddingWishList>() {
+            @Override
+            public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
+                if (response.isSuccessful()) {
+                    wishListProductsIds.clear();
+                    for (int i = 0; i < response.body().getItems().size(); i++) {
+                        wishListProductsIds.add(response.body().getItems().get(i).getProductId() + "");
+                    }
+                    //   saveWishListToPrefs(context);
+                    Log.e("sucsess wish", wishListProductsIds.size() + "");
+                } else {
+
+                    Log.e("Not sucsess", "from wishlist save ");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResAddingWishList> call, Throwable t) {
+                Log.e("falier", "from wishlist save ");
+            }
+        });
     }
 
 

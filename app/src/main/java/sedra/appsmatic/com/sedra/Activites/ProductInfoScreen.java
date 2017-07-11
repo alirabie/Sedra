@@ -428,11 +428,13 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
         //Check button status
-        for(int i=0;i<Home.wishListProductsIds.size();i++) {
-            if (Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))) {
-                favBtn.setImageResource(R.drawable.favoriteheart);
-                favBtn.setTag("2");
-                break;
+        if(!Home.wishListProductsIds.isEmpty()) {
+            for (int i = 0; i < Home.wishListProductsIds.size(); i++) {
+                if (Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))) {
+                    favBtn.setImageResource(R.drawable.favoriteheart);
+                    favBtn.setTag("2");
+                    break;
+                }
             }
         }
 
@@ -443,29 +445,71 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             @Override
             public void onClick(View v) {
 
-                if(favBtn.getTag().equals("1")){
-                favBtn.setImageResource(R.drawable.favoriteheart);
-                    favBtn.setTag("2");
-
-                    Home.wishListProductsIds.add(getIntent().getStringExtra("product_id"));
-                    Home.saveWishListToPrefs(ProductInfoScreen.this);
-
-
+                if(SaveSharedPreference.getCustomerId(ProductInfoScreen.this).isEmpty()){
+                    FloatingLoginDialog.startShow(ProductInfoScreen.this);
                 }else {
-                 favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
-                    favBtn.setTag("1");
+                    if(favBtn.getTag().equals("1")){
+                        favBtn.setImageResource(R.drawable.favoriteheart);
+                        favBtn.setTag("2");
 
-                    for(int i=0;i<Home.wishListProductsIds.size();i++){
-                        if(Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))){
-                            Home.wishListProductsIds.remove(i);
-                            Home.saveWishListToPrefs(ProductInfoScreen.this);
+                        Generator.createService(SedraApi.class).addToWishList(getIntent().getStringExtra("product_id"),2,1,Integer.parseInt(SaveSharedPreference.getCustomerId(ProductInfoScreen.this))).enqueue(new Callback<ResAddingWishList>() {
+                            @Override
+                            public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
+                                if (response.isSuccessful()) {
+                                    if(response.body()==null) {
 
-                            break;
+                                    }else {
+                                        Home.fillWishListFromServer(ProductInfoScreen.this);
+                                        Toast.makeText(ProductInfoScreen.this,getResources().getString(R.string.adddonewish),Toast.LENGTH_LONG).show();
+                                        Log.e("addsuc", Home.wishListProductsIds.size() + "");
+                                    }
+
+                                } else {
+                                    try {
+                                        Toast.makeText(ProductInfoScreen.this,"Product not added "+response.errorBody().string(),Toast.LENGTH_LONG).show();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResAddingWishList> call, Throwable t) {
+                                Toast.makeText(ProductInfoScreen.this,"Product wishlist failure "+t.getMessage(),Toast.LENGTH_LONG).show();
+                                Log.e("addwish", "fali" + t.getMessage());
+                            }
+                        });
+
+
+
+                    }else {
+                        favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
+                        favBtn.setTag("1");
+
+                        //remove locally for testing waiting delete api working to active deleting on server
+
+                        for(int i=0;i<Home.wishListProductsIds.size();i++){
+                            if(Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))){
+                                Home.wishListProductsIds.remove(i);
+                                Home.saveWishListToPrefs(ProductInfoScreen.this);
+
+                                break;
+                            }
                         }
+
+
                     }
 
 
+
+
                 }
+
+
+
+
+
             }
         });
 

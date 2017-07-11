@@ -181,8 +181,14 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         case 6:
 
                             //Favorite screen
-                            context.startActivity(new Intent(context, FavoritesScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                            drawer.closeDrawer(GravityCompat.START);
+                            if(SaveSharedPreference.getCustomerId(context).isEmpty()){
+                                FloatingLoginDialog.startShow(context);
+                            }else {
+                                context.startActivity(new Intent(context, FavoritesScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                drawer.closeDrawer(GravityCompat.START);
+                            }
+
+
                             break;
 
                         case 7:
@@ -291,6 +297,7 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             //Sign out
 
                             SaveSharedPreference.setCustomerId(context,"");
+                            Home.wishListProductsIds.clear();
                             context.startActivity(new Intent(context, SplashScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             ((Activity) context).finish();
                             drawer.closeDrawer(GravityCompat.START);

@@ -161,6 +161,7 @@ public class SignInScreen extends AppCompatActivity {
 
                               if(response.body().getCustomers()!=null){
                                   SaveSharedPreference.setCustomerId(SignInScreen.this,response.body().getCustomers().get(0).getId()+"");
+                                  Home.fillWishListFromServer(SignInScreen.this);
                                   startActivity(new Intent(SignInScreen.this, CountriesScreen.class));
                                   SignInScreen.this.finish();
                                   Log.e("Done : ",response.body().getCustomers().get(0).getId()+"");

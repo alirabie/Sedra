@@ -136,6 +136,7 @@ public static void startShow(final Context context){
                                 Home.sideMenuAdb.notifyDataSetChanged();
                                 Home.sideMenu.setAdapter(Home.sideMenuAdb);
                                 Home.sideMenu.setLayoutManager(new LinearLayoutManager(context));
+                                Home.fillWishListFromServer(context);
                                 dialogBuildercard.dismiss();
                                 Log.e("Done : ", response.body().getCustomers().get(0).getId() + "");
                             }else if(response.body().getErrors().getAccount()!=null) {
