@@ -196,11 +196,11 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 addToCartBtn.clearAnimation();
                 addToCartBtn.setAnimation(anim);
 
-                if(SaveSharedPreference.getCustomerId(ProductInfoScreen.this).isEmpty()){
+                if (SaveSharedPreference.getCustomerId(ProductInfoScreen.this).isEmpty()) {
 
-                  FloatingLoginDialog.startShow(ProductInfoScreen.this);
+                    FloatingLoginDialog.startShow(ProductInfoScreen.this);
 
-                }else {
+                } else {
                     if (count == 0) {
 
                         NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
@@ -223,7 +223,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         final String localTime = date.format(currentLocalTime);
                         final ReqCartItems reqCartItems = new ReqCartItems();
                         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-                        if(isRental){
+                        if (isRental) {
                             shoppingCartItem.setRentalStartDateUtc("2030-06-23T16:15:47-04:00");
                             shoppingCartItem.setRentalEndDateUtc("2030-07-23T16:15:47-06:00");
                         }
@@ -243,79 +243,79 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                                 if (response.isSuccessful()) {
                                     //Update cart badge count
-                                        Home.getCartItemsCount(ProductInfoScreen.this, SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
-                                        //Initialize Done Dialog
-                                        dialogBuildercard = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
-                                        dialogBuildercard
-                                                .withDuration(700)//def
-                                                .withDialogColor(getResources().getColor(R.color.colorPrimary))
-                                                .withEffect(Effectstype.Newspager)
-                                                .withTitleColor(getResources().getColor(R.color.colorPrimary))
-                                                .isCancelableOnTouchOutside(false)                           //def    | isCancelable(true)
-                                                .setCustomView(R.layout.activity_done_screen, addToCartBtn.getContext())
-                                                .show();
-                                        dialogBuildercard.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                                            @Override
-                                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                                                return keyCode == KeyEvent.KEYCODE_BACK;
-                                            }
-                                        });
-                                        bg = (FrameLayout) dialogBuildercard.findViewById(R.id.donebox);
-                                        contin = (ImageView) dialogBuildercard.findViewById(R.id.contin_shopping_btn);
-                                        finishShopping = (ImageView) dialogBuildercard.findViewById(R.id.done_shopping_btn);
-                                        //Set images languages
-                                        if (SaveSharedPreference.getLangId(ProductInfoScreen.this).equals("ar")) {
-                                            contin.setImageResource(R.drawable.continueshoppingbtn_ar);
-                                            finishShopping.setImageResource(R.drawable.completepurchasebtn_ar);
-                                            bg.setBackground(getResources().getDrawable(R.drawable.donemessage_ar));
-                                        } else {
-                                            contin.setImageResource(R.drawable.continueshoppingbtn_en);
-                                            finishShopping.setImageResource(R.drawable.completepurchasebtn_en);
-                                            bg.setBackground(getResources().getDrawable(R.drawable.donemessage_en));
+                                    Home.getCartItemsCount(ProductInfoScreen.this, SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
+                                    //Initialize Done Dialog
+                                    dialogBuildercard = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                                    dialogBuildercard
+                                            .withDuration(700)//def
+                                            .withDialogColor(getResources().getColor(R.color.colorPrimary))
+                                            .withEffect(Effectstype.Newspager)
+                                            .withTitleColor(getResources().getColor(R.color.colorPrimary))
+                                            .isCancelableOnTouchOutside(false)                           //def    | isCancelable(true)
+                                            .setCustomView(R.layout.activity_done_screen, addToCartBtn.getContext())
+                                            .show();
+                                    dialogBuildercard.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                                        @Override
+                                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                            return keyCode == KeyEvent.KEYCODE_BACK;
                                         }
+                                    });
+                                    bg = (FrameLayout) dialogBuildercard.findViewById(R.id.donebox);
+                                    contin = (ImageView) dialogBuildercard.findViewById(R.id.contin_shopping_btn);
+                                    finishShopping = (ImageView) dialogBuildercard.findViewById(R.id.done_shopping_btn);
+                                    //Set images languages
+                                    if (SaveSharedPreference.getLangId(ProductInfoScreen.this).equals("ar")) {
+                                        contin.setImageResource(R.drawable.continueshoppingbtn_ar);
+                                        finishShopping.setImageResource(R.drawable.completepurchasebtn_ar);
+                                        bg.setBackground(getResources().getDrawable(R.drawable.donemessage_ar));
+                                    } else {
+                                        contin.setImageResource(R.drawable.continueshoppingbtn_en);
+                                        finishShopping.setImageResource(R.drawable.completepurchasebtn_en);
+                                        bg.setBackground(getResources().getDrawable(R.drawable.donemessage_en));
+                                    }
 
-                                        contin.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuildercard.dismiss();
-                                                ProductInfoScreen.this.finish();
-                                            }
-                                        });
+                                    contin.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuildercard.dismiss();
+                                            ProductInfoScreen.this.finish();
+                                        }
+                                    });
 
-                                        finishShopping.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogBuildercard.dismiss();
-                                                startActivity(new Intent(ProductInfoScreen.this, ShoppingCart.class));
-                                                ProductInfoScreen.this.finish();
-                                            }
-                                        });
+                                    finishShopping.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialogBuildercard.dismiss();
+                                            startActivity(new Intent(ProductInfoScreen.this, ShoppingCart.class));
+                                            ProductInfoScreen.this.finish();
+                                        }
+                                    });
 
-                                        Log.e("Success", response.body().getShoppingCarts().size() + "");
-                                        //reset count
-                                        count = 0;
-                                        isRental = false;
+                                    Log.e("Success", response.body().getShoppingCarts().size() + "");
+                                    //reset count
+                                    count = 0;
+                                    isRental = false;
 
-                                    }else{
+                                } else {
 
                                     //Handel Error
                                     Gson gson = new GsonBuilder().create();
                                     ResErrors resErrors = new ResErrors();
                                     try {
                                         resErrors = gson.fromJson(response.errorBody().string(), ResErrors.class);
-                                        if(resErrors.getErrors().getShoppingCartItem()!=null) {
+                                        if (resErrors.getErrors().getShoppingCartItem() != null) {
                                             //Collect Error  Data
                                             String error = "";
                                             StringBuilder stringBuilder = new StringBuilder();
-                                            if(!resErrors.getErrors().getShoppingCartItem().isEmpty()) {
+                                            if (!resErrors.getErrors().getShoppingCartItem().isEmpty()) {
                                                 //Put errors count
-                                                stringBuilder.append(resErrors.getErrors().getShoppingCartItem().size()+" Errors"+"\n");
+                                                stringBuilder.append(resErrors.getErrors().getShoppingCartItem().size() + " Errors" + "\n");
                                                 for (int i = 0; i < resErrors.getErrors().getShoppingCartItem().size(); i++) {
                                                     stringBuilder.append(resErrors.getErrors().getShoppingCartItem().get(i) + "\n");
                                                 }
                                             }
 
-                                            error=stringBuilder.toString();
+                                            error = stringBuilder.toString();
                                             NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
                                             dialogBuilder
                                                     .withTitle(getResources().getString(R.string.sedra))
@@ -324,7 +324,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                                     .withIcon(getResources().getDrawable(R.drawable.icon))
                                                     .withDuration(700)                                          //def
                                                     .withEffect(Effectstype.RotateBottom)
-                                                    .withMessage(error+ "")
+                                                    .withMessage(error + "")
                                                     .show();
 
                                             Toast.makeText(getApplicationContext(), resErrors.getErrors().getShoppingCartItem().size() + "", Toast.LENGTH_LONG).show();
@@ -333,13 +333,13 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                     }
 
 
+                                    Log.e("NotSuccess", localTime + " " + getIntent().getStringExtra("product_id"));
 
-                                        Log.e("NotSuccess", localTime + " " + getIntent().getStringExtra("product_id"));
-
-                                    }
+                                }
 
 
                             }
+
                             @Override
                             public void onFailure(Call<ResCartItems> call, Throwable t) {
                                 Log.e("fail", t.getMessage());
@@ -349,7 +349,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                     }
 
                 }
-
 
 
             }
@@ -363,7 +362,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 deliveryTimeBtn.clearAnimation();
                 deliveryTimeBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this,DeliveryDateScreen.class).putExtra("dayes",dayCount));
+                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount));
                 //Reset Day Count
                 dayCount="0";
             }
@@ -427,52 +426,45 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
         favBtn.setTag("1");
 
+
+        //Check button status
+        for(int i=0;i<Home.wishListProductsIds.size();i++) {
+            if (Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))) {
+                favBtn.setImageResource(R.drawable.favoriteheart);
+                favBtn.setTag("2");
+                break;
+            }
+        }
+
+
+
         //fav btn action
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                Generator.createService(SedraApi.class).addToWishList(getIntent().getStringExtra("product_id"),"2","1",SaveSharedPreference.getCustomerId(ProductInfoScreen.this)).enqueue(new Callback<ResAddingWishList>() {
-                    @Override
-                    public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
-
-                        if(response.isSuccessful()){
-
-
-                        }else {
-
-
-
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResAddingWishList> call, Throwable t) {
-
-                    }
-                });
-
-
-
-
-
-
-
-
-
-
-
-
                 if(favBtn.getTag().equals("1")){
                 favBtn.setImageResource(R.drawable.favoriteheart);
                     favBtn.setTag("2");
 
+                    Home.wishListProductsIds.add(getIntent().getStringExtra("product_id"));
+                    Home.saveWishListToPrefs(ProductInfoScreen.this);
+
+
                 }else {
                  favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
                     favBtn.setTag("1");
+
+                    for(int i=0;i<Home.wishListProductsIds.size();i++){
+                        if(Home.wishListProductsIds.get(i).equals(getIntent().getStringExtra("product_id"))){
+                            Home.wishListProductsIds.remove(i);
+                            Home.saveWishListToPrefs(ProductInfoScreen.this);
+
+                            break;
+                        }
+                    }
+
+
                 }
             }
         });
@@ -514,4 +506,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         super.onPause();
         count=0;
     }
+
+
+
 }

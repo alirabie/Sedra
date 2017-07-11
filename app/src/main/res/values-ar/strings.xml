@@ -95,5 +95,6 @@
     <string name="paynotallaw">لا يمكنك اتمام عملية الدفع , سلة المشتريات فارغة !</string>
     <string name="loginvalemail">أدخل البريد الالكترونى!</string>
     <string name="loginvalpassword">أدخل كلمة المرور!</string>
+    <string name="favorit"></string>
 
 </resources>

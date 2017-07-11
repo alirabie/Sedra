@@ -81,9 +81,7 @@ public class Home extends AppCompatActivity  {
     public static  LayerDrawable icon;
     public static SideMenuAdb sideMenuAdb;
 
-
-
-
+    public static List<String>wishListProductsIds=new ArrayList<>();
 
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
@@ -93,6 +91,7 @@ public class Home extends AppCompatActivity  {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        wishListProductsIds=SaveSharedPreference.getWishListOrders(Home.this);
         sideMenuAdb=new SideMenuAdb(Home.this);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -474,7 +473,7 @@ public class Home extends AppCompatActivity  {
         if(SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
 
         }else {
-            getCartItemsCount(Home.this,SaveSharedPreference.getCustomerId(Home.this));
+            getCartItemsCount(Home.this, SaveSharedPreference.getCustomerId(Home.this));
         }
 
 
@@ -603,20 +602,25 @@ public class Home extends AppCompatActivity  {
         Generator.createService(SedraApi.class).getCartItems(customerId).enqueue(new Callback<ResCartItems>() {
             @Override
             public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
-                if(response.isSuccessful()){
-                    setBadgeCount(context, icon, response.body().getShoppingCarts().size()+"");
-                }else {
-                    Log.e("erorr","cart not set num");
+                if (response.isSuccessful()) {
+                    setBadgeCount(context, icon, response.body().getShoppingCarts().size() + "");
+                } else {
+                    Log.e("erorr", "cart not set num");
                 }
             }
+
             @Override
             public void onFailure(Call<ResCartItems> call, Throwable t) {
-                Log.e("cartNum fail",t.getMessage());
+                Log.e("cartNum fail", t.getMessage());
             }
         });
     }
 
 
+
+    public static void saveWishListToPrefs (Context context){
+        SaveSharedPreference.setWishListOrders(context,wishListProductsIds);
+    }
 
 
 

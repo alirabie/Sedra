@@ -4,6 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Eng Ali on 4/20/2017.
  */
@@ -14,6 +21,7 @@ public class SaveSharedPreference {
     static final String LANG_ID="langId";
     static final String lOAD_IMG_ID="imagesStatus";
     static final String CUSTOMER_ID="customerid";
+    static final String WISHLIST_ORDERS="wishList";
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -54,7 +62,7 @@ public class SaveSharedPreference {
 
     public static void setCustomerId(Context context,String id){
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(CUSTOMER_ID,id);
+        editor.putString(CUSTOMER_ID, id);
         editor.commit();
     }
 
@@ -75,5 +83,28 @@ public class SaveSharedPreference {
         editor.clear(); //clear all stored data
         editor.commit();
     }
+
+    public static void setWishListOrders(Context context,List<String> items){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(items);
+        editor.putString(WISHLIST_ORDERS, json);
+        editor.commit();
+    }
+
+
+
+    public static List<String> getWishListOrders(Context context){
+        String json= getSharedPreferences(context).getString(WISHLIST_ORDERS, "");
+        List<String> cartMeals=new ArrayList<>();
+        if(!json.isEmpty()) {
+            Type type = new TypeToken<List<String>>() {}.getType();
+            Gson gson = new Gson();
+            cartMeals= gson.fromJson(json, type);
+        }
+        return cartMeals;
+    }
+
+
 
 }

@@ -42,6 +42,10 @@ public interface SedraApi {
     @GET("api/products/{id}")
     Call<ResProducts> getProductInfo(@Path("id") String id);
 
+    //Get Product info by ids
+    @GET("api/products?fields=id,name,images,price")
+    Call<ResProducts> getSpecificProducts (@Query("ids") String id);
+
     //Get Countries Kuwait Saudi
     @GET("api/countries?")
     Call<ResCountry> getCountries(@Query("ids") String id);
