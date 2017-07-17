@@ -11,9 +11,9 @@
     <string name="forgetpass">Forgot Password</string>
     <string name="newaccount">Create New Account</string>
     <string name="signuptitle">SignUp</string>
-    <string name="repassword">Re Password</string>
+    <string name="repassword">Last Name</string>
     <string name="phonenum">Phone Number</string>
-    <string name="username">User Name</string>
+    <string name="username">First Name</string>
     <string name="forgetpasstitle">Reset Password</string>
     <string name="typephonenum">Please type your phone number to reset password</string>
     <string name="newpassword">New Password</string>
@@ -97,5 +97,11 @@
     <string name="loginvalpassword">"Password is required!"</string>
     <string name="adddonewish">Product has been added to your Favorites</string>
     <string name="removewishlist">Product has been removed from your Favorites</string>
+    <string name="lnameerrorr">Last Name is required !</string>
+    <string name="phoneerror">Phone Number is required !</string>
+    <string name="fnameerrorr">First Name is required !</string>
+    <string name="loginsucsess">You are Logged in successfully ( Welcome )</string>
+    <string name="regsuccsess">New User has been registered successfully</string>
+    <string name="faild">Operation Failed</string>
 
 </resources>

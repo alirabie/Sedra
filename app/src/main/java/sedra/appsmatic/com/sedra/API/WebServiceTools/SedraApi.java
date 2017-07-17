@@ -105,18 +105,17 @@ public interface SedraApi {
                                           @Query("quantity")Integer qty,
                                           @Query("customerId")Integer customerId);
 
-
-
-
     //Delete from wish list
     @POST("api/wishlist/delete")
     Call<ResAddingWishList>deleteWishlistItem(@Query("itemId")String id,@Query("customerId") String custId);
-
 
 
     //Get All WishList
     @GET("api/wishlist/{customerId}")
     Call<ResAddingWishList>getAllWishList(@Path("customerId") String id);
 
+    //Register new Customer
+    @POST("api/customers/")
+    Call<RegResponse> regesterNewCustomer(@Body Object item);
 
 }

@@ -11,9 +11,9 @@
     <string name="forgetpass">نسيت كلمة المرور</string>
     <string name="newaccount">إنشاء حساب جديد</string>
     <string name="phonenum">رقم الجوال</string>
-    <string name="repassword">إعادة كلمة المرور</string>
+    <string name="repassword">الاسم الثانى</string>
     <string name="signuptitle">تسجيل</string>
-    <string name="username">اسم المستخدم</string>
+    <string name="username">الاسم الاول </string>
     <string name="forgetpasstitle">إعادة تعيين كلمة المرور</string>
     <string name="typephonenum">قم بإدخال رقم الجوال لإعادة تعيين كلمة المرور لحسابك</string>
     <string name="newpassword">كلمة المرور الجديدة</string>
@@ -97,5 +97,11 @@
     <string name="loginvalpassword">أدخل كلمة المرور!</string>
     <string name="adddonewish">تم اضافة هذا المنتج الى مفضلتك </string>
     <string name="removewishlist">تم حذف هذا المنتج من مفضلتك</string>
+    <string name="lnameerrorr">من فضلك ادخل الاسم الثانى</string>
+    <string name="phoneerror">من فضلك ادخل رقم الجوال </string>
+    <string name="fnameerrorr">من فضلك ادخل الاسم الاول </string>
+    <string name="loginsucsess">لقد تم تسجيل دخولك بنجاح مرحبا بك</string>
+    <string name="regsuccsess">تم انشاء حساب مستخدم جديد بنجاح </string>
+    <string name="faild">فشلت العملية</string>
 
 </resources>

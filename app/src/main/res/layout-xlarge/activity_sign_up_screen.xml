@@ -74,21 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:ems="10"
-            android:id="@+id/signup_username_input"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/inputbar"
-            android:hint="@string/username"
-            android:textAlignment="viewStart"
-            android:padding="15dp"
-            android:textSize="25dp"
-            android:gravity="start"
-            android:password="false"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:ems="10"
             android:id="@+id/signup_password_input"
             android:layout_marginTop="10dp"
             android:background="@drawable/inputbar"
@@ -99,6 +84,21 @@
             android:gravity="start"
             android:password="false"
             android:inputType="textPassword" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:ems="10"
+            android:id="@+id/signup_username_input"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/inputbar"
+            android:hint="@string/username"
+            android:textAlignment="viewStart"
+            android:padding="15dp"
+            android:textSize="25dp"
+            android:gravity="start"
+            android:password="false"
+            android:inputType="textPersonName" />
 
         <EditText
             android:layout_width="match_parent"
