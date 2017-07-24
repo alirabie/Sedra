@@ -78,7 +78,7 @@ public class ShoppingCart extends AppCompatActivity  {
     private ResPaymentAction requestPayment;
     private IProviderBinder binder;
     private ProgressBar progressBar;
-    private TextView emptyFlag;
+    private TextView emptyFlag,totalPrice,finalTotalprice;
     private Boolean isReadyToPay;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -107,6 +107,8 @@ public class ShoppingCart extends AppCompatActivity  {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart_screen);
+        totalPrice=(TextView)findViewById(R.id.total_price);
+        finalTotalprice=(TextView)findViewById(R.id.final_total_price);
         progressBar = (ProgressBar)findViewById(R.id.progressbar_cart);
         requestPayment=new ResPaymentAction();
         Window window = this.getWindow();
@@ -145,6 +147,26 @@ public class ShoppingCart extends AppCompatActivity  {
                             itemsList.setLayoutManager(new LinearLayoutManager(ShoppingCart.this));
                             itemsList.setAdapter(new CartAdb(response.body(),ShoppingCart.this));
                             isReadyToPay=true;
+
+
+
+
+                            //Calc total price for cart
+                            Double total=0.0;
+                            if(!response.body().getShoppingCarts().isEmpty()) {
+                                for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
+                                    total = total + response.body().getShoppingCarts().get(i).getQuantity() * response.body().getShoppingCarts().get(i).getProduct().getPrice();
+                                }
+                                totalPrice.setText(total+" "+getResources().getString(R.string.sr));
+                                finalTotalprice.setText(total+" "+getResources().getString(R.string.sr));
+                            }
+
+
+
+
+
+
+
                         }
 
                     }else {
