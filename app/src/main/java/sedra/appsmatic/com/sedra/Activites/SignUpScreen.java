@@ -18,6 +18,8 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +35,7 @@ import sedra.appsmatic.com.sedra.R;
 public class SignUpScreen extends AppCompatActivity {
 
     private ImageView signUpBtn,home;
-    private EditText emailInput,passwordInput,fNameInput,lNameInput,phoneInput;
+    private EditText emailInput,passwordInput,fNameInput,lNameInput,phoneInput,repass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class SignUpScreen extends AppCompatActivity {
         fNameInput=(EditText)findViewById(R.id.signup_username_input);
         lNameInput=(EditText)findViewById(R.id.signup_repassword_input);
         phoneInput=(EditText)findViewById(R.id.signup_phone_input);
+        repass=(EditText)findViewById(R.id.re_password);
 
 
         //Set images languages
@@ -84,6 +87,9 @@ public class SignUpScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Pattern p = Pattern.compile("^(.+)@(.+)$");
+                Matcher m = p.matcher(emailInput.getText().toString());
+
                 //Inputs validations
                 if( emailInput.getText().toString().length() == 0 ){
                    emailInput.setError(getResources().getString(R.string.loginvalemail));
@@ -91,14 +97,28 @@ public class SignUpScreen extends AppCompatActivity {
                 }else if (passwordInput.getText().toString().length()==0) {
                     passwordInput.setError(getResources().getString(R.string.loginvalpassword));
 
+                }else if(repass.getText().toString().length()==0) {
+                    repass.setError(getResources().getString(R.string.loginvalpassword));
+
                 }else if(fNameInput.getText().toString().length()==0){
                     fNameInput.setError(getResources().getString(R.string.fnameerrorr));
 
                 }else if(lNameInput.getText().toString().length()==0){
                     lNameInput.setError(getResources().getString(R.string.lnameerrorr));
 
-                }else if(phoneInput.getText().toString().length()==0){
+                }else if(phoneInput.getText().toString().length()==0) {
                     phoneInput.setError(getResources().getString(R.string.phoneerror));
+
+                }else if(!passwordInput.getText().toString().equals(repass.getText().toString())) {
+                    passwordInput.setError(getResources().getString(R.string.passnotmatch));
+                    repass.setError(getResources().getString(R.string.passnotmatch));
+
+                }else if(!m.matches()) {
+                    emailInput.setError(getResources().getString(R.string.notvalidemail));
+
+                }else if(passwordInput.getText().length()<6) {
+                    passwordInput.setError(getResources().getString(R.string.passwordleanght));
+
                 }else {
 
                     //Registration request >>

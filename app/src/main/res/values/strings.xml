@@ -101,6 +101,10 @@
     <string name="regsuccsess">New User has been registered successfully</string>
     <string name="loginsucsess">You are Logged in successfully ( Welcome )</string>
     <string name="faild">Operation Failed</string>
+    <string name="repasswordreg">Re Password</string>
+    <string name="passnotmatch">Passwords Not Matches !</string>
+    <string name="notvalidemail">Invalid Email Address</string>
+    <string name="passwordleanght">Password should be at lest 6 Chars </string>
 
 
 

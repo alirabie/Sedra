@@ -103,5 +103,9 @@
     <string name="loginsucsess">لقد تم تسجيل دخولك بنجاح مرحبا بك</string>
     <string name="regsuccsess">تم انشاء حساب مستخدم جديد بنجاح </string>
     <string name="faild">فشلت العملية</string>
+    <string name="repasswordreg">إعادة كلمة المرور</string>
+    <string name="passnotmatch">كلمات المرور غير متطابقه</string>
+    <string name="notvalidemail">البريد الالكترونى غير صحيح</string>
+    <string name="passwordleanght">كلمة المرور يجب ان تكون 6 احرف على الاقل </string>
 
 </resources>
