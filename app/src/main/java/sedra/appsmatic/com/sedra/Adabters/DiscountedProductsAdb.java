@@ -40,30 +40,36 @@ public class DiscountedProductsAdb extends RecyclerView.Adapter<DiscountedProduc
 
         holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
 
-        //Check Settings For Load images
-        if(SaveSharedPreference.getImgLoadingSatatus(context)){
-            Picasso.with(context)
-                    .load(products.getProducts().get(position).getImages().get(0).getSrc().toString())
-                    .fit()
-                    .into(holder.productImg);
-        }else {
+        if(products.getProducts().get(position).getImages().isEmpty()){
             Picasso.with(context)
                     .load(R.drawable.placeholder)
                     .fit()
                     .into(holder.productImg);
-        }
 
-
-
-
-        holder.productImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, ProductInfoScreen.class)
-                        .putExtra("product_id",products.getProducts().get(position).getId()+"")
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }else {
+            //Check Settings For Load images
+            if (SaveSharedPreference.getImgLoadingSatatus(context)) {
+                Picasso.with(context)
+                        .load(products.getProducts().get(position).getImages().get(0).getSrc().toString())
+                        .fit()
+                        .into(holder.productImg);
+            } else {
+                Picasso.with(context)
+                        .load(R.drawable.placeholder)
+                        .fit()
+                        .into(holder.productImg);
             }
-        });
+
+
+            holder.productImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, ProductInfoScreen.class)
+                            .putExtra("product_id", products.getProducts().get(position).getId() + "")
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+            });
+        }
     }
 
     @Override

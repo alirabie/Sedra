@@ -45,7 +45,13 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
 
         holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
 
+        if(products.getProducts().get(position).getImages().isEmpty()){
+            Picasso.with(context)
+                    .load(R.drawable.placeholder)
+                    .fit()
+                    .into(holder.productImg);
 
+        }else{
         //Check Settings For Load images
         if(SaveSharedPreference.getImgLoadingSatatus(context)){
             try {
@@ -88,6 +94,7 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
                       .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
+    }
     }
 
     @Override

@@ -28,6 +28,17 @@ public class RCustomer {
     @SerializedName("phone")
     @Expose
     private String phone;
+    @SerializedName("verificationcode")
+    @Expose
+    private String verificationcode;
+
+    public String getVerificationcode() {
+        return verificationcode;
+    }
+
+    public void setVerificationcode(String verificationcode) {
+        this.verificationcode = verificationcode;
+    }
 
     public List<Integer> getRoleIds() {
         return roleIds;

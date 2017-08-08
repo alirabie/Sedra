@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -27,6 +30,7 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.Registration.PostNewCustomer;
 import sedra.appsmatic.com.sedra.API.Models.Registration.RCustomer;
+import sedra.appsmatic.com.sedra.API.Models.verifications.VerificationCode;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
@@ -35,7 +39,8 @@ import sedra.appsmatic.com.sedra.R;
 public class SignUpScreen extends AppCompatActivity {
 
     private ImageView signUpBtn,home;
-    private EditText emailInput,passwordInput,fNameInput,lNameInput,phoneInput,repass;
+    private EditText emailInput,passwordInput,fNameInput,lNameInput,phoneInput,repass,verificationCodeInput;
+    private TextView verifyMobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,9 @@ public class SignUpScreen extends AppCompatActivity {
         lNameInput=(EditText)findViewById(R.id.signup_repassword_input);
         phoneInput=(EditText)findViewById(R.id.signup_phone_input);
         repass=(EditText)findViewById(R.id.re_password);
+        verificationCodeInput=(EditText)findViewById(R.id.verificationcodeinput);
+        verifyMobile=(TextView)findViewById(R.id.phone_ver_link_btn);
+        verificationCodeInput.setVisibility(View.INVISIBLE);
 
 
         //Set images languages
@@ -78,6 +86,74 @@ public class SignUpScreen extends AppCompatActivity {
                 startActivity(new Intent(SignUpScreen.this,SplashScreen.class));
             }
         });
+
+
+
+
+        //Verify phone number
+        verifyMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Animation anim = AnimationUtils.loadAnimation(SignUpScreen.this, R.anim.alpha);
+                verifyMobile.clearAnimation();
+                verifyMobile.setAnimation(anim);
+
+                if(phoneInput.getText().length()==0){
+                    phoneInput.setError(getResources().getString(R.string.phoneerror));
+                }else {
+
+                    //Loading Dialog
+                    final ProgressDialog mProgressDialog = new ProgressDialog(SignUpScreen.this);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.show();
+
+                    Generator.createService(SedraApi.class).verifyMoblieNum(phoneInput.getText().toString()+"").enqueue(new Callback<VerificationCode>() {
+                        @Override
+                        public void onResponse(Call<VerificationCode> call, Response<VerificationCode> response) {
+
+                            if (response.isSuccessful()) {
+
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(),getResources().getString(R.string.codewillsend)+" "+response.body().getVerificationCode()+"",Toast.LENGTH_LONG).show();
+
+                                verificationCodeInput.setVisibility(View.VISIBLE);
+                                //Animate verify box
+                                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+                                verificationCodeInput.clearAnimation();
+                                verificationCodeInput.setAnimation(anim);
+
+                            } else {
+
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(),"Not success from mobile verification",Toast.LENGTH_LONG).show();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<VerificationCode> call, Throwable t) {
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Failure from mobile verification"+t.getMessage().toString(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+
+
+
+
+
+
+            }
+        });
+
+
 
 
 
@@ -119,6 +195,11 @@ public class SignUpScreen extends AppCompatActivity {
                 }else if(passwordInput.getText().length()<6) {
                     passwordInput.setError(getResources().getString(R.string.passwordleanght));
 
+
+                }else if(verificationCodeInput.getText().length()==0) {
+
+                    verificationCodeInput.setError(getResources().getString(R.string.insertvercode));
+
                 }else {
 
                     //Registration request >>
@@ -135,11 +216,12 @@ public class SignUpScreen extends AppCompatActivity {
                     List<Integer> rollIds=new ArrayList<Integer>();
                     rollIds.add(3);
                     customer.setRoleIds(rollIds);
-                    customer.setEmail(emailInput.getText().toString()+"");
-                    customer.setPassword(passwordInput.getText().toString()+"");
-                    customer.setFirstName(fNameInput.getText().toString()+"");
-                    customer.setLastName(lNameInput.getText().toString()+"");
-                    customer.setPhone(phoneInput.getText().toString()+"");
+                    customer.setEmail(emailInput.getText().toString() + "");
+                    customer.setPassword(passwordInput.getText().toString() + "");
+                    customer.setFirstName(fNameInput.getText().toString() + "");
+                    customer.setLastName(lNameInput.getText().toString() + "");
+                    customer.setPhone(phoneInput.getText().toString() + "");
+                    customer.setVerificationcode(verificationCodeInput.getText().toString()+"");
                     postNewCustomer.setCustomer(customer);
 
                     Generator.createService(SedraApi.class).regesterNewCustomer(postNewCustomer).enqueue(new Callback<RegResponse>() {
@@ -151,12 +233,12 @@ public class SignUpScreen extends AppCompatActivity {
                                 if (mProgressDialog.isShowing())
                                     mProgressDialog.dismiss();
 
-                                if(response.body()!=null){
+                                if(response.body().getCustomers()!=null){
                                     Toast.makeText(getApplicationContext(),getResources().getString(R.string.regsuccsess),Toast.LENGTH_LONG).show();
                                     startActivity(new Intent(SignUpScreen.this,SignInScreen.class));
                                     SignUpScreen.this.finish();
-                                }else {
-                                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.faild),Toast.LENGTH_LONG).show();
+                                }else if(response.body().getErrors()!=null) {
+                                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.faild)+" "+response.body().getErrors().getAccount()+"",Toast.LENGTH_LONG).show();
                                 }
 
                             }else {

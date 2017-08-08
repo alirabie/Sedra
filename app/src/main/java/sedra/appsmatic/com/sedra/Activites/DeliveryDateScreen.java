@@ -55,6 +55,8 @@ public class DeliveryDateScreen extends AppCompatActivity {
 
 
 
+        Toast.makeText(DeliveryDateScreen.this, "Vendor Id = "+getIntent().getIntExtra("vendorid",0), Toast.LENGTH_LONG).show();
+
 
         //Set images languages
         if(SaveSharedPreference.getLangId(this).equals("ar")){

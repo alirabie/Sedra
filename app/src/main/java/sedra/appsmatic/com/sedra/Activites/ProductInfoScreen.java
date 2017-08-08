@@ -62,6 +62,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     private FrameLayout bg;
     private ImageView contin,finishShopping;
     private Boolean isRental;
+    private int vendorId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         pName.setText(response.body().getProducts().get(0).getName() + "");
                         pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
                         pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
+                        vendorId=response.body().getProducts().get(0).getVendorId();
                         if(!response.body().getProducts().get(0).getAttributes().isEmpty()){
                             if(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue()!=null) {
                                 if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")) {
@@ -362,9 +364,10 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 deliveryTimeBtn.clearAnimation();
                 deliveryTimeBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount));
+                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount).putExtra("vendorid",vendorId));
                 //Reset Day Count
                 dayCount="0";
+                vendorId=0;
             }
         });
 

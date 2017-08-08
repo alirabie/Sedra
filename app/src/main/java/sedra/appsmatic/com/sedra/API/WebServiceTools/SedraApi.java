@@ -20,6 +20,7 @@ import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
+import sedra.appsmatic.com.sedra.API.Models.verifications.VerificationCode;
 
 /**
  * Created by Eng Ali on 4/18/2017.
@@ -117,5 +118,11 @@ public interface SedraApi {
     //Register new Customer
     @POST("api/customers/")
     Call<RegResponse> regesterNewCustomer(@Body Object item);
+
+    //verify phone number
+    @POST("api/customers/PhoneVerification?")
+    Call<VerificationCode>verifyMoblieNum(@Query("phoneno") String phone);
+
+
 
 }

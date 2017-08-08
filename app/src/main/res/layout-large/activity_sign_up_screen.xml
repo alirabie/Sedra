@@ -128,7 +128,7 @@
             android:textSize="20dp"
             android:gravity="start"
             android:password="false"
-            android:inputType="textPassword" />
+            android:inputType="text" />
 
         <EditText
             android:layout_width="match_parent"
@@ -145,7 +145,46 @@
             android:password="false"
             android:inputType="phone" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="15dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/mobileverify"
+                android:id="@+id/phone_ver_link_btn"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimary"
+                android:typeface="serif"
+                android:textStyle="bold"
+                android:textIsSelectable="false"
+                android:clickable="true"
+                android:autoText="false"
+                android:autoLink="all" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:id="@+id/verificationcodeinput"
+                android:background="@drawable/coboneinput"
+                android:hint="@string/verifcode"
+                android:textAlignment="center"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:password="false"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:inputType="text" />
+        </LinearLayout>
 
         <ImageView
             android:layout_width="wrap_content"

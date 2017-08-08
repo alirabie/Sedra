@@ -105,6 +105,10 @@
     <string name="passnotmatch">Passwords Not Matches !</string>
     <string name="notvalidemail">Invalid Email Address</string>
     <string name="passwordleanght">Password should be at lest 6 Chars </string>
+    <string name="mobileverify">Click to Verify Mobile Number</string>
+    <string name="verifcode">Verification Code</string>
+    <string name="insertvercode">Insert Verification code</string>
+    <string name="codewillsend">An verification code will be sent to you by SMS</string>
 
 
 

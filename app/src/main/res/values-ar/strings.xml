@@ -107,5 +107,9 @@
     <string name="passnotmatch">كلمات المرور غير متطابقه</string>
     <string name="notvalidemail">البريد الالكترونى غير صحيح</string>
     <string name="passwordleanght">كلمة المرور يجب ان تكون 6 احرف على الاقل </string>
+    <string name="verifcode">رمز التأكيد</string>
+    <string name="mobileverify">إضغط هنا للتحقق من رقم الجوال</string>
+    <string name="insertvercode">قم بإدخال رمز التحقق</string>
+    <string name="codewillsend">سوف يتم ارسال رمز التحقق فى رسالة قصيرة لجوالك الان</string>
 
 </resources>
