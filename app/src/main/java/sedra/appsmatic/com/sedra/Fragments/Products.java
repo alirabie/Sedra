@@ -32,7 +32,7 @@ public class Products extends Fragment {
     private String id="";
     private RecyclerView proudctsList;
     private ProgressBar progressBar;
-    private static String categoryKey,countryKey,stateKey,vendorKey,minPriceKey,flag,searchKeyword;
+    private static String categoryKey,countryKey,stateKey,districtkey,vendorKey,minPriceKey,flag,searchKeyword;
     private static Bundle b;
     private static TextView emptySign;
 
@@ -111,63 +111,79 @@ public class Products extends Fragment {
             });
 
         }else {
+
             if(b.getString("flag")!=null){
 
-                Generator.createService(SedraApi.class).getFilter(
-                        countryKey=b.getString("countryKey"),
-                        searchKeyword=b.getString("serachKeyword"),
-                        stateKey=b.getString("stateKey"),
-                        categoryKey=b.getString("categoryKey"),
-                        vendorKey=b.getString("vendorKey"),
-                        minPriceKey=b.getString("priceKey")).enqueue(new Callback<ResProducts>() {
-                    @Override
-                    public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
-                        if (response.isSuccessful()) {
-                            if (progressBar.isShown())
-                                progressBar.setVisibility(View.GONE);
+                if(b.getString("flag").equals("filter")) {
+                    Generator.createService(SedraApi.class).getFilter(
+                            countryKey = b.getString("countryKey"),
+                            searchKeyword = b.getString("serachKeyword"),
+                            stateKey = b.getString("stateKey"),
+                            districtkey = b.getString("districtkey"),
+                            categoryKey = b.getString("categoryKey"),
+                            vendorKey = b.getString("vendorKey"),
+                            minPriceKey = b.getString("priceKey")).enqueue(new Callback<ResProducts>() {
+                        @Override
+                        public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+                            if (response.isSuccessful()) {
+                                if (progressBar.isShown())
+                                    progressBar.setVisibility(View.GONE);
 
-                            try {
-                                if(response.body().getProducts().isEmpty()){
-                                    emptySign.setVisibility(View.VISIBLE);
-                                }else {
-                                    emptySign.setVisibility(View.INVISIBLE);
+                                try {
+                                    if (response.body().getProducts().isEmpty()) {
+                                        emptySign.setVisibility(View.VISIBLE);
+                                    } else {
+                                        emptySign.setVisibility(View.INVISIBLE);
+                                    }
+                                    proudctsList = (RecyclerView) view.findViewById(R.id.prouductslist);
+                                    proudctsList.setAdapter(new ProductsAdb(response.body(), getContext()));
+                                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                                    DisplayMetrics outMetrics = new DisplayMetrics();
+                                    display.getMetrics(outMetrics);
+                                    float density = getResources().getDisplayMetrics().density;
+                                    float dpWidth = outMetrics.widthPixels / density;
+                                    int columns = Math.round(dpWidth / 130);
+                                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
+                                    proudctsList.setLayoutManager(gridLayoutManager);
+                                } catch (Exception e) {
+
                                 }
-                                proudctsList = (RecyclerView) view.findViewById(R.id.prouductslist);
-                                proudctsList.setAdapter(new ProductsAdb(response.body(), getContext()));
-                                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                                DisplayMetrics outMetrics = new DisplayMetrics();
-                                display.getMetrics(outMetrics);
-                                float density = getResources().getDisplayMetrics().density;
-                                float dpWidth = outMetrics.widthPixels / density;
-                                int columns = Math.round(dpWidth / 130);
-                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columns);
-                                proudctsList.setLayoutManager(gridLayoutManager);
-                            } catch (Exception e) {
 
+                            } else {
+                                Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
                             }
-
-                        } else {
-                            Toast.makeText(getContext(), "No response from products Fragment ", Toast.LENGTH_LONG).show();
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<ResProducts> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<ResProducts> call, Throwable t) {
 
-                        NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
-                        dialogBuilder
-                                .withTitle(getResources().getString(R.string.conectionerrorr))
-                                .withDialogColor(R.color.colorPrimary)
-                                .withTitleColor("#FFFFFF")
-                                .withIcon(getResources().getDrawable(R.drawable.icon))
-                                .withDuration(700)                                          //def
-                                .withEffect(Effectstype.RotateBottom)
-                                .withMessage(t.getMessage() + "connection error from products Fragment ")
-                                .show();
+                            NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
+                            dialogBuilder
+                                    .withTitle(getResources().getString(R.string.conectionerrorr))
+                                    .withDialogColor(R.color.colorPrimary)
+                                    .withTitleColor("#FFFFFF")
+                                    .withIcon(getResources().getDrawable(R.drawable.icon))
+                                    .withDuration(700)                                          //def
+                                    .withEffect(Effectstype.RotateBottom)
+                                    .withMessage(t.getMessage() + "connection error from products Fragment ")
+                                    .show();
 
-                    }
-                });
+                        }
+                    });
 
+
+                }else {
+
+
+                    // for home two spinners put flag vendor
+
+
+
+
+
+
+
+                }
             } else {
                 id = b.getString("id");
                 Generator.createService(SedraApi.class).getCategoryProducts(id).enqueue(new Callback<ResProducts>() {

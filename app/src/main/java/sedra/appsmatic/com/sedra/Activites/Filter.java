@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -25,6 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
+import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
@@ -53,7 +56,9 @@ public class Filter extends AppCompatActivity {
     private static List<String> countriesNames= new ArrayList<>();
     private static List<String> vendorsNames= new ArrayList<>();
     private static List<String> vendorsIds= new ArrayList<>();
-    private static String categoryKey,countryKey,stateKey,vendorKey,minPriceKey;
+    private static List<String> districtsNames=new ArrayList<>();
+    private static List<String> districtsIds=new ArrayList<>();
+    private static String categoryKey,countryKey,stateKey,districtkey,vendorKey,minPriceKey;
     private static List<String> options;
     private static List<String>distructsNames=new ArrayList<>();
 
@@ -68,6 +73,7 @@ public class Filter extends AppCompatActivity {
         countryKey="";
         categoryKey="";
         stateKey="";
+        districtkey="";
         vendorKey="";
         minPriceKey="0";
         options=new ArrayList<>();
@@ -101,7 +107,7 @@ public class Filter extends AppCompatActivity {
         filterStates.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterdistructs.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterVendors.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
-        filterSameday.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,options));
+        filterSameday.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options));
         filterSameday.setHint(getResources().getString(R.string.sameday));
         filterSameday.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterCategoriy.setHint(getResources().getString(R.string.selectcategorie));
@@ -147,7 +153,7 @@ public class Filter extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResCategories> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage()+"Response from filter categores not working !",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), t.getMessage() + "Response from filter categores not working !", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -173,12 +179,17 @@ public class Filter extends AppCompatActivity {
                     filterCountries.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+
                             if (!statesNames.isEmpty()) {
                                 statesNames.clear();
                                 statesIds.clear();
                             }
 
                             countryKey = countriesNames.get(position);
+
+
+
                             //get states by id
                             Generator.createService(SedraApi.class).getStates(countriesIds.get(position)).enqueue(new Callback<ResStates>() {
 
@@ -204,15 +215,74 @@ public class Filter extends AppCompatActivity {
                                         //states list selection item action start home activity and send state id
                                         filterStates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
-                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                                                stateKey = statesNames.get(position);
                                                 if (!vendorsNames.isEmpty()) {
                                                     vendorsNames.clear();
                                                     vendorsIds.clear();
                                                 }
 
 
-                                                stateKey = statesNames.get(position);
+
+                                                //Get districts
+                                                Generator.createService(SedraApi.class).getDestrics(countryKey,stateKey).enqueue(new Callback<Districts>() {
+                                                    @Override
+                                                    public void onResponse(Call<Districts> call, final Response<Districts> response) {
+
+                                                        if(response.isSuccessful()){
+
+
+                                                            //fill names and ids to spinner list from response
+                                                            for (int i = 0; i < response.body().getDistricts().size(); i++) {
+                                                                districtsNames.add(response.body().getDistricts().get(i).getName());
+                                                                districtsIds.add(response.body().getDistricts().get(i).getId());
+                                                            }
+
+
+                                                            //add names to spinner list
+                                                            final ArrayAdapter<String> districtadapter = new ArrayAdapter<>(Filter.this, android.R.layout.simple_spinner_dropdown_item, districtsNames);
+                                                            districtadapter.notifyDataSetChanged();
+                                                            filterdistructs.setAdapter(districtadapter);
+                                                            filterdistructs.setHint(getResources().getString(R.string.distrects));
+                                                            filterdistructs.setHintTextColor(Color.GRAY);
+                                                            filterdistructs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                                @Override
+                                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                                                    if (!districtsNames.isEmpty()) {
+                                                                        districtsNames.clear();
+                                                                        districtsIds.clear();
+                                                                    }
+
+                                                                    districtkey=response.body().getDistricts().get(position).getName();
+
+                                                                }
+                                                            });
+
+                                                        }else {
+                                                           Toast.makeText(getApplicationContext(),"response from filter districts not success",Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Districts> call, Throwable t) {
+                                                        Toast.makeText(getApplicationContext(),"response from filter districts failed"+" "+t.getMessage(),Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                                 //get vendors
                                                 Generator.createService(SedraApi.class).getVendors(countriesIds.get(currentPosition), statesIds.get(position)).enqueue(new Callback<ResVendors>() {
@@ -309,6 +379,9 @@ public class Filter extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
+
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 filterBtnGo.clearAnimation();
                 filterBtnGo.setAnimation(anim);
@@ -317,15 +390,18 @@ public class Filter extends AppCompatActivity {
                     minPriceKey=priceInput.getText().toString();
                 }
 
+                Log.e("gooooood",districtkey+vendorKey+countryKey+stateKey+minPriceKey+searcInput.getText().toString()+categoryKey);
+
                 Products products2 = new Products();
                 Bundle bundle = new Bundle();
                 bundle.putString("flag","filter");
                 bundle.putString("categoryKey",categoryKey);
                 bundle.putString("countryKey",countryKey);
                 bundle.putString("stateKey",stateKey);
+                bundle.putString("districtkey", districtkey);
                 bundle.putString("vendorKey", vendorKey);
                 bundle.putString("priceKey", minPriceKey);
-                bundle.putString("serachKeyword",searcInput.getText().toString()+"");
+                bundle.putString("serachKeyword", searcInput.getText().toString() + "");
 
                 products2.setArguments(bundle);
                 //put here id to send to fragment
@@ -340,9 +416,12 @@ public class Filter extends AppCompatActivity {
                 countriesIds.clear();
                 categoriesIds.clear();
                 categoriesNames.clear();
+                districtsNames.clear();
+                districtsIds.clear();
                 countryKey="";
                 categoryKey="";
                 stateKey="";
+                districtkey="";
                 vendorKey="";
                 minPriceKey="0";
                 Filter.this.finish();
@@ -363,11 +442,12 @@ public class Filter extends AppCompatActivity {
         countriesIds.clear();
         categoriesIds.clear();
         categoriesNames.clear();
-        vendorsNames.clear();
-        vendorsIds.clear();
+        districtsNames.clear();
+        districtsIds.clear();
         countryKey="";
         categoryKey="";
         stateKey="";
+        districtkey="";
         vendorKey="";
         minPriceKey="0";
 

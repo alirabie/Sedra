@@ -14,6 +14,7 @@ import sedra.appsmatic.com.sedra.API.Models.Addresses.ResAddresses;
 import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
@@ -72,14 +73,16 @@ public interface SedraApi {
     Call<ResProducts> getFilter(@Query("country")String country,
                                 @Query("searchKeyword")String keyword,
                                 @Query("state")String state,
+                                @Query("district")String district,
                                 @Query("category_id")String id,
                                 @Query("vendor_name") String vendorName,
                                 @Query("min_price")String minPrice);
 
 
 
-    //Get districts
-    //@GET("api/districts/country/{country}/state/{state}")
+   //Get districts
+   @GET("api/districts/country/{country}/state/{state}")
+   Call<Districts>getDestrics(@Path("country") String country,@Path("state") String state);
 
 
 

@@ -162,7 +162,11 @@ public class CountriesScreen extends AppCompatActivity {
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                 startActivity(new Intent(CountriesScreen.this, Home.class)
                                                         .putExtra("country_id", countriesIds.get(currentPosition))
-                                                        .putExtra("stateId", statesIds.get(position)));
+                                                        .putExtra("stateId", statesIds.get(position))
+                                                        .putExtra("countryname",countriesNames.get(currentPosition))
+                                                        .putExtra("statename",statesNames.get(position)));
+
+
                                                 CountriesScreen.this.finish();
                                                 countriesNames.clear();
                                                 countriesIds.clear();

@@ -56,6 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
@@ -71,6 +72,8 @@ public class Home extends AppCompatActivity  {
 
     private BetterSpinner vendors;
     private BetterSpinner districtsSp;
+    private static List<String> districtsNames;
+    private static List<String> districtsIds;
     private static List<String> vendorsNames;
     private static List<String> vendorsIds;
     private static List<String>products;
@@ -81,10 +84,8 @@ public class Home extends AppCompatActivity  {
     public static MenuItem itemCart;
     public static  LayerDrawable icon;
     public static SideMenuAdb sideMenuAdb;
-
     public static List<String>wishListProductsIds=new ArrayList<>();
     public static HashMap <String,String> itemsIds=new HashMap();
-
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
 
@@ -133,6 +134,9 @@ public class Home extends AppCompatActivity  {
         //Receive vendorsIds from countries screen
         String countryId=getIntent().getStringExtra("country_id");
         String stateId=getIntent().getStringExtra("stateId");
+        String countryName=getIntent().getStringExtra("countryname");
+        String stateName=getIntent().getStringExtra("statename");
+
 
         //Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
 
@@ -182,7 +186,7 @@ public class Home extends AppCompatActivity  {
                 Products gifts = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","14");
+                bundle.putString("id","2");
                 gifts.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -227,7 +231,7 @@ public class Home extends AppCompatActivity  {
                 Products plants = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","4");
+                bundle.putString("id","10");
                 plants.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -262,6 +266,8 @@ public class Home extends AppCompatActivity  {
         districtsSp.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
         vendors.setAdapter(new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome));
         districtsSp.setHint(getResources().getString(R.string.distrects));
+
+        //get vendors
         Generator.createService(SedraApi.class).getVendors(countryId,stateId).enqueue(new Callback<ResVendors>() {
             @Override
             public void onResponse(Call<ResVendors> call, Response<ResVendors> response) {
@@ -274,25 +280,60 @@ public class Home extends AppCompatActivity  {
                         vendorsIds.add(response.body().getVendors().get(i).getId());
                     }
                     //add names to spinner list
-                    ArrayAdapter<String> vendorsAdabtor=new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, vendorsNames);
+                    ArrayAdapter<String> vendorsAdabtor = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, vendorsNames);
                     vendorsAdabtor.notifyDataSetChanged();
                     vendors.setAdapter(vendorsAdabtor);
                     vendors.setHint(getResources().getString(R.string.selectvendor));
                     vendors.setHintTextColor(Color.WHITE);
-                }else {
+                } else {
                     Toast.makeText(getApplication(), "Response not success from vendors Home ", Toast.LENGTH_LONG).show();
                 }
 
-                }
+            }
 
             @Override
             public void onFailure(Call<ResVendors> call, Throwable t) {
-                Toast.makeText(getApplication(), t.getMessage()+" : connection error from vendors", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(), t.getMessage() + " : connection error from vendors", Toast.LENGTH_LONG).show();
             }
         });
 
 
 
+
+        //get districts
+        Generator.createService(SedraApi.class).getDestrics(getIntent().getStringExtra("countryname"),getIntent().getStringExtra("statename")).enqueue(new Callback<Districts>() {
+            @Override
+            public void onResponse(Call<Districts> call, Response<Districts> response) {
+
+                if (response.isSuccessful()) {
+                    //fill names to spinner list from response
+                    districtsNames = new ArrayList<>();
+                    districtsIds = new ArrayList<>();
+                    for (int i = 0; i < response.body().getDistricts().size(); i++) {
+                        districtsNames.add(response.body().getDistricts().get(i).getName());
+                        districtsIds.add(response.body().getDistricts().get(i).getId());
+                    }
+                    //add names to spinner list
+                    ArrayAdapter<String> districsAdabtor = new ArrayAdapter<>(Home.this, R.layout.drop_down_list_custome, districtsNames);
+                    districsAdabtor.notifyDataSetChanged();
+                    districtsSp.setAdapter(districsAdabtor);
+                    districtsSp.setHint(getResources().getString(R.string.distrects));
+                    districtsSp.setHintTextColor(Color.WHITE);
+
+                } else {
+
+                    Toast.makeText(getApplication(), "response not success from districts home spinner", Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Districts> call, Throwable t) {
+
+                Toast.makeText(getApplication(), "connection error from districts home spinner"+t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 
