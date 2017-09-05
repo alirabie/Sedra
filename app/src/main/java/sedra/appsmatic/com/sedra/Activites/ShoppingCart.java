@@ -48,7 +48,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +59,9 @@ import javax.net.ssl.HttpsURLConnection;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
+import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
+import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
 import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
@@ -69,6 +74,7 @@ import sedra.appsmatic.com.sedra.RequestPayment;
 
 public class ShoppingCart extends AppCompatActivity  {
 
+    private List<OrderItem>orderItems=new ArrayList<>();
     ImageView payBtn,activeDis,emptycart;
     private BetterSpinner cridetCards;
     private String[] contentArray ={"VISA","MasterCard"};
@@ -149,6 +155,20 @@ public class ShoppingCart extends AppCompatActivity  {
                             isReadyToPay=true;
 
 
+
+
+                            //fill order items
+                            if(!response.body().getShoppingCarts().isEmpty()) {
+                                for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
+                                    OrderItem orderItem = new OrderItem();
+                                    orderItem.setProductId(response.body().getShoppingCarts().get(i).getProductId());
+                                    orderItem.setQuantity(response.body().getShoppingCarts().get(i).getQuantity());
+                                    orderItems.add(orderItem);
+                                }
+
+                            }else {
+                                orderItems.clear();
+                            }
 
 
                             //Calc total price for cart
@@ -234,6 +254,44 @@ public class ShoppingCart extends AppCompatActivity  {
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
+
+
+                //Create New Order .
+                //Check if order items is empty or not
+                if(!orderItems.isEmpty()) {
+                    NewOrder newOrder = new NewOrder();
+                    Order order = new Order();
+                    order.setCustomerId(Integer.parseInt(SaveSharedPreference.getCustomerId(ShoppingCart.this)));
+                    order.setOrderItems(orderItems);
+                    order.setBillingAddress(SaveSharedPreference.getCustomerInfo(ShoppingCart.this).getCustomers().get(0).getBillingAddress());
+                    order.setPaymentMethodSystemName("Payments.Manual");
+                    newOrder.setOrder(order);
+                    Gson gson = new Gson();
+                    Log.e("New Order", gson.toJson(newOrder));
+
+
+
+
+
+
+
+                }else {
+
+                    //empty order items
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+               //Process Payment
                 if(isReadyToPay){
                     Set<String> paymentBrands = new LinkedHashSet<String>();
                     paymentBrands.add("VISA");

@@ -176,13 +176,6 @@
             android:checked="false"
             android:textSize="15dp" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/registermailcheck"
-            android:id="@+id/register_mail_check"
-            android:textSize="15dp"
-            android:checked="false" />
     </LinearLayout>
 
     <LinearLayout

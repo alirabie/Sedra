@@ -71,7 +71,7 @@ public class Customer {
     private String lastActivityDateUtc;
     @SerializedName("role_ids")
     @Expose
-    private List<Object> roleIds = null;
+    private List<Integer> roleIds = null;
 
     public List<Object> getShoppingCartItems() {
         return shoppingCartItems;
@@ -233,11 +233,11 @@ public class Customer {
         this.lastActivityDateUtc = lastActivityDateUtc;
     }
 
-    public List<Object> getRoleIds() {
+    public List<Integer> getRoleIds() {
         return roleIds;
     }
 
-    public void setRoleIds(List<Object> roleIds) {
+    public void setRoleIds(List<Integer> roleIds) {
         this.roleIds = roleIds;
     }
 

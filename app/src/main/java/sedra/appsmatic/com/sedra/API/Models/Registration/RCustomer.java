@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import sedra.appsmatic.com.sedra.API.Models.Customers.BillingAddress;
+
 /**
  * Created by Eng Ali on 7/17/2017.
  */
@@ -28,6 +30,18 @@ public class RCustomer {
     @SerializedName("phone")
     @Expose
     private String phone;
+    @SerializedName("billing_address")
+    @Expose
+    private BillingAddress billingAddress;
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
     @SerializedName("verificationcode")
     @Expose
     private String verificationcode;

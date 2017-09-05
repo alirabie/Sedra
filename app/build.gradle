@@ -60,4 +60,7 @@ dependencies {
     compile 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 }
+dependencies {
+    compile 'com.android.support:support-v4:23.+'
+}
 

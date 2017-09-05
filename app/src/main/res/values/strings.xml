@@ -109,9 +109,7 @@
     <string name="verifcode">Verification Code</string>
     <string name="insertvercode">Insert Verification code</string>
     <string name="codewillsend">An verification code will be sent to you by SMS</string>
-
-
-
+    <string name="addreesserorr">Insert your Address</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

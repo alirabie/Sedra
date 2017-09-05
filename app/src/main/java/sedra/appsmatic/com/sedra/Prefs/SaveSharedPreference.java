@@ -11,6 +11,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+
 /**
  * Created by Eng Ali on 4/20/2017.
  */
@@ -22,6 +24,8 @@ public class SaveSharedPreference {
     static final String lOAD_IMG_ID="imagesStatus";
     static final String CUSTOMER_ID="customerid";
     static final String WISHLIST_ORDERS="wishList";
+    static final String CUSTOMER_INFO="customerInfo";
+
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -65,6 +69,35 @@ public class SaveSharedPreference {
         editor.putString(CUSTOMER_ID, id);
         editor.commit();
     }
+
+
+    public static void setCustomerInfo(Context context,RegResponse regResponse){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(regResponse);
+        editor.putString(CUSTOMER_INFO, json);
+        editor.commit();
+    }
+
+
+    public static RegResponse getCustomerInfo(Context context){
+
+        String json= getSharedPreferences(context).getString(CUSTOMER_INFO, "");
+        RegResponse regResponse=new RegResponse();
+        if(!json.isEmpty()) {
+            Type type = new TypeToken<RegResponse>() {}.getType();
+            Gson gson = new Gson();
+            regResponse= gson.fromJson(json, type);
+        }
+        return regResponse;
+    }
+
+
+
+
+
+
+
 
     public static String getCustomerId(Context context){
         return getSharedPreferences(context).getString(CUSTOMER_ID, "");

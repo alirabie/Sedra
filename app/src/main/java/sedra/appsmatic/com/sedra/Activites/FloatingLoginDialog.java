@@ -132,6 +132,7 @@ public static void startShow(final Context context){
                                 mProgressDialog.dismiss();
                             if(response.body().getCustomers()!=null){
                                 SaveSharedPreference.setCustomerId(context,response.body().getCustomers().get(0).getId()+"");
+                                SaveSharedPreference.setCustomerInfo(context, response.body());
                                 Home.getCartItemsCount(context, SaveSharedPreference.getCustomerId(context));
                                 Home.sideMenuAdb.notifyDataSetChanged();
                                 Home.sideMenu.setAdapter(Home.sideMenuAdb);

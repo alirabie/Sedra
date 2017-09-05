@@ -218,6 +218,7 @@ public class Filter extends AppCompatActivity {
                                             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                                                 stateKey = statesNames.get(position);
+
                                                 if (!vendorsNames.isEmpty()) {
                                                     vendorsNames.clear();
                                                     vendorsIds.clear();

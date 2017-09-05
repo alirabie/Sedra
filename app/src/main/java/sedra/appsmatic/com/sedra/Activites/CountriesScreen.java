@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
+import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
+import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
@@ -64,6 +67,16 @@ public class CountriesScreen extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
+
+
+
+
+        NewOrder newOrder=new NewOrder();
+        Order order =new Order();
+        order.setBillingAddress(SaveSharedPreference.getCustomerInfo(CountriesScreen.this).getCustomers().get(0).getBillingAddress());
+
+
+
 
         //setup items
         progressBar = (ProgressBar)findViewById(R.id.countries_progressbar);

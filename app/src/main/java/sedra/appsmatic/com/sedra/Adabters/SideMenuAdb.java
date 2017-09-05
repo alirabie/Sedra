@@ -297,6 +297,7 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             //Sign out
 
                             SaveSharedPreference.setCustomerId(context,"");
+                            SaveSharedPreference.setCustomerInfo(context,null);
                             Home.wishListProductsIds.clear();
                             context.startActivity(new Intent(context, SplashScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             ((Activity) context).finish();
