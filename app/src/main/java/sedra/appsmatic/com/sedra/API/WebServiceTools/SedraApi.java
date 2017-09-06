@@ -15,6 +15,7 @@ import sedra.appsmatic.com.sedra.API.Models.Categories.ResCategories;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
+import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
@@ -126,6 +127,10 @@ public interface SedraApi {
     @POST("api/customers/PhoneVerification?")
     Call<VerificationCode>verifyMoblieNum(@Query("phoneno") String phone);
 
+
+    //Place new Order
+    @POST("/api/orders")
+    Call<OrderResponse>placeNewOrder(@Body Object order);
 
 
 }

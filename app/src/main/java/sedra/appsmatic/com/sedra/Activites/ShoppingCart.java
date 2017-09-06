@@ -62,6 +62,7 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
 import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
+import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
 import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
@@ -151,9 +152,8 @@ public class ShoppingCart extends AppCompatActivity  {
                             emptyFlag.setVisibility(View.INVISIBLE);
                             itemsList=(RecyclerView)findViewById(R.id.shopping_cart_list);
                             itemsList.setLayoutManager(new LinearLayoutManager(ShoppingCart.this));
-                            itemsList.setAdapter(new CartAdb(response.body(),ShoppingCart.this));
+                            itemsList.setAdapter(new CartAdb(response.body(), ShoppingCart.this));
                             isReadyToPay=true;
-
 
 
 
@@ -267,13 +267,38 @@ public class ShoppingCart extends AppCompatActivity  {
                     order.setPaymentMethodSystemName("Payments.Manual");
                     newOrder.setOrder(order);
                     Gson gson = new Gson();
-                    Log.e("New Order", gson.toJson(newOrder));
+                    //log request body
+                    Log.e("New Order request ", gson.toJson(newOrder));
 
+                    Generator.createService(SedraApi.class).placeNewOrder(newOrder).enqueue(new Callback<OrderResponse>() {
+                        @Override
+                        public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                            if(response.isSuccessful()){
 
+                                if(response.body().getOrders()!=null){
+                                    Toast.makeText(ShoppingCart.this,getResources().getString(R.string.orderplace),Toast.LENGTH_LONG).show();
 
+                                }else {
+                                    Toast.makeText(ShoppingCart.this,"there is an error in order placement response body",Toast.LENGTH_LONG).show();
+                                }
+                                //Gson gson1=new Gson();
+                                //Log.e("New Order response ", gson1.toJson(response.body()));
 
+                            }else {
 
+                                try {
+                                    Toast.makeText(ShoppingCart.this,"Response not success from order placement : "+response.errorBody().string(),Toast.LENGTH_LONG).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
+                        @Override
+                        public void onFailure(Call<OrderResponse> call, Throwable t) {
+                            Toast.makeText(ShoppingCart.this,"Connection failed from order placement"+t.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
 
                 }else {
 
@@ -338,6 +363,12 @@ public class ShoppingCart extends AppCompatActivity  {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        orderItems.clear();
+    }
 
     @Override
     protected void onStop() {

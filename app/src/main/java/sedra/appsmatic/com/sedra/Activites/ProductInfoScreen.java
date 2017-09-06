@@ -244,6 +244,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
                                 if (response.isSuccessful()) {
+
                                     //Update cart badge count
                                     Home.getCartItemsCount(ProductInfoScreen.this, SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
                                     //Initialize Done Dialog

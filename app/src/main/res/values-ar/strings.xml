@@ -112,5 +112,6 @@
     <string name="insertvercode">قم بإدخال رمز التحقق</string>
     <string name="codewillsend">سوف يتم ارسال رمز التحقق فى رسالة قصيرة لجوالك الان</string>
     <string name="addreesserorr">أدخل عنوانك</string>
+    <string name="orderplace">تم تسجيل طلبك بنجاح</string>
 
 </resources>
