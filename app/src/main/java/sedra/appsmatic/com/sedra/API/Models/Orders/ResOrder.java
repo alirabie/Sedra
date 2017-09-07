@@ -30,7 +30,7 @@ public class ResOrder {
     private String customerCurrencyCode;
     @SerializedName("currency_rate")
     @Expose
-    private Integer currencyRate;
+    private float currencyRate;
     @SerializedName("customer_tax_display_type_id")
     @Expose
     private Integer customerTaxDisplayTypeId;
@@ -195,11 +195,11 @@ public class ResOrder {
         this.customerCurrencyCode = customerCurrencyCode;
     }
 
-    public Integer getCurrencyRate() {
+    public float getCurrencyRate() {
         return currencyRate;
     }
 
-    public void setCurrencyRate(Integer currencyRate) {
+    public void setCurrencyRate(float currencyRate) {
         this.currencyRate = currencyRate;
     }
 

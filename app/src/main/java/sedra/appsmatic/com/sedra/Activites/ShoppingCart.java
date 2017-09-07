@@ -270,6 +270,7 @@ public class ShoppingCart extends AppCompatActivity  {
                     //log request body
                     Log.e("New Order request ", gson.toJson(newOrder));
 
+                    //place order on server
                     Generator.createService(SedraApi.class).placeNewOrder(newOrder).enqueue(new Callback<OrderResponse>() {
                         @Override
                         public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
@@ -297,6 +298,7 @@ public class ShoppingCart extends AppCompatActivity  {
                         @Override
                         public void onFailure(Call<OrderResponse> call, Throwable t) {
                             Toast.makeText(ShoppingCart.this,"Connection failed from order placement"+t.getMessage(),Toast.LENGTH_LONG).show();
+                            Log.e("errrr",t.getMessage());
                         }
                     });
 

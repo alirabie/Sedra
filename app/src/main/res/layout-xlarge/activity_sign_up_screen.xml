@@ -33,7 +33,7 @@
                     android:id="@+id/login_tb_title"
                     android:text="@string/signuptitle"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="30dp"
                     android:gravity="center"
                     android:padding="5dp" />
             </LinearLayout>
