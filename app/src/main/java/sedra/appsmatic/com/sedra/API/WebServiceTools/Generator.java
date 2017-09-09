@@ -1,6 +1,5 @@
 package sedra.appsmatic.com.sedra.API.WebServiceTools;
 
-import android.net.Credentials;
 import android.text.TextUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -8,13 +7,14 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sedra.appsmatic.com.sedra.URL.URLs;
 
 /**
  * Created by Eng Ali on 4/18/2017.
  */
 public class Generator {
 
-    public static final String API_BASE_URL = "http://sedragift.com/";
+    public static final String API_BASE_URL = URLs.API_BASE_URL;
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
 

@@ -2,11 +2,17 @@ package sedra.appsmatic.com.sedra.Activites;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,14 +55,16 @@ import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ShoppingCartItem;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Adabters.ProductsAdb;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
+import sedra.appsmatic.com.sedra.URL.URLs;
 
 public class ProductInfoScreen extends ActionBarActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private SliderLayout mDemoSlider;
     private TextView pName,pPrice,pDec,pReady,countTv;
-    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down,favBtn;
+    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down,favBtn,shareBtn;
     private static int count =0;
     private static String dayCount="0";
     NiftyDialogBuilder dialogBuildercard;
@@ -63,6 +72,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     private ImageView contin,finishShopping;
     private Boolean isRental;
     private int vendorId=0;
+    RecyclerView relatedProductsList;
+    private static final String ALLOWED_URI_CHARS = " @#&=*+-_.,:!?()/~'%";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +103,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         up=(ImageView)findViewById(R.id.up_count);
         down=(ImageView)findViewById(R.id.dwon_count);
         favBtn=(ImageView)findViewById(R.id.fav_btn);
+        shareBtn=(ImageView)findViewById(R.id.share_btn);
+        sugTitle.setVisibility(View.INVISIBLE);
 
 
         //Set images languages
@@ -110,27 +123,32 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         }
 
 
+
+
+        //Get product info by id
         Generator.createService(SedraApi.class).getProductInfo(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
             @Override
             public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
                 if (response.isSuccessful()) {
 
                     try {
-                        isRental=response.body().getProducts().get(0).getIsRental();
+                        isRental = response.body().getProducts().get(0).getIsRental();
                         pName.setText(response.body().getProducts().get(0).getName() + "");
                         pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
                         pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
-                        vendorId=response.body().getProducts().get(0).getVendorId();
-                        if(!response.body().getProducts().get(0).getAttributes().isEmpty()){
-                            if(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue()!=null) {
+                        vendorId = response.body().getProducts().get(0).getVendorId();
+                        if (!response.body().getProducts().get(0).getAttributes().isEmpty()) {
+                            if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() != null) {
                                 if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")) {
                                     pReady.setText(getResources().getString(R.string.sameday));
                                 } else {
                                     pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() + " " + getResources().getString(R.string.day));
-                                    dayCount=response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue();
+                                    dayCount = response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue();
                                 }
-                            }else {pReady.setText(getResources().getString(R.string.notset));}
-                        }else {
+                            } else {
+                                pReady.setText(getResources().getString(R.string.notset));
+                            }
+                        } else {
                             pReady.setText(getResources().getString(R.string.notset));
                         }
 
@@ -156,8 +174,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
                         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
                         mDemoSlider.setDuration(4000);
-                }catch (Exception e){
-                        NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                    } catch (Exception e) {
+                        NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
                         dialogBuilder
                                 .withTitle(getResources().getString(R.string.conectionerrorr))
                                 .withDialogColor(R.color.colorPrimary)
@@ -175,7 +193,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
             @Override
             public void onFailure(Call<ResProducts> call, Throwable t) {
 
-                NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
+                NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ProductInfoScreen.this);
                 dialogBuilder
                         .withTitle(getResources().getString(R.string.conectionerrorr))
                         .withDialogColor(R.color.colorPrimary)
@@ -189,6 +207,25 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
             }
         });
+
+
+        //Share button action
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
+                shareBtn.clearAnimation();
+                shareBtn.setAnimation(anim);
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = URLs.API_BASE_URL + pName.getText().toString();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Uri.encode(shareBody, ALLOWED_URI_CHARS).replaceAll(" ", "-"));
+                startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share)));
+            }
+        });
+
+
 
         /////add to cart button
         addToCartBtn.setOnClickListener(new View.OnClickListener() {
@@ -365,7 +402,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
                 deliveryTimeBtn.clearAnimation();
                 deliveryTimeBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount).putExtra("vendorid",vendorId));
+                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount).putExtra("vendorid", vendorId));
                 //Reset Day Count
                 dayCount="0";
                 vendorId=0;
@@ -394,6 +431,66 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 startActivity(new Intent(ProductInfoScreen.this, DeliveryAddress.class));
             }
         });
+
+
+
+
+
+        //Suggested Products
+        Generator.createService(SedraApi.class).getRelatedProducts(getIntent().getStringExtra("product_id")).enqueue(new Callback<ResProducts>() {
+            @Override
+            public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
+
+                if(response.isSuccessful()){
+                    try {
+                        if(response.body()==null){
+                            sugTitle.setVisibility(View.INVISIBLE);
+                        }else {
+                            sugTitle.setVisibility(View.VISIBLE);
+                            relatedProductsList = (RecyclerView)findViewById(R.id.sug_proud_list);
+                            relatedProductsList.setAdapter(new ProductsAdb(response.body(), ProductInfoScreen.this));
+                            LinearLayoutManager linearLayout=new LinearLayoutManager(ProductInfoScreen.this);
+                            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                            relatedProductsList.setLayoutManager(linearLayout);
+                        }
+
+                    } catch (Exception e) {}
+                }else {
+
+
+                    Toast.makeText(ProductInfoScreen.this,"Not success from related products",Toast.LENGTH_LONG).show();
+
+                }
+
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResProducts> call, Throwable t) {
+               // Toast.makeText(ProductInfoScreen.this,"connection error from related products"+t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         ////up down actions

@@ -71,9 +71,6 @@ public class CountriesScreen extends AppCompatActivity {
 
 
 
-        NewOrder newOrder=new NewOrder();
-        Order order =new Order();
-        order.setBillingAddress(SaveSharedPreference.getCustomerInfo(CountriesScreen.this).getCustomers().get(0).getBillingAddress());
 
 
 

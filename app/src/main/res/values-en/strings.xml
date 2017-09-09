@@ -113,5 +113,6 @@
     <string name="codewillsend">An verification code will be sent to you by SMS</string>
     <string name="addreesserorr">Insert your Address</string>
     <string name="orderplace">Your Order has been placed successfully</string>
+    <string name="share">Share Product Via</string>
 
 </resources>

@@ -61,6 +61,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:id="@+id/frameLayout">
+
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/slider"
                     android:layout_width="match_parent"
@@ -169,30 +170,32 @@
                     android:id="@+id/gift_msg_btn"
                     android:src="@drawable/giftingmessage"
                     android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/linearLayout3"
+                    android:layout_above="@+id/linearLayout4"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="20dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sug_title_id"
+                        android:src="@drawable/suggestedtitle"
+                        android:padding="10dp" />
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/sug_proud_list">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/linearLayout3"
-                android:layout_above="@+id/linearLayout4"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sug_title_id"
-                    android:src="@drawable/suggestedtitle"
-                    android:padding="10dp" />
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sug_proud_list">
-
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

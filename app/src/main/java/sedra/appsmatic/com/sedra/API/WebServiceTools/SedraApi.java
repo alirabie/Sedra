@@ -132,5 +132,9 @@ public interface SedraApi {
     @POST("/api/orders")
     Call<OrderResponse>placeNewOrder(@Body Object order);
 
+    //Related products
+    @GET("/api/products/related/{id}")
+    Call<ResProducts> getRelatedProducts(@Path("id") String id);
+
 
 }
