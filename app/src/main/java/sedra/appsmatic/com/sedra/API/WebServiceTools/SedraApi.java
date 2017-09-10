@@ -136,5 +136,20 @@ public interface SedraApi {
     @GET("/api/products/related/{id}")
     Call<ResProducts> getRelatedProducts(@Path("id") String id);
 
+    //Get discounted products with id
+    @GET("/api/products/discounted/{id}")
+    Call<ResProducts> getDiscountedProducts(@Path("id") String id);
+
+    //Get discounted products all
+    @GET("/api/products/discounted/")
+    Call<ResProducts> getAllDiscountedProducts();
+
+
+
+
+
+
+
+
 
 }

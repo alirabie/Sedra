@@ -71,7 +71,7 @@ public class DiscountedScreen extends AppCompatActivity {
                 DiscountedProducts flowers = new DiscountedProducts();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id", "13");
+                bundle.putString("id", "1");
                 flowers.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -96,7 +96,7 @@ public class DiscountedScreen extends AppCompatActivity {
                 DiscountedProducts gifts = new DiscountedProducts();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","14");
+                bundle.putString("id","2");
                 gifts.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -120,7 +120,7 @@ public class DiscountedScreen extends AppCompatActivity {
                 DiscountedProducts cookies = new DiscountedProducts();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","15");
+                bundle.putString("id","3");
                 cookies.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -141,7 +141,7 @@ public class DiscountedScreen extends AppCompatActivity {
                 DiscountedProducts plants = new DiscountedProducts();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","16");
+                bundle.putString("id","10");
                 plants.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();

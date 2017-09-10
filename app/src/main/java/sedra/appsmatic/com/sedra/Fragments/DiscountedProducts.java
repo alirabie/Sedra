@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -30,6 +31,7 @@ public class DiscountedProducts extends Fragment {
     private String id="";
     private RecyclerView proudctsList;
     private ProgressBar progressBar;
+    private static TextView emptySign;
 
 
     @Override
@@ -43,6 +45,8 @@ public class DiscountedProducts extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         progressBar = (ProgressBar) view.findViewById(R.id.dis_progressbar);
         progressBar.setVisibility(View.VISIBLE);
+        emptySign=(TextView)view.findViewById(R.id.empty_tv);
+        emptySign.setVisibility(View.INVISIBLE);
 
 
         //receive Id and use it
@@ -52,12 +56,18 @@ public class DiscountedProducts extends Fragment {
         if(b.isEmpty()) {
 
             //Get all products
-            Generator.createService(SedraApi.class).getAllProuducts().enqueue(new Callback<ResProducts>() {
+            Generator.createService(SedraApi.class).getAllDiscountedProducts().enqueue(new Callback<ResProducts>() {
                 @Override
                 public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
                     if (response.isSuccessful()) {
-                        if(progressBar.isShown())
+                        if (progressBar.isShown())
                             progressBar.setVisibility(View.GONE);
+
+                        if(response.body().getProducts().isEmpty()){
+                            emptySign.setVisibility(View.VISIBLE);
+                        }else {
+                            emptySign.setVisibility(View.INVISIBLE);
+                        }
 
                         try {
                             proudctsList = (RecyclerView) view.findViewById(R.id.discounted_prouductslist);
@@ -82,7 +92,7 @@ public class DiscountedProducts extends Fragment {
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
 
-                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
                     dialogBuilder
                             .withTitle(getResources().getString(R.string.conectionerrorr))
                             .withDialogColor(R.color.colorPrimary)
@@ -102,12 +112,17 @@ public class DiscountedProducts extends Fragment {
             //when action from top buttons
 
             id = b.getString("id");
-            Generator.createService(SedraApi.class).getCategoryProducts(id).enqueue(new Callback<ResProducts>() {
+            Generator.createService(SedraApi.class).getDiscountedProducts(id).enqueue(new Callback<ResProducts>() {
                 @Override
                 public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {
                     if (response.isSuccessful()) {
-                          if(progressBar.isShown())
+                        if (progressBar.isShown())
                             progressBar.setVisibility(View.GONE);
+                        if(response.body().getProducts().isEmpty()){
+                            emptySign.setVisibility(View.VISIBLE);
+                        }else {
+                            emptySign.setVisibility(View.INVISIBLE);
+                        }
                         try {
                             proudctsList = (RecyclerView) view.findViewById(R.id.discounted_prouductslist);
                             proudctsList.setAdapter(new DiscountedProductsAdb(response.body(), getContext()));
@@ -132,7 +147,7 @@ public class DiscountedProducts extends Fragment {
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
 
-                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
+                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
                     dialogBuilder
                             .withTitle(getResources().getString(R.string.conectionerrorr))
                             .withDialogColor(R.color.colorPrimary)
