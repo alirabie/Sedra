@@ -310,9 +310,15 @@ public class SignUpScreen extends AppCompatActivity {
                 verifyMobile.clearAnimation();
                 verifyMobile.setAnimation(anim);
 
+                Pattern pPhone=Pattern.compile("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|\n" +
+                        "2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|\n" +
+                        "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}$");
+                Matcher mPhone=pPhone.matcher(phoneInput.getText().toString());
                 if(phoneInput.getText().length()==0){
                     phoneInput.setError(getResources().getString(R.string.phoneerror));
-                }else {
+                }else if(!mPhone.matches()){
+                    phoneInput.setError(getResources().getString(R.string.phonevalid));
+                } else {
 
                     //Loading Dialog
                     final ProgressDialog mProgressDialog = new ProgressDialog(SignUpScreen.this);
@@ -325,16 +331,18 @@ public class SignUpScreen extends AppCompatActivity {
                         public void onResponse(Call<VerificationCode> call, Response<VerificationCode> response) {
 
                             if (response.isSuccessful()) {
-
-                                if (mProgressDialog.isShowing())
-                                    mProgressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(),getResources().getString(R.string.codewillsend)+" "+response.body().getVerificationCode()+"",Toast.LENGTH_LONG).show();
-
-                                verificationCodeInput.setVisibility(View.VISIBLE);
-                                //Animate verify box
-                                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
-                                verificationCodeInput.clearAnimation();
-                                verificationCodeInput.setAnimation(anim);
+                                if (response.body().getErrorMessage()==null){
+                                    if (mProgressDialog.isShowing())
+                                        mProgressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.codewillsend)+" ",Toast.LENGTH_LONG).show();
+                                    verificationCodeInput.setVisibility(View.VISIBLE);
+                                    //Animate verify box
+                                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+                                    verificationCodeInput.clearAnimation();
+                                    verificationCodeInput.setAnimation(anim);
+                                }else {
+                                    Toast.makeText(getApplicationContext(),response.body().getErrorMessage()+"",Toast.LENGTH_LONG).show();
+                                }
 
                             } else {
 
@@ -376,6 +384,10 @@ public class SignUpScreen extends AppCompatActivity {
 
                 Pattern p = Pattern.compile("^(.+)@(.+)$");
                 Matcher m = p.matcher(emailInput.getText().toString());
+                Pattern pPhone=Pattern.compile("\\+(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|\n" +
+                        "2[98654321]\\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|\n" +
+                        "4[987654310]|3[9643210]|2[70]|7|1)\\d{1,14}$");
+                Matcher mPhone=pPhone.matcher(phoneInput.getText().toString());
 
                 //Inputs validations
                 if( emailInput.getText().toString().length() == 0 ){
@@ -390,15 +402,16 @@ public class SignUpScreen extends AppCompatActivity {
                 }else if(fNameInput.getText().toString().length()==0){
                     fNameInput.setError(getResources().getString(R.string.fnameerrorr));
 
-                }else if(lNameInput.getText().toString().length()==0){
+                }else if(lNameInput.getText().toString().length()==0) {
                     lNameInput.setError(getResources().getString(R.string.lnameerrorr));
 
                 }else if(phoneInput.getText().toString().length()==0) {
                     phoneInput.setError(getResources().getString(R.string.phoneerror));
 
-                }
+                } else if (!mPhone.matches()){
+                    phoneInput.setError(getResources().getString(R.string.phonevalid));
 
-                else if(!passwordInput.getText().toString().equals(repass.getText().toString())) {
+                } else if(!passwordInput.getText().toString().equals(repass.getText().toString())) {
                     passwordInput.setError(getResources().getString(R.string.passnotmatch));
                     repass.setError(getResources().getString(R.string.passnotmatch));
 
