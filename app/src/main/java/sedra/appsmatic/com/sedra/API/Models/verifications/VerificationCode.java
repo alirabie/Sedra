@@ -11,9 +11,15 @@ public class VerificationCode {
     @Expose
     private String verificationCode;
 
+    @SerializedName("NewPassword")
+    @Expose
+    private String newPassword;
+
     @SerializedName("ErrorMessage")
     @Expose
     private String errorMessage;
+
+
 
     public String getErrorMessage() {
         return errorMessage;
@@ -31,4 +37,11 @@ public class VerificationCode {
         this.verificationCode = verificationCode;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 }

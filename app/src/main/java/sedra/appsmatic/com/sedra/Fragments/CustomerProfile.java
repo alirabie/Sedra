@@ -1,16 +1,17 @@
-package sedra.appsmatic.com.sedra.Activites;
+package sedra.appsmatic.com.sedra.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -36,20 +37,21 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Customers.BillingAddress;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+import sedra.appsmatic.com.sedra.API.Models.Customers.UpdateCustomer;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Registration.PostNewCustomer;
 import sedra.appsmatic.com.sedra.API.Models.Registration.RCustomer;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
-import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.verifications.VerificationCode;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
-public class SignUpScreen extends AppCompatActivity {
 
-    private ImageView signUpBtn,home;
+public class CustomerProfile extends Fragment {
+
     private EditText emailInput,passwordInput,fNameInput,lNameInput,phoneInput,repass,verificationCodeInput,address1;
     private TextView verifyMobile;
     private BetterSpinner filterCountries;
@@ -64,48 +66,68 @@ public class SignUpScreen extends AppCompatActivity {
     private static final String SAUDI_ID="52";
     private static final String KUWAIT_ID="69";
     private static String countryKey,stateKey,districtkey,statusid,countryid;
-
-
+    private ImageView signUpBtn;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_screen);
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //Check Os Ver For Set Status Bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+    }
 
-        signUpBtn=(ImageView)findViewById(R.id.signup_btn);
-        home=(ImageView)findViewById(R.id.home_btn_login);
-        emailInput=(EditText)findViewById(R.id.signup_email_input);
-        passwordInput=(EditText)findViewById(R.id.signup_password_input);
-        fNameInput=(EditText)findViewById(R.id.signup_username_input);
-        lNameInput=(EditText)findViewById(R.id.signup_repassword_input);
-        phoneInput=(EditText)findViewById(R.id.signup_phone_input);
-        repass=(EditText)findViewById(R.id.re_password);
-        address1=(EditText)findViewById(R.id.signup_address_input);
-        verificationCodeInput=(EditText)findViewById(R.id.verificationcodeinput);
-        verifyMobile=(TextView)findViewById(R.id.phone_ver_link_btn);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_customer_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        signUpBtn=(ImageView)view.findViewById(R.id.signup_btn);
+        emailInput=(EditText)view.findViewById(R.id.signup_email_input);
+        passwordInput=(EditText)view.findViewById(R.id.signup_password_input);
+        fNameInput=(EditText)view.findViewById(R.id.signup_username_input);
+        lNameInput=(EditText)view.findViewById(R.id.signup_repassword_input);
+        phoneInput=(EditText)view.findViewById(R.id.signup_phone_input);
+        repass=(EditText)view.findViewById(R.id.re_password);
+        address1=(EditText)view.findViewById(R.id.signup_address_input);
+        verificationCodeInput=(EditText)view.findViewById(R.id.verificationcodeinput);
+        verifyMobile=(TextView)view.findViewById(R.id.phone_ver_link_btn);
         verificationCodeInput.setVisibility(View.INVISIBLE);
 
+        //Set images languages
+        if(SaveSharedPreference.getLangId(getContext()).equals("ar")){
+            signUpBtn.setImageResource(R.drawable.savebtn);
+        }else{
+            signUpBtn.setImageResource(R.drawable.save_btn_en);
+        }
 
-        filterCountries = (BetterSpinner) findViewById(R.id.signup_countery_spinner);
-        filterStates =(BetterSpinner)findViewById(R.id.signup_state_spinner);
-        filterdistructs=(BetterSpinner)findViewById(R.id.signup_district_spinner);
-        filterCountries.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
-        filterStates.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item));
-        filterdistructs.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
+        filterCountries = (BetterSpinner)view.findViewById(R.id.signup_countery_spinner);
+        filterStates =(BetterSpinner)view.findViewById(R.id.signup_state_spinner);
+        filterdistructs=(BetterSpinner)view.findViewById(R.id.signup_district_spinner);
+        filterCountries.setAdapter(new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_dropdown_item));
+        filterStates.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item));
+        filterdistructs.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item));
         filterCountries.setHint(getResources().getString(R.string.selectcountry));
         filterCountries.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterStates.setHint(getResources().getString(R.string.selectstate));
         filterStates.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterdistructs.setHintTextColor(getResources().getColor(R.color.colorPrimary));
         filterdistructs.setHint(getResources().getString(R.string.distrects));
+
+
+
+        //fill inputs from saved data
+        emailInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getEmail() + "");
+        fNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getFirstName()+"");
+        lNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getLastName() + "");
+        //filterCountries.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCountry().toString()+"");
+        //filterStates.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getProvince().toString()+"");
+        //filterdistructs.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCity().toString()+"");
+        address1.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getAddress1().toString()+"");
+        phoneInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getPhoneNumber().toString() + "");
+
 
 
         //get countries by id
@@ -120,7 +142,7 @@ public class SignUpScreen extends AppCompatActivity {
                         countriesIds.add(response.body().getCountries().get(i).getId());
                     }
                     //add names to spinner list
-                    ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(SignUpScreen.this, android.R.layout.simple_spinner_dropdown_item, countriesNames);
+                    ArrayAdapter<String> cuntryadapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, countriesNames);
                     cuntryadapter.notifyDataSetChanged();
                     filterCountries.setAdapter(cuntryadapter);
                     filterCountries.setHint(getResources().getString(R.string.selectcountry));
@@ -135,9 +157,7 @@ public class SignUpScreen extends AppCompatActivity {
                             }
 
                             countryKey = countriesNames.get(position);
-                            countryid=countriesIds.get(position);
-
-
+                            countryid = countriesIds.get(position);
 
 
                             //get states by id
@@ -157,7 +177,7 @@ public class SignUpScreen extends AppCompatActivity {
                                         }
 
                                         //add names to spinner list
-                                        final ArrayAdapter<String> statesadabter = new ArrayAdapter<>(SignUpScreen.this, android.R.layout.simple_spinner_dropdown_item, statesNames);
+                                        final ArrayAdapter<String> statesadabter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, statesNames);
                                         statesadabter.notifyDataSetChanged();
                                         filterStates.setAdapter(statesadabter);
                                         filterStates.setHint(getResources().getString(R.string.selectstate));
@@ -168,7 +188,7 @@ public class SignUpScreen extends AppCompatActivity {
                                             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                                                 stateKey = statesNames.get(position);
-                                                statusid=statesIds.get(position);
+                                                statusid = statesIds.get(position);
 
                                                 //Get districts
                                                 Generator.createService(SedraApi.class).getDestrics(countryKey, stateKey).enqueue(new Callback<Districts>() {
@@ -186,7 +206,7 @@ public class SignUpScreen extends AppCompatActivity {
 
 
                                                             //add names to spinner list
-                                                            final ArrayAdapter<String> districtadapter = new ArrayAdapter<>(SignUpScreen.this, android.R.layout.simple_spinner_dropdown_item, districtsNames);
+                                                            final ArrayAdapter<String> districtadapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, districtsNames);
                                                             districtadapter.notifyDataSetChanged();
                                                             filterdistructs.setAdapter(districtadapter);
                                                             filterdistructs.setHint(getResources().getString(R.string.distrects));
@@ -202,19 +222,19 @@ public class SignUpScreen extends AppCompatActivity {
 
                                                                     districtkey = response.body().getDistricts().get(position).getName();
 
-                                                                    Log.e("gooood","Country Id : "+countryid+"status id : "+statusid+" district name : "+districtkey);
+                                                                    Log.e("gooood", "Country Id : " + countryid + "status id : " + statusid + " district name : " + districtkey);
 
                                                                 }
                                                             });
 
                                                         } else {
-                                                            Toast.makeText(getApplicationContext(), "response from filter districts not success", Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(getContext(), "response from filter districts not success", Toast.LENGTH_LONG).show();
                                                         }
                                                     }
 
                                                     @Override
                                                     public void onFailure(Call<Districts> call, Throwable t) {
-                                                        Toast.makeText(getApplicationContext(), "response from filter districts failed" + " " + t.getMessage(), Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getContext(), "response from filter districts failed" + " " + t.getMessage(), Toast.LENGTH_LONG).show();
                                                     }
                                                 });
 
@@ -223,13 +243,13 @@ public class SignUpScreen extends AppCompatActivity {
                                         });
 
                                     } else {
-                                        Toast.makeText(getApplication(), "Response not sucsess from states ", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "Response not sucsess from states ", Toast.LENGTH_LONG).show();
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResStates> call, Throwable t) {
-                                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(SignUpScreen.this);
+                                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
                                     dialogBuilder
                                             .withTitle(getResources().getString(R.string.conectionerrorr))
                                             .withDialogColor(R.color.colorPrimary)
@@ -247,14 +267,14 @@ public class SignUpScreen extends AppCompatActivity {
                     });
 
                 } else {
-                    Toast.makeText(getApplication(), "Response not sucsess from countries ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Response not sucsess from countries ", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResCountry> call, Throwable t) {
 
-                NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(SignUpScreen.this);
+                NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(getContext());
                 dialogBuilder
                         .withTitle(getResources().getString(R.string.conectionerrorr))
                         .withDialogColor(R.color.colorPrimary)
@@ -270,58 +290,27 @@ public class SignUpScreen extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-        //Set images languages
-        if(SaveSharedPreference.getLangId(this).equals("ar")){
-            signUpBtn.setImageResource(R.drawable.signup_btn_arabic);
-        }else{
-            signUpBtn.setImageResource(R.drawable.signupsc_btn_en);
-        }
-
-
-
-
-        //Home btn action
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SignUpScreen.this.finish();
-                startActivity(new Intent(SignUpScreen.this,SplashScreen.class));
-            }
-        });
-
-
-
-
         //Verify phone number
         verifyMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Animation anim = AnimationUtils.loadAnimation(SignUpScreen.this, R.anim.alpha);
+                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.alpha);
                 verifyMobile.clearAnimation();
                 verifyMobile.setAnimation(anim);
 
-                Pattern pPhone=Pattern.compile("\\(?([0-9]{4})\\)?([ .-]?)([0-9]{4})\\2([0-9]{4})");
-                Matcher mPhone=pPhone.matcher(phoneInput.getText().toString());
-                if(phoneInput.getText().length()==0){
+                Pattern pPhone = Pattern.compile("\\(?([0-9]{4})\\)?([ .-]?)([0-9]{4})\\2([0-9]{4})");
+                Matcher mPhone = pPhone.matcher(phoneInput.getText().toString());
+                if (phoneInput.getText().length() == 0) {
                     phoneInput.setError(getResources().getString(R.string.phoneerror));
-                }else if(!mPhone.matches()){
+                } else if (!mPhone.matches()) {
                     phoneInput.setError(getResources().getString(R.string.phonevalid));
                 } else {
 
                     //Loading Dialog
-                    final ProgressDialog mProgressDialog = new ProgressDialog(SignUpScreen.this);
+                    final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
                     mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.setMessage(getContext().getResources().getString(R.string.pleasew));
                     mProgressDialog.show();
 
                     Generator.createService(SedraApi.class).verifyMoblieNum(phoneInput.getText().toString()).enqueue(new Callback<VerificationCode>() {
@@ -332,21 +321,23 @@ public class SignUpScreen extends AppCompatActivity {
                                 if (response.body().getErrorMessage().equals("") || response.body().getErrorMessage() == null) {
                                     if (mProgressDialog.isShowing())
                                         mProgressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.codewillsend) + " ", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.codewillsend) + " ", Toast.LENGTH_LONG).show();
                                     verificationCodeInput.setVisibility(View.VISIBLE);
                                     //Animate verify box
-                                    Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+                                    Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
                                     verificationCodeInput.clearAnimation();
                                     verificationCodeInput.setAnimation(anim);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), response.body().getErrorMessage() + "", Toast.LENGTH_LONG).show();
+                                    if (mProgressDialog.isShowing())
+                                        mProgressDialog.dismiss();
+                                    Toast.makeText(getContext(), response.body().getErrorMessage() + "", Toast.LENGTH_LONG).show();
                                 }
 
                             } else {
 
                                 if (mProgressDialog.isShowing())
                                     mProgressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Not success from mobile verification", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Not success from mobile verification", Toast.LENGTH_LONG).show();
 
                             }
 
@@ -356,30 +347,20 @@ public class SignUpScreen extends AppCompatActivity {
                         public void onFailure(Call<VerificationCode> call, Throwable t) {
                             if (mProgressDialog.isShowing())
                                 mProgressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Failure from mobile verification" + t.getMessage().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Failure from mobile verification" + t.getMessage().toString(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-
-
-
-
-
 
 
             }
         });
 
 
-
-
-
-
-        //SignUp button Action
+        //Save button
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Pattern p = Pattern.compile("^(.+)@(.+)$");
                 Matcher m = p.matcher(emailInput.getText().toString());
                 Pattern pPhone=Pattern.compile("(9[976]\\d|8[987530]\\d|6[987]\\d|5[90]\\d|42\\d|3[875]\\d|\n" +
@@ -389,7 +370,7 @@ public class SignUpScreen extends AppCompatActivity {
 
                 //Inputs validations
                 if( emailInput.getText().toString().length() == 0 ){
-                   emailInput.setError(getResources().getString(R.string.loginvalemail));
+                    emailInput.setError(getResources().getString(R.string.loginvalemail));
 
                 }else if (passwordInput.getText().toString().length()==0) {
                     passwordInput.setError(getResources().getString(R.string.loginvalpassword));
@@ -438,19 +419,18 @@ public class SignUpScreen extends AppCompatActivity {
                     filterdistructs.setError(getResources().getString(R.string.distrects));
                 } else {
 
-                    //Registration request >>
+
+                    //Update request >>
 
                     //Loading Dialog
-                    final ProgressDialog mProgressDialog = new ProgressDialog(SignUpScreen.this);
+                    final ProgressDialog mProgressDialog = new ProgressDialog(getContext());
                     mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.setMessage(getContext().getResources().getString(R.string.pleasew));
                     mProgressDialog.show();
 
-                        //create data
-                    PostNewCustomer postNewCustomer=new PostNewCustomer();
+                    //create data
+
                     RCustomer customer=new RCustomer();
-
-
                     //fill billing address
                     BillingAddress billingAddress=new BillingAddress();
                     billingAddress.setCountryId(countryid);
@@ -460,12 +440,12 @@ public class SignUpScreen extends AppCompatActivity {
                     billingAddress.setStateProvinceId(statusid);
                     billingAddress.setCity(districtkey);
                     billingAddress.setPhoneNumber(phoneInput.getText().toString() + "");
-                    billingAddress.setAddress1(address1.getText()+"");
+                    billingAddress.setAddress1(address1.getText() + "");
                     billingAddress.setZipPostalCode("00");
-
                     List<Integer> rollIds=new ArrayList<Integer>();
                     rollIds.add(3);
                     customer.setRoleIds(rollIds);
+                    customer.setId(SaveSharedPreference.getCustomerId(getContext()));
                     customer.setEmail(emailInput.getText().toString() + "");
                     customer.setPassword(passwordInput.getText().toString() + "");
                     customer.setFirstName(fNameInput.getText().toString() + "");
@@ -473,15 +453,16 @@ public class SignUpScreen extends AppCompatActivity {
                     customer.setPhone(phoneInput.getText().toString() + "");
                     customer.setVerificationcode(verificationCodeInput.getText().toString() + "");
                     customer.setBillingAddress(billingAddress);
-                    postNewCustomer.setCustomer(customer);
 
+                    UpdateCustomer updateCustomer=new UpdateCustomer();
+                    updateCustomer.setCustomer(customer);
 
                     Gson gson =new Gson();
-                    String json = gson.toJson(postNewCustomer);
+                    String json = gson.toJson(updateCustomer);
 
-                    Log.e("Json : ",json);
+                    Log.e("new Customer Data :", json);
 
-                    Generator.createService(SedraApi.class).regesterNewCustomer(postNewCustomer).enqueue(new Callback<RegResponse>() {
+                    Generator.createService(SedraApi.class).updateCustomer(updateCustomer,SaveSharedPreference.getCustomerId(getContext())).enqueue(new Callback<RegResponse>() {
                         @Override
                         public void onResponse(Call<RegResponse> call, Response<RegResponse> response) {
 
@@ -491,11 +472,29 @@ public class SignUpScreen extends AppCompatActivity {
                                     mProgressDialog.dismiss();
 
                                 if (response.body().getCustomers() != null) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.regsuccsess), Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(SignUpScreen.this, SignInScreen.class));
-                                    SignUpScreen.this.finish();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.update), Toast.LENGTH_LONG).show();
+                                    //Save new Data locally
+                                    SaveSharedPreference.setCustomerInfo(getContext(),response.body());
+                                    countriesNames.clear();
+                                    countriesIds.clear();
+                                    statesNames.clear();
+                                    countriesIds.clear();
+                                    districtsNames.clear();
+                                    districtsIds.clear();
+
+                                    //Change Fragment
+                                    Products products = new Products();
+                                    Bundle bundle = new Bundle();
+                                    products.setArguments(bundle);
+                                    android.support.v4.app.FragmentManager fragmentManager = ((FragmentActivity)getContext()).getSupportFragmentManager();
+                                    android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.replace(R.id.fragmentcontener, products);
+                                    fragmentTransaction.commit();
+
+
+
                                 } else if (response.body().getErrors() != null) {
-                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.faild) + " " + response.body().getErrors().getAccount() + "", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.faild) + " " + response.body().getErrors().getAccount() + "", Toast.LENGTH_LONG).show();
                                 }
 
                             } else {
@@ -503,7 +502,7 @@ public class SignUpScreen extends AppCompatActivity {
                                 if (mProgressDialog.isShowing())
                                     mProgressDialog.dismiss();
 
-                                Toast.makeText(getApplicationContext(), "Not success from SignUp", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Not success from update user", Toast.LENGTH_LONG).show();
 
                             }
 
@@ -514,11 +513,9 @@ public class SignUpScreen extends AppCompatActivity {
                             if (mProgressDialog.isShowing())
                                 mProgressDialog.dismiss();
 
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.faild) + " " + t.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), getResources().getString(R.string.faild) + " update customer " + t.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
-
-
 
 
 
@@ -547,43 +544,40 @@ public class SignUpScreen extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
             }
         });
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     @Override
-    public void onBackPressed() {
-       SignUpScreen.this.finish();
-    }
-
-
-    @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-
-        countriesNames.clear();
-        countriesIds.clear();
-        statesNames.clear();
-        countriesIds.clear();
-        districtsNames.clear();
-        districtsIds.clear();
-
-
-
-
-
-
-
-
+            countriesNames.clear();
+            countriesIds.clear();
+            statesNames.clear();
+            countriesIds.clear();
+            districtsNames.clear();
+            districtsIds.clear();
     }
 }

@@ -12,6 +12,9 @@ import sedra.appsmatic.com.sedra.API.Models.Customers.BillingAddress;
  */
 public class RCustomer {
 
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("role_ids")
     @Expose
     private List<Integer> roleIds = null;
@@ -100,5 +103,13 @@ public class RCustomer {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sedra.appsmatic.com.sedra.Activites.SignInScreen"
+    android:background="#e2dcd0">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:fillViewport="false"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:padding="15dp"
+            android:gravity="start"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/signup_email_input"
+                android:background="@drawable/inputbar"
+                android:hint="@string/emailhint"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/signup_password_input"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/passwordhint"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/re_password"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/repasswordreg"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/signup_username_input"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/username"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/signup_repassword_input"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/repassword"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="text" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/signup_phone_input"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/phonenum"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="phone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/inputbar"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="15dp">
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/signup_countery_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:textSize="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/inputbar"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="15dp">
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/signup_state_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:textSize="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/inputbar"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="15dp">
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/signup_district_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:textSize="12dp"
+                    android:textAlignment="viewStart"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:ems="10"
+                android:id="@+id/signup_address_input"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/inputbar"
+                android:hint="@string/deliceraddress"
+                android:textAlignment="viewStart"
+                android:padding="10dp"
+                android:textSize="13dp"
+                android:gravity="start"
+                android:password="false"
+                android:inputType="text" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/mobileverify"
+                    android:id="@+id/phone_ver_link_btn"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textSize="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:typeface="serif"
+                    android:textStyle="bold"
+                    android:textIsSelectable="false"
+                    android:clickable="true"
+                    android:autoText="false"
+                    android:autoLink="all" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:ems="10"
+                    android:id="@+id/verificationcodeinput"
+                    android:background="@drawable/coboneinput"
+                    android:hint="@string/verifcode"
+                    android:textAlignment="center"
+                    android:padding="10dp"
+                    android:textSize="10dp"
+                    android:password="false"
+                    android:inputType="text"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signup_btn"
+                android:src="@drawable/save_btn_en"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

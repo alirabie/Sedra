@@ -35,6 +35,7 @@ import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
 import sedra.appsmatic.com.sedra.Activites.SplashScreen;
+import sedra.appsmatic.com.sedra.Fragments.CustomerProfile;
 import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.Fragments.Settngs;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
@@ -247,6 +248,7 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 1:
+                            //settings
                             Settngs settngs = new Settngs();
                             android.support.v4.app.FragmentManager fragmentManager2 = ((FragmentActivity) context).getSupportFragmentManager();
                             android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
@@ -256,7 +258,12 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             break;
                         case 2:
                             //My account
-
+                            CustomerProfile customerProfile = new CustomerProfile();
+                            android.support.v4.app.FragmentManager fragmentManager3 = ((FragmentActivity) context).getSupportFragmentManager();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction3 = fragmentManager3.beginTransaction();
+                            fragmentTransaction3.replace(R.id.fragmentcontener, customerProfile);
+                            fragmentTransaction3.commit();
+                            drawer.closeDrawer(GravityCompat.START);
                             break;
 
                         case 3:

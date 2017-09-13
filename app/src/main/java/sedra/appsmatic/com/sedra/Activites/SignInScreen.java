@@ -25,12 +25,15 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.Error.ResErrors;
+import sedra.appsmatic.com.sedra.API.Models.verifications.VerificationCode;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
@@ -91,7 +94,53 @@ public class SignInScreen extends AppCompatActivity {
                 Animation anim = AnimationUtils.loadAnimation(SignInScreen.this, R.anim.alpha);
                 forgetPassBtn.clearAnimation();
                 forgetPassBtn.setAnimation(anim);
-                startActivity(new Intent(SignInScreen.this,ForgetPasswordScreen.class));
+                //Loading Dialog
+
+
+                Pattern p = Pattern.compile("^(.+)@(.+)$");
+                Matcher m = p.matcher(user.getText().toString());
+                if (user.getText().length() == 0 || !m.matches()) {
+                    user.setError(getResources().getString(R.string.notvalidemail));
+                } else {
+
+                    final ProgressDialog mProgressDialog = new ProgressDialog(SignInScreen.this);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.show();
+                    Generator.createService(SedraApi.class).retrivePassword(user.getText().toString()).enqueue(new Callback<VerificationCode>() {
+                        @Override
+                        public void onResponse(Call<VerificationCode> call, Response<VerificationCode> response) {
+
+                            if (response.isSuccessful()) {
+                                if (response.body().getErrorMessage().equals("") || response.body().getErrorMessage() == null) {
+                                    if (mProgressDialog.isShowing())
+                                        mProgressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.newpass) + " ", Toast.LENGTH_LONG).show();
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), response.body().getErrorMessage() + "", Toast.LENGTH_LONG).show();
+                                }
+
+                            } else {
+
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Not success from retrieve password", Toast.LENGTH_LONG).show();
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<VerificationCode> call, Throwable t) {
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Failure from retrieve password" + t.getMessage().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+                // startActivity(new Intent(SignInScreen.this,ForgetPasswordScreen.class));
             }
         });
 

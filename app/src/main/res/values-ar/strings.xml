@@ -10,7 +10,7 @@
     <string name="passwordhint">كلمة المرور</string>
     <string name="forgetpass">نسيت كلمة المرور</string>
     <string name="newaccount">إنشاء حساب جديد</string>
-    <string name="phonenum">رقم الجوال (e.g : +14155552671)</string>
+    <string name="phonenum">رقم الجوال (e.g : 14155552671)</string>
     <string name="repassword">الاسم الثانى</string>
     <string name="signuptitle">تسجيل</string>
     <string name="username">الاسم الاول </string>
@@ -114,6 +114,8 @@
     <string name="addreesserorr">أدخل عنوانك</string>
     <string name="orderplace">تم تسجيل طلبك بنجاح</string>
     <string name="share">مشاركة المنتج بواسطة </string>
-    <string name="phonevalid">رقم الجوال غير صالح (e.g : +14155552671)</string>
+    <string name="phonevalid">رقم الجوال غير صالح (e.g : 14155552671)</string>
+    <string name="update">تم حفظ بياناتك بنجاح</string>
+    <string name="newpass">سوف يتم ارسال كلمة مرور موقته الان على جوالك</string>
 
 </resources>

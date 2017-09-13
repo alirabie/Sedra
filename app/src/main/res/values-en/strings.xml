@@ -12,7 +12,7 @@
     <string name="newaccount">Create New Account</string>
     <string name="signuptitle">SignUp</string>
     <string name="repassword">Last Name</string>
-    <string name="phonenum">Phone Number (e.g : +14155552671)</string>
+    <string name="phonenum">Phone Number (e.g : 14155552671)</string>
     <string name="username">First Name</string>
     <string name="forgetpasstitle">Reset Password</string>
     <string name="typephonenum">Please type your phone number to reset password</string>
@@ -114,6 +114,8 @@
     <string name="addreesserorr">Insert your Address</string>
     <string name="orderplace">Your Order has been placed successfully</string>
     <string name="share">Share Product Via</string>
-    <string name="phonevalid">Invalid phone number format (e.g : +14155552671)</string>
+    <string name="phonevalid">Invalid phone number format (e.g : 14155552671)</string>
+    <string name="update">Your Info has been Saved Successfully</string>
+    <string name="newpass">New Default Password will send in SMS shortly</string>
 
 </resources>

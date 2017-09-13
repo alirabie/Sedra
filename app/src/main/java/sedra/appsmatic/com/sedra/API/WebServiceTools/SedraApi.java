@@ -8,6 +8,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import sedra.appsmatic.com.sedra.API.Models.Addresses.ResAddresses;
@@ -127,6 +128,9 @@ public interface SedraApi {
     @POST("api/customers/PhoneVerification?")
     Call<VerificationCode>verifyMoblieNum(@Query("phoneno") String phone);
 
+    //Retrieve Password
+    @POST("api/customers/RetrievePassword/{email}/ ")
+    Call<VerificationCode>retrivePassword(@Path("email") String email);
 
     //Place new Order
     @POST("/api/orders")
@@ -143,6 +147,10 @@ public interface SedraApi {
     //Get discounted products all
     @GET("/api/products/discounted/")
     Call<ResProducts> getAllDiscountedProducts();
+
+    //Update Customer
+    @PUT("api/customers/{id}")
+    Call<RegResponse> updateCustomer(@Body Object item,@Path("id")String id);
 
 
 
