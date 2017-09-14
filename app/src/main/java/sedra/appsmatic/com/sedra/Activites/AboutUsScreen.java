@@ -32,6 +32,8 @@ public class AboutUsScreen extends AppCompatActivity {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
 
+        //week end
+
         home=(ImageView)findViewById(R.id.home_btn_abotus);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
