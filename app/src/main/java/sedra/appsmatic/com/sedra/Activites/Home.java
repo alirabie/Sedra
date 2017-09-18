@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -132,10 +134,10 @@ public class Home extends AppCompatActivity  {
 
 
         //Receive vendorsIds from countries screen
-        String countryId=getIntent().getStringExtra("country_id");
-        String stateId=getIntent().getStringExtra("stateId");
-        String countryName=getIntent().getStringExtra("countryname");
-        String stateName=getIntent().getStringExtra("statename");
+        final String countryId=getIntent().getStringExtra("country_id");
+        final String stateId=getIntent().getStringExtra("stateId");
+        final String countryName=getIntent().getStringExtra("countryname");
+        final String stateName=getIntent().getStringExtra("statename");
 
 
         //Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
@@ -285,6 +287,34 @@ public class Home extends AppCompatActivity  {
                     vendors.setAdapter(vendorsAdabtor);
                     vendors.setHint(getResources().getString(R.string.selectvendor));
                     vendors.setHintTextColor(Color.WHITE);
+
+                    //request filter by vendor
+                    vendors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Products products2 = new Products();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("flag","filter");
+                            bundle.putString("categoryKey","");
+                            bundle.putString("countryKey","");
+                            bundle.putString("stateKey","");
+                            bundle.putString("districtkey", "");
+                            bundle.putString("vendorKey", vendorsNames.get(position)+"");
+                            bundle.putString("priceKey", "0");
+                            bundle.putString("serachKeyword","");
+
+                            products2.setArguments(bundle);
+                            //put here id to send to fragment
+                            Home.fragmentManager
+                                    .beginTransaction()
+                                    .replace(R.id.fragmentcontener,
+                                            products2)
+                                    .addToBackStack(null).commitAllowingStateLoss();
+                        }
+                    });
+
+
                 } else {
                     Toast.makeText(getApplication(), "Response not success from vendors Home ", Toast.LENGTH_LONG).show();
                 }
@@ -296,6 +326,14 @@ public class Home extends AppCompatActivity  {
                 Toast.makeText(getApplication(), t.getMessage() + " : connection error from vendors", Toast.LENGTH_LONG).show();
             }
         });
+
+
+
+
+
+
+
+
 
 
 
@@ -319,6 +357,30 @@ public class Home extends AppCompatActivity  {
                     districtsSp.setAdapter(districsAdabtor);
                     districtsSp.setHint(getResources().getString(R.string.distrects));
                     districtsSp.setHintTextColor(Color.WHITE);
+
+                    //request products by districts
+                districtsSp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Products products2 = new Products();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("flag","filter");
+                        bundle.putString("categoryKey","");
+                        bundle.putString("countryKey",countryName);
+                        bundle.putString("stateKey",stateName);
+                        bundle.putString("districtkey", districtsNames.get(position));
+                        bundle.putString("vendorKey", "");
+                        bundle.putString("priceKey", "0");
+                        bundle.putString("serachKeyword", "");
+                        products2.setArguments(bundle);
+                        //put here id to send to fragment
+                        Home.fragmentManager
+                                .beginTransaction()
+                                .replace(R.id.fragmentcontener,
+                                        products2)
+                                .addToBackStack(null).commitAllowingStateLoss();
+                    }
+                });
 
                 } else {
 
@@ -475,51 +537,75 @@ public class Home extends AppCompatActivity  {
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(Home.this);
-            dialogBuilder
-                    .withTitle(getResources().getString(R.string.sedra))
-                    .withDialogColor(R.color.colorPrimary)
-                    .withTitleColor("#FFFFFF")
-                    .withIcon(getResources().getDrawable(R.drawable.icon))
-                    .withDuration(700)                                          //def
-                    .withEffect(Effectstype.RotateBottom)
-                    .withMessage(getResources().getString(R.string.exitfromapp))
-                    .withButton1Text(getResources().getString(R.string.yes))
-                    .withButton2Text(getResources().getString(R.string.no))
-                    .setButton1Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogBuilder.dismiss();
-                            Home.this.finish();
-                        }
-                    })
-                    .setButton2Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {dialogBuilder.dismiss();
-                        }
-                    })
-                    .show();
 
-/*
+        } else {
+
+
+            Products products2 = new Products();
+            Bundle bundle = new Bundle();
+            //put here id to send to fragment
+            products2.setArguments(bundle);
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragmentcontener, products2);
+            fragmentTransaction.commit();
+            districtsSp.clearListSelection();
+            districtsSp.setText(getResources().getString(R.string.distrects));
+            vendors.clearListSelection();
+            vendors.setText(getResources().getString(R.string.selectvendor));
+            flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+            giftBtn.setImageResource(R.drawable.giftbtnunactive);
+            cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
+            plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+
+            Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
 
             if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
+                final NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(Home.this);
+                dialogBuilder
+                        .withTitle(getResources().getString(R.string.sedra))
+                        .withDialogColor(R.color.colorPrimary)
+                        .withTitleColor("#FFFFFF")
+                        .withIcon(getResources().getDrawable(R.drawable.icon))
+                        .withDuration(700)                                          //def
+                        .withEffect(Effectstype.RotateBottom)
+                        .withMessage(getResources().getString(R.string.exitfromapp))
+                        .withButton1Text(getResources().getString(R.string.yes))
+                        .withButton2Text(getResources().getString(R.string.no))
+                        .setButton1Click(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                                Home.this.finish();
+                            }
+                        })
+                        .setButton2Click(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {dialogBuilder.dismiss();
+                            }
+                        })
+                        .show();
                 return;
             }
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
 
+
+
+            this.doubleBackToExitPressedOnce = true;
+            // Toast.makeText(this, R.string.pressagain, Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-            */
+
+
+
+
         }
 
 
