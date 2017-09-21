@@ -75,7 +75,7 @@ public class CountriesScreen extends AppCompatActivity {
 
 
 
-        //setup items
+        //setup items 123
         progressBar = (ProgressBar)findViewById(R.id.countries_progressbar);
         countriesspinner = (BetterSpinner) findViewById(R.id.countryspinner);
         contriesBox=(LinearLayout)findViewById(R.id.countries_contenr);
