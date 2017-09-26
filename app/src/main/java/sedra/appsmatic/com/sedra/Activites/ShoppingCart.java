@@ -87,6 +87,7 @@ public class ShoppingCart extends AppCompatActivity  {
     private ProgressBar progressBar;
     private TextView emptyFlag,totalPrice,finalTotalprice;
     private Boolean isReadyToPay;
+
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

@@ -59,6 +59,7 @@ public class Filter extends AppCompatActivity {
     private static List<String> districtsNames=new ArrayList<>();
     private static List<String> districtsIds=new ArrayList<>();
     private static String categoryKey,countryKey,stateKey,districtkey,vendorKey,minPriceKey;
+    private boolean deliveratsamedate=false;
     private static List<String> options;
     private static List<String>distructsNames=new ArrayList<>();
 
@@ -77,8 +78,8 @@ public class Filter extends AppCompatActivity {
         vendorKey="";
         minPriceKey="0";
         options=new ArrayList<>();
-        options.add(getResources().getString(R.string.yes));
-        options.add(getResources().getString(R.string.no));
+        options.add(0,getResources().getString(R.string.yes));
+        options.add(1,getResources().getString(R.string.no));
 
         closeBtn=(ImageView)findViewById(R.id.close_filter_btn);
         filterBtnGo=(ImageView)findViewById(R.id.filter_go_btn);
@@ -105,8 +106,8 @@ public class Filter extends AppCompatActivity {
         filterCategoriy.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterCountries.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
         filterStates.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
-        filterdistructs.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
-        filterVendors.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item));
+        filterdistructs.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item));
+        filterVendors.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item));
         filterSameday.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options));
         filterSameday.setHint(getResources().getString(R.string.sameday));
         filterSameday.setHintTextColor(getResources().getColor(R.color.colorPrimary));
@@ -142,12 +143,12 @@ public class Filter extends AppCompatActivity {
                     filterCategoriy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            categoryKey=categoriesIds.get(position);
+                            categoryKey = categoriesIds.get(position);
                         }
                     });
 
                 } else {
-                    Toast.makeText(getApplicationContext(),"Response from filter categores not working !",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Response from filter categores not working !", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -368,12 +369,35 @@ public class Filter extends AppCompatActivity {
         });
 
 
+
+        //filter by dliver at the same day
+        filterSameday.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        deliveratsamedate=true;
+                        break;
+                    case 1:
+                        deliveratsamedate=false;
+                        break;
+                }
+
+            }
+        });
+
+
+
+        //close button
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Filter.this.finish();
             }
         });
+
+
+
 
 
         filterBtnGo.setOnClickListener(new View.OnClickListener() {
@@ -402,6 +426,7 @@ public class Filter extends AppCompatActivity {
                 bundle.putString("districtkey", districtkey);
                 bundle.putString("vendorKey", vendorKey);
                 bundle.putString("priceKey", minPriceKey);
+                bundle.putBoolean("deliverbythesameday", deliveratsamedate);
                 bundle.putString("serachKeyword", searcInput.getText().toString() + "");
 
                 products2.setArguments(bundle);
@@ -425,6 +450,7 @@ public class Filter extends AppCompatActivity {
                 districtkey="";
                 vendorKey="";
                 minPriceKey="0";
+                deliveratsamedate=false;
                 Filter.this.finish();
             }
         });
@@ -451,9 +477,7 @@ public class Filter extends AppCompatActivity {
         districtkey="";
         vendorKey="";
         minPriceKey="0";
-
-
-
+        deliveratsamedate=false;
 
     }
 }

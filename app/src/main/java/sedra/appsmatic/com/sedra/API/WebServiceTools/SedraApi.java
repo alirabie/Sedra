@@ -78,6 +78,7 @@ public interface SedraApi {
                                 @Query("district")String district,
                                 @Query("category_id")String id,
                                 @Query("vendor_name") String vendorName,
+                                @Query("deliveredatthesameday")boolean deliveratsameday,
                                 @Query("min_price")String minPrice);
 
 

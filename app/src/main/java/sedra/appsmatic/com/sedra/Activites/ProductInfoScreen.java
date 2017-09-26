@@ -142,8 +142,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                 if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue().equals("0")) {
                                     pReady.setText(getResources().getString(R.string.sameday));
                                 } else {
-                                    pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() + " " + getResources().getString(R.string.day));
-                                    dayCount = response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue();
+                                    pReady.setText(response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() + " - " +response.body().getProducts().get(0).getAttributes().get(1).getDefaultValue()+ getResources().getString(R.string.day));
+                                    dayCount = response.body().getProducts().get(0).getAttributes().get(1).getDefaultValue();
                                 }
                             } else {
                                 pReady.setText(getResources().getString(R.string.notset));

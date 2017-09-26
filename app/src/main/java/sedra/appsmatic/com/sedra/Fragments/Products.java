@@ -33,6 +33,7 @@ public class Products extends Fragment {
     private RecyclerView proudctsList;
     private ProgressBar progressBar;
     private static String categoryKey,countryKey,stateKey,districtkey,vendorKey,minPriceKey,flag,searchKeyword;
+    private static boolean deliveratsameday=false;
     private static Bundle b;
     private static TextView emptySign;
 
@@ -122,6 +123,7 @@ public class Products extends Fragment {
                             districtkey = b.getString("districtkey"),
                             categoryKey = b.getString("categoryKey"),
                             vendorKey = b.getString("vendorKey"),
+                            deliveratsameday=b.getBoolean("deliverbythesameday"),
                             minPriceKey = b.getString("priceKey")).enqueue(new Callback<ResProducts>() {
                         @Override
                         public void onResponse(Call<ResProducts> call, Response<ResProducts> response) {

@@ -86,7 +86,7 @@
     <string name="sameday">التوصيل فى نفس اليوم</string>
     <string name="emptyproducts">لا توجد منتجات </string>
     <string name="distrects">أختر الحى</string>
-    <string name="day">يوم</string>
+    <string name="day">ايام</string>
     <string name="notset">لم يحدد بعد</string>
     <string name="countitem">من فضلك قم بتحديد الكمية !</string>
     <string name="erorr">لم يتم اضافة المنتج الى سلة الشراء ! </string>
