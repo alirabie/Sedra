@@ -42,7 +42,7 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
 
     @Override
     public void onBindViewHolder(final vh0 holder, final int position) {
-
+        animate(holder);
         holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
 
         if(products.getProducts().get(position).getImages().isEmpty()){
@@ -101,6 +101,18 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
     public int getItemCount() {
         return products.getProducts().size();
     }
+
+
+
+
+    public void animate(RecyclerView.ViewHolder viewHolder) {
+        final Animation animAnticipateOvershoot = AnimationUtils.loadAnimation(context, R.anim.fadein);
+        viewHolder.itemView.setAnimation(animAnticipateOvershoot);
+    }
+
+
+
+
 
 public static class vh0 extends RecyclerView.ViewHolder{
 
