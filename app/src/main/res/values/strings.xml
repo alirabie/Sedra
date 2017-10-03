@@ -115,6 +115,7 @@
     <string name="phonevalid">Invalid phone number format (e.g : 14155552671)</string>
     <string name="update">Your Info has been Saved Successfully </string>
     <string name="newpass">New Default Password will send in SMS shortly</string>
+    <string name="selectcard">Please Select Card Brand</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

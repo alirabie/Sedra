@@ -3,20 +3,33 @@ package sedra.appsmatic.com.sedra;
 import android.os.StrictMode;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by Eng Ali on 6/5/2017.
  */
 public class RequestPayment {
 
-    public static String request(Double amount,String currency) throws IOException {
+
+    public static String request(Double amount,String currency) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
 
         if (android.os.Build.VERSION.SDK_INT > 9)
         {
@@ -24,7 +37,8 @@ public class RequestPayment {
             StrictMode.setThreadPolicy(policy);
         }
 
-        URL url = new URL("https://test.oppwa.com/v1/checkouts");
+        String link="https://test.oppwa.com/v1/checkouts";
+        URL url = new URL(link);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoInput(true);
@@ -53,4 +67,8 @@ public class RequestPayment {
 
         return IOUtils.toString(is);
     }
-}
+
+
+        }
+
+

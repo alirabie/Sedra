@@ -117,5 +117,6 @@
     <string name="phonevalid">رقم الجوال غير صالح (e.g : 14155552671)</string>
     <string name="update">تم حفظ بياناتك بنجاح</string>
     <string name="newpass">سوف يتم ارسال كلمة مرور موقته الان على جوالك</string>
+    <string name="selectcard">من فضلك اختار نوع الكارت الإئتمانى</string>
 
 </resources>

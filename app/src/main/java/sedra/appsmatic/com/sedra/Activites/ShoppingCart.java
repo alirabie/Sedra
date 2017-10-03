@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.animation.LayoutTransition;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -35,10 +37,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
 import com.oppwa.mobile.connect.checkout.dialog.PaymentButtonFragment;
+import com.oppwa.mobile.connect.checkout.meta.CheckoutSecurityPolicyMode;
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 import com.oppwa.mobile.connect.exception.PaymentError;
 import com.oppwa.mobile.connect.exception.PaymentException;
+import com.oppwa.mobile.connect.payment.CheckoutInfo;
+import com.oppwa.mobile.connect.payment.PaymentParams;
+import com.oppwa.mobile.connect.payment.card.CardPaymentParams;
 import com.oppwa.mobile.connect.provider.Connect;
+import com.oppwa.mobile.connect.provider.ITransactionListener;
+import com.oppwa.mobile.connect.provider.Transaction;
 import com.oppwa.mobile.connect.service.ConnectService;
 import com.oppwa.mobile.connect.service.IProviderBinder;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
@@ -78,33 +86,15 @@ public class ShoppingCart extends AppCompatActivity  {
     private List<OrderItem>orderItems=new ArrayList<>();
     ImageView payBtn,activeDis,emptycart;
     private BetterSpinner cridetCards;
-    private String[] contentArray ={"VISA","MasterCard"};
-    private int cardTypeFlag=-1;
+    private String[] contentArray ={"VISA","MASTER"};
+    private String cardBrand="";
     String price ="100.0";
     private RecyclerView itemsList;
     private ResPaymentAction requestPayment;
-    private IProviderBinder binder;
     private ProgressBar progressBar;
     private TextView emptyFlag,totalPrice,finalTotalprice;
     private Boolean isReadyToPay;
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            binder = (IProviderBinder) service;
-        /* we have a connection to the service */
-            try {
-                binder.initializeProvider(Connect.ProviderMode.TEST);
-            } catch (PaymentException ee) {
-	    /* error occurred */
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            binder = null;
-        }
-    };
 
 
 
@@ -132,6 +122,9 @@ public class ShoppingCart extends AppCompatActivity  {
         emptyFlag=(TextView)findViewById(R.id.cartimptyflag);
         emptyFlag.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
+
+
 
 
         if(SaveSharedPreference.getCustomerId(ShoppingCart.this).isEmpty()){
@@ -218,21 +211,11 @@ public class ShoppingCart extends AppCompatActivity  {
         cridetCards.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                cardTypeFlag = position;
+                cardBrand=contentArray[position];
             }
         });
 
 
-        //Request Payment Checkout id
-        try {
-            String json=RequestPayment.request(Double.parseDouble(price),"SAR");
-            Log.e("jjjjjj",json);
-            Type type = new TypeToken<ResPaymentAction>() {}.getType();
-            Gson gson = new Gson();
-            requestPayment= gson.fromJson(json, type);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
         //Set images languages
@@ -256,10 +239,9 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
-
                 //Create New Order .
                 //Check if order items is empty or not
-                if(!orderItems.isEmpty()) {
+                if (!orderItems.isEmpty()) {
                     NewOrder newOrder = new NewOrder();
                     Order order = new Order();
                     order.setCustomerId(Integer.parseInt(SaveSharedPreference.getCustomerId(ShoppingCart.this)));
@@ -275,21 +257,32 @@ public class ShoppingCart extends AppCompatActivity  {
                     Generator.createService(SedraApi.class).placeNewOrder(newOrder).enqueue(new Callback<OrderResponse>() {
                         @Override
                         public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
 
-                                if(response.body().getOrders()!=null){
-                                    Toast.makeText(ShoppingCart.this,getResources().getString(R.string.orderplace),Toast.LENGTH_LONG).show();
+                                if (response.body().getOrders() != null) {
+                                    Toast.makeText(ShoppingCart.this, getResources().getString(R.string.orderplace), Toast.LENGTH_LONG).show();
 
-                                }else {
-                                    Toast.makeText(ShoppingCart.this,"there is an error in order placement response body",Toast.LENGTH_LONG).show();
+                                    //Check if card brand selected
+                                    if(cridetCards.getText().toString().isEmpty()){
+                                        cridetCards.setError(getResources().getString(R.string.selectcard));
+                                    }else {
+                                        startActivity(new Intent(ShoppingCart.this, PaymentScreen.class)
+                                                .putExtra("cardBrand", cardBrand)
+                                                .putExtra("totalPrice", totalPrice.getText()));
+                                        ShoppingCart.this.finish();
+                                    }
+
+
+                                } else {
+                                    Toast.makeText(ShoppingCart.this, "there is an error in order placement response body", Toast.LENGTH_LONG).show();
                                 }
                                 //Gson gson1=new Gson();
                                 //Log.e("New Order response ", gson1.toJson(response.body()));
 
-                            }else {
+                            } else {
 
                                 try {
-                                    Toast.makeText(ShoppingCart.this,"Response not success from order placement : "+response.errorBody().string(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ShoppingCart.this, "Response not success from order placement : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -298,39 +291,14 @@ public class ShoppingCart extends AppCompatActivity  {
 
                         @Override
                         public void onFailure(Call<OrderResponse> call, Throwable t) {
-                            Toast.makeText(ShoppingCart.this,"Connection failed from order placement"+t.getMessage(),Toast.LENGTH_LONG).show();
-                            Log.e("errrr",t.getMessage());
+                            Toast.makeText(ShoppingCart.this, "Connection failed from order placement" + t.getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e("errrr", t.getMessage());
                         }
                     });
 
-                }else {
+                }else{
 
-                    //empty order items
-
-
-                }
-
-
-
-
-
-
-
-
-
-
-               //Process Payment
-                if(isReadyToPay){
-                    Set<String> paymentBrands = new LinkedHashSet<String>();
-                    paymentBrands.add("VISA");
-                    paymentBrands.add("MASTER");
-                    CheckoutSettings checkoutSettings = new CheckoutSettings(requestPayment.getId(), paymentBrands);
-                    Intent intent = new Intent(getApplicationContext(), CheckoutActivity.class);
-                    intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
-                    startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
-                    Log.e("hhhhh",requestPayment.getId());
-                }else {
-                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ShoppingCart.this);
+                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ShoppingCart.this);
                     dialogBuilder
                             .withTitle(getResources().getString(R.string.sedra))
                             .withDialogColor(R.color.colorPrimary)
@@ -338,12 +306,9 @@ public class ShoppingCart extends AppCompatActivity  {
                             .withIcon(getResources().getDrawable(R.drawable.icon))
                             .withDuration(700)                                          //def
                             .withEffect(Effectstype.RotateBottom)
-                            .withMessage(getResources().getString(R.string.paynotallaw))
+                            .withMessage(getResources().getString(R.string.emptyproducts))
                             .show();
                 }
-
-
-
 
             }
         });
@@ -358,13 +323,7 @@ public class ShoppingCart extends AppCompatActivity  {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Intent intent = new Intent(this, ConnectService.class);
-        startService(intent);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
+
 
 
     @Override
@@ -372,39 +331,6 @@ public class ShoppingCart extends AppCompatActivity  {
         super.onPause();
         orderItems.clear();
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        unbindService(serviceConnection);
-        stopService(new Intent(this, ConnectService.class));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case CheckoutActivity.RESULT_OK:
-            /* transaction successful */
-                Toast.makeText(getApplication(),"transaction successful"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
-                ShoppingCart.this.finish();
-                break;
-            case CheckoutActivity.RESULT_CANCELED:
-            /* shopper canceled the checkout process */
-                Toast.makeText(getApplication(),"shopper canceled the checkout process"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
-                ShoppingCart.this.finish();
-                break;
-            case CheckoutActivity.RESULT_ERROR:
-            /* error occurred */
-                PaymentError error = data.getExtras().getParcelable(CheckoutActivity.CHECKOUT_RESULT_ERROR);
-                Toast.makeText(getApplication(),"No checkout Id"+" Checkout Id : "+requestPayment.getId(),Toast.LENGTH_LONG).show();
-                ShoppingCart.this.finish();
-        }
-    }
-
-
-
-
 
 
 

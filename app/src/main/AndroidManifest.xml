@@ -109,7 +109,7 @@
 
         <activity
             android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
-            android:theme="@style/Theme.Checkout.Light"
+            android:theme="@style/Theme.Checkout.Dark"
             android:windowSoftInputMode="adjustPan"
             android:exported="false"
             android:launchMode="singleTop"/>

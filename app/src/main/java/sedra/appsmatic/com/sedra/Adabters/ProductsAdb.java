@@ -103,8 +103,6 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
     }
 
 
-
-
     public void animate(RecyclerView.ViewHolder viewHolder) {
         final Animation animAnticipateOvershoot = AnimationUtils.loadAnimation(context, R.anim.fadein);
         viewHolder.itemView.setAnimation(animAnticipateOvershoot);
