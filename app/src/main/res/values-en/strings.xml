@@ -118,5 +118,11 @@
     <string name="update">Your Info has been Saved Successfully</string>
     <string name="newpass">New Default Password will send in SMS shortly</string>
     <string name="selectcard">Please Select Card Brand</string>
+    <string name="sedragifts">Sedra for Gifts</string>
+    <string name="mainaddress">Main Address</string>
+    <string name="addressdetails">255 King Fahd St , Al-Dmam - Al-Khobr</string>
+    <string name="phoneinfo">Phone Number</string>
+    <string name="phone">+96651234567 / +96655533322</string>
+    <string name="sedrainfo">Sedra is an e-shop consists of four sections the first for Flowers, the second for the various gifts, the third for chocolates and cakes, the fourth for seedlings and the ornamental trees</string>
 
 </resources>

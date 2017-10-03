@@ -37,7 +37,7 @@ public class RequestPayment {
             StrictMode.setThreadPolicy(policy);
         }
 
-        String link="https://test.oppwa.com/v1/checkouts";
+        String link="https://oppwa.com/v1/checkouts";
         URL url = new URL(link);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setRequestMethod("POST");

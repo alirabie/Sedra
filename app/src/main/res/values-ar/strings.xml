@@ -118,5 +118,11 @@
     <string name="update">تم حفظ بياناتك بنجاح</string>
     <string name="newpass">سوف يتم ارسال كلمة مرور موقته الان على جوالك</string>
     <string name="selectcard">من فضلك اختار نوع الكارت الإئتمانى</string>
+    <string name="sedragifts">سيدرا للهدايا</string>
+    <string name="sedrainfo">سيدرا هو متجر الكترونى يحتوى على اربعة اقسام الأول بيع الورود , الثانى الهدايا المتنوعة و الثالث الشوكليت والكعك والرابع شتلات واشجار الزينة</string>
+    <string name="mainaddress">العنوان الرئيسي</string>
+    <string name="addressdetails">255 شارع الملك فهد , الدمام , الخبر</string>
+    <string name="phoneinfo">رقم الهاتف</string>
+    <string name="phone">+96651234567 / +96655533322</string>
 
 </resources>

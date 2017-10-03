@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -66,6 +67,8 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
     TextView txtDes;
     Button pay;
     private ResPaymentAction requestPayment;
+    private static final String APPLICATIONIDENTIFIER = "YOUR APP ID";
+    private static final String PROFILETOKEN = "YOUR PROFILE TOKEN";
 
 
 
@@ -77,7 +80,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
             binder = (IProviderBinder) service;
         /* we have a connection to the service */
             try {
-                binder.initializeProvider(Connect.ProviderMode.TEST);
+                binder.initializeProvider(Connect.ProviderMode.LIVE);
             } catch (PaymentException ee) {
 	    /* error occurred */
             }
@@ -94,6 +97,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_payment_screen);
 
 
@@ -187,6 +191,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
                     Transaction transaction = null;
                     transaction = new Transaction(paymentParams);
                     binder.submitTransaction(transaction);
+
 
 
                 } catch (PaymentException e) {

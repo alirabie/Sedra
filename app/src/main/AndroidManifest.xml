@@ -107,6 +107,7 @@
             android:name="com.oppwa.mobile.connect.service.ConnectService"
             android:exported="false"/>
 
+
         <activity
             android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
             android:theme="@style/Theme.Checkout.Dark"

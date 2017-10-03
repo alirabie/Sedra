@@ -3,10 +3,12 @@ package sedra.appsmatic.com.sedra.Activites;
 import android.animation.LayoutTransition;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -104,6 +106,7 @@ public class ShoppingCart extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_shopping_cart_screen);
         totalPrice=(TextView)findViewById(R.id.total_price);
         finalTotalprice=(TextView)findViewById(R.id.final_total_price);
@@ -239,6 +242,12 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
+                //Loading dialog
+                final ProgressDialog mProgressDialog = new ProgressDialog(ShoppingCart.this);
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                mProgressDialog.show();
+
                 //Create New Order .
                 //Check if order items is empty or not
                 if (!orderItems.isEmpty()) {
@@ -258,6 +267,8 @@ public class ShoppingCart extends AppCompatActivity  {
                         @Override
                         public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                             if (response.isSuccessful()) {
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
 
                                 if (response.body().getOrders() != null) {
                                     Toast.makeText(ShoppingCart.this, getResources().getString(R.string.orderplace), Toast.LENGTH_LONG).show();
@@ -274,6 +285,8 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
                                 } else {
+                                    if (mProgressDialog.isShowing())
+                                        mProgressDialog.dismiss();
                                     Toast.makeText(ShoppingCart.this, "there is an error in order placement response body", Toast.LENGTH_LONG).show();
                                 }
                                 //Gson gson1=new Gson();
@@ -291,6 +304,8 @@ public class ShoppingCart extends AppCompatActivity  {
 
                         @Override
                         public void onFailure(Call<OrderResponse> call, Throwable t) {
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
                             Toast.makeText(ShoppingCart.this, "Connection failed from order placement" + t.getMessage(), Toast.LENGTH_LONG).show();
                             Log.e("errrr", t.getMessage());
                         }
@@ -298,6 +313,8 @@ public class ShoppingCart extends AppCompatActivity  {
 
                 }else{
 
+                    if (mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
                     NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ShoppingCart.this);
                     dialogBuilder
                             .withTitle(getResources().getString(R.string.sedra))
