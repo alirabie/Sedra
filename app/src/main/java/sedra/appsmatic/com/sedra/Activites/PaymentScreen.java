@@ -80,7 +80,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
             binder = (IProviderBinder) service;
         /* we have a connection to the service */
             try {
-                binder.initializeProvider(Connect.ProviderMode.LIVE);
+                binder.initializeProvider(Connect.ProviderMode.TEST);
             } catch (PaymentException ee) {
 	    /* error occurred */
             }
@@ -255,7 +255,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
 
     @Override
     public void transactionCompleted(Transaction transaction) {
-        Toast.makeText(getApplication(),"Sucsess"+" Checkout Id : "+requestPayment.getId()+transaction.getAlipaySignedOrderInfo(),Toast.LENGTH_LONG).show();
+        Log.e("Sucsess"," Checkout Id : "+requestPayment.getId()+transaction.getAlipaySignedOrderInfo());
     }
 
     @Override

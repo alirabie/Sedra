@@ -17,6 +17,7 @@ import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
+import sedra.appsmatic.com.sedra.API.Models.PresentCards.ReqPresentCard;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
@@ -152,6 +153,12 @@ public interface SedraApi {
     //Update Customer
     @PUT("api/customers/{id}")
     Call<RegResponse> updateCustomer(@Body Object item,@Path("id")String id);
+
+
+
+    //Select Present Card
+    @POST("api/presentcard")
+    Call<Object> selectPresentCard(@Body Object item);
 
 
 
