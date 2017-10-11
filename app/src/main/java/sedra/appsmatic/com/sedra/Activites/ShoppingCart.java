@@ -242,6 +242,18 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
+
+
+
+                startActivity(new Intent(ShoppingCart.this,PresentCard.class));
+
+
+
+
+
+
+
+/*
                 //Loading dialog
                 final ProgressDialog mProgressDialog = new ProgressDialog(ShoppingCart.this);
                 mProgressDialog.setIndeterminate(true);
@@ -326,8 +338,15 @@ public class ShoppingCart extends AppCompatActivity  {
                             .withMessage(getResources().getString(R.string.emptyproducts))
                             .show();
                 }
+*/
+
+
+
+
+
 
             }
+
         });
 
 

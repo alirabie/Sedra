@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sedra.appsmatic.com.sedra.Fragments.PresentCardTabs.CardAddress">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/hay_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hay" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:ems="10"
+            android:id="@+id/st_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/st"
+            android:inputType="textPostalAddress" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:ems="10"
+            android:id="@+id/home_num_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/homephone"
+            android:inputType="number" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/rcivername_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/rcevername" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:ems="10"
+            android:id="@+id/rciver_phone_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/rceverphone"
+            android:inputType="phone" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:ems="10"
+            android:id="@+id/more_info_input"
+            android:background="@drawable/inputbar"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/moreinfo"
+            android:inputType="textImeMultiLine" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save_delivery_location_btn"
+            android:src="@drawable/savebtn"
+            android:layout_marginTop="25dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

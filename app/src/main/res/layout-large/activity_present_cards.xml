@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activites.PresentCard">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/view">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/login_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/login_tb_title"
+                android:text="@string/presentcard"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:padding="5dp" />
+        </android.support.v7.widget.Toolbar>
+
+            <com.astuetz.PagerSlidingTabStrip
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/presentcrads_tabs_master"
+                app:pstsShouldExpand="true"
+                app:pstsTextAllCaps="true"
+                android:fillViewport="false"
+                android:textSize="20sp"
+                app:pstsIndicatorColor="#ffff"/>
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_presentcards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_below="@+id/view"
+        android:layout_above="@+id/textView10" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="false"
+        android:id="@+id/textView10"
+        android:text="@string/addcard"
+        android:gravity="center"
+        android:padding="15dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary" />
+
+</RelativeLayout>

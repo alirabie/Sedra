@@ -124,5 +124,10 @@
     <string name="addressdetails">255 شارع الملك فهد , الدمام , الخبر</string>
     <string name="phoneinfo">رقم الهاتف</string>
     <string name="phone">+96651234567 / +96655533322</string>
+    <string name="cardaddress">عنوان التوصيل</string>
+    <string name="cardmessage">رسالة الإهداء</string>
+    <string name="cardvdate">وقت التوصيل</string>
+    <string name="presentcard">كارت الإهداء</string>
+    <string name="addcard">أضف كارت الإهداء</string>
 
 </resources>

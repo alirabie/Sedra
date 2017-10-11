@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -94,8 +93,9 @@
         <activity
             android:name=".Activites.DeliveryAddress"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activites.DoneScreen"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity
+            android:name=".Activites.DoneScreen"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".Activites.DiscountedScreen"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -105,26 +105,25 @@
 
         <service
             android:name="com.oppwa.mobile.connect.service.ConnectService"
-            android:exported="false"/>
-
+            android:exported="false" />
 
         <activity
             android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
-            android:theme="@style/Theme.Checkout.Dark"
-            android:windowSoftInputMode="adjustPan"
             android:exported="false"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Checkout.Dark"
+            android:windowSoftInputMode="adjustPan" />
 
         <receiver
             android:name=".CheckoutBroadcastReceiver"
             android:exported="false">
-
             <intent-filter>
-                <action android:name="com.oppwa.mobile.connect.checkout.ACTION_PAYMENT_METHOD_SELECTED"/>
+                <action android:name="com.oppwa.mobile.connect.checkout.ACTION_PAYMENT_METHOD_SELECTED" />
             </intent-filter>
-
         </receiver>
 
+        <activity android:name=".Activites.PresentCard"
+                  android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
