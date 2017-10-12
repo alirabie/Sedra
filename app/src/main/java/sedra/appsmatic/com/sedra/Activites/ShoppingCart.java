@@ -242,18 +242,7 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
-
-
-
-                startActivity(new Intent(ShoppingCart.this,PresentCard.class));
-
-
-
-
-
-
-
-/*
+                //startActivity(new Intent(ShoppingCart.this,PresentCard.class));
                 //Loading dialog
                 final ProgressDialog mProgressDialog = new ProgressDialog(ShoppingCart.this);
                 mProgressDialog.setIndeterminate(true);
@@ -305,7 +294,8 @@ public class ShoppingCart extends AppCompatActivity  {
                                 //Log.e("New Order response ", gson1.toJson(response.body()));
 
                             } else {
-
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
                                 try {
                                     Toast.makeText(ShoppingCart.this, "Response not success from order placement : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
                                 } catch (IOException e) {
@@ -338,12 +328,6 @@ public class ShoppingCart extends AppCompatActivity  {
                             .withMessage(getResources().getString(R.string.emptyproducts))
                             .show();
                 }
-*/
-
-
-
-
-
 
             }
 

@@ -277,17 +277,6 @@ public class Filter extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                                                 //get vendors
                                                 Generator.createService(SedraApi.class).getVendors(countriesIds.get(currentPosition), statesIds.get(position)).enqueue(new Callback<ResVendors>() {
                                                     @Override

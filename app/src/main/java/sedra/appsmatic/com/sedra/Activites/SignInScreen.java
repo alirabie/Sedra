@@ -98,7 +98,6 @@ public class SignInScreen extends AppCompatActivity {
                 forgetPassBtn.setAnimation(anim);
                 //Loading Dialog
 
-
                 Pattern p = Pattern.compile("^(.+)@(.+)$");
                 Matcher m = p.matcher(user.getText().toString());
                 if (user.getText().length() == 0 || !m.matches()) {
@@ -120,6 +119,8 @@ public class SignInScreen extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.newpass) + " ", Toast.LENGTH_LONG).show();
 
                                 } else {
+                                    if (mProgressDialog.isShowing())
+                                        mProgressDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), response.body().getErrorMessage() + "", Toast.LENGTH_LONG).show();
                                 }
 
@@ -218,15 +219,6 @@ public class SignInScreen extends AppCompatActivity {
                                   Toast.makeText(getApplicationContext(),getResources().getString(R.string.loginsucsess),Toast.LENGTH_LONG).show();
                                   SignInScreen.this.finish();
                                   Log.e("Done : ",response.body().getCustomers().get(0).getId()+"");
-
-
-
-
-
-
-
-
-
 
                               }else if(response.body().getErrors().getAccount()!=null) {
                                   //Show Error
