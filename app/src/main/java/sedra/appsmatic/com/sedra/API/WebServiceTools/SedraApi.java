@@ -1,6 +1,7 @@
 package sedra.appsmatic.com.sedra.API.WebServiceTools;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -158,7 +159,7 @@ public interface SedraApi {
 
     //Select Present Card
     @POST("api/presentcard")
-    Call<Object> selectPresentCard(@Body Object item);
+    Call<ResponseBody> selectPresentCard(@Body Object item);
 
 
 

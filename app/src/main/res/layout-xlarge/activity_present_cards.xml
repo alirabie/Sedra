@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:layout_below="@+id/view"
-        android:layout_above="@+id/textView10" />
+        android:layout_above="@+id/master_add_card_button" />
 
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="false"
-        android:id="@+id/textView10"
+        android:id="@+id/master_add_card_button"
         android:text="@string/addcard"
         android:gravity="center"
         android:padding="15dp"

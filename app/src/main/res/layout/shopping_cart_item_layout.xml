@@ -7,8 +7,23 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:gravity="start">
+
         <LinearLayout
             android:orientation="vertical"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/addgiftcard_btn"
+                android:src="@drawable/addcardbtn"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:padding="5dp"
@@ -24,6 +39,7 @@
                 android:textSize="10dp"
                 android:textColor="#000000"
                 android:gravity="center" />
+
         </LinearLayout>
 
         <RelativeLayout
@@ -99,6 +115,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

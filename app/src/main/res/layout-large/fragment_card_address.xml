@@ -16,19 +16,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/hay_input"
-            android:background="@drawable/inputbar"
-            android:padding="10dp"
-            android:gravity="start"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:hint="@string/hay" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
             android:ems="10"
             android:id="@+id/st_input"
             android:background="@drawable/inputbar"
@@ -55,19 +42,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/rcivername_input"
-            android:background="@drawable/inputbar"
-            android:padding="10dp"
-            android:gravity="start"
-            android:textSize="15dp"
-            android:layout_marginTop="15dp"
-            android:hint="@string/rcevername" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
             android:ems="10"
             android:id="@+id/rciver_phone_input"
             android:background="@drawable/inputbar"
@@ -90,6 +64,20 @@
             android:layout_marginTop="15dp"
             android:hint="@string/moreinfo"
             android:inputType="textImeMultiLine" />
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            tools:context="sedra.appsmatic.com.sedra.Activites.DeliveryAddress"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp" />
 
         <ImageView
             android:layout_width="wrap_content"

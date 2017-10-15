@@ -65,7 +65,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
     private SliderLayout mDemoSlider;
     private TextView pName,pPrice,pDec,pReady,countTv;
-    private ImageView addToCartBtn,deliveryAddressBtn,deliveryTimeBtn,giftMsgBtn,sugTitle,up,down,favBtn,shareBtn;
+    private ImageView addToCartBtn,sugTitle,up,down,favBtn,shareBtn;
     private static int count =0;
     private static String dayCount="0";
     NiftyDialogBuilder dialogBuildercard;
@@ -98,9 +98,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         pReady=(TextView)findViewById(R.id.time_to_redy);
         countTv=(TextView)findViewById(R.id.count_tv);
         addToCartBtn=(ImageView)findViewById(R.id.add_to_cart_tv);
-        deliveryAddressBtn=(ImageView)findViewById(R.id.deliver_btn);
-        deliveryTimeBtn=(ImageView)findViewById(R.id.time_deliver_btn);
-        giftMsgBtn=(ImageView)findViewById(R.id.gift_msg_btn);
         sugTitle=(ImageView)findViewById(R.id.sug_title_id);
         up=(ImageView)findViewById(R.id.up_count);
         down=(ImageView)findViewById(R.id.dwon_count);
@@ -108,21 +105,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
         shareBtn=(ImageView)findViewById(R.id.share_btn);
         sugTitle.setVisibility(View.INVISIBLE);
 
-
-        //Set images languages
-        if(SaveSharedPreference.getLangId(this).equals("ar")){
-            addToCartBtn.setImageResource(R.drawable.addtocart_btn);
-            deliveryAddressBtn.setImageResource(R.drawable.deliveryaddress);
-            deliveryTimeBtn.setImageResource(R.drawable.deliverytime);
-            giftMsgBtn.setImageResource(R.drawable.giftingmessage);
-            sugTitle.setImageResource(R.drawable.suggestedtitle);
-        }else{
-            addToCartBtn.setImageResource(R.drawable.add_to_cart_btn_en);
-            deliveryAddressBtn.setImageResource(R.drawable.delivery_address_btn_en);
-            deliveryTimeBtn.setImageResource(R.drawable.delivery_time_btn_en);
-            giftMsgBtn.setImageResource(R.drawable.gift_msg_btn_en);
-            sugTitle.setImageResource(R.drawable.suggested_title_en);
-        }
 
 
 
@@ -284,6 +266,20 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                                 if (response.isSuccessful()) {
 
+                                    //Reset Order Id
+                                    SaveSharedPreference.setOrderId(ProductInfoScreen.this,"");
+
+                                   /*
+                                    if(SaveSharedPreference.getOrderId(ProductInfoScreen.this).equals("")){
+                                        //In this case order id is empty and this is first add to order
+                                    }else {
+                                        //in this case order id is exist and need update order only
+                                    }
+
+
+                                    */
+
+
                                     //Update cart badge count
                                     Home.getCartItemsCount(ProductInfoScreen.this, SaveSharedPreference.getCustomerId(ProductInfoScreen.this));
                                     //Initialize Done Dialog
@@ -393,48 +389,9 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                 }
 
 
+
             }
         });
-
-
-        //Delivery Date btn
-        deliveryTimeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
-                deliveryTimeBtn.clearAnimation();
-                deliveryTimeBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this, DeliveryDateScreen.class).putExtra("dayes", dayCount).putExtra("vendorid", vendorId));
-                //Reset Day Count
-                dayCount="0";
-                vendorId=0;
-            }
-        });
-
-        //Gift Msg btn
-        giftMsgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
-                giftMsgBtn.clearAnimation();
-                giftMsgBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this, GiftMessageScreen.class));
-            }
-        });
-
-
-        //Delivery Address btn
-        deliveryAddressBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.alpha);
-                deliveryAddressBtn.clearAnimation();
-                deliveryAddressBtn.setAnimation(anim);
-                startActivity(new Intent(ProductInfoScreen.this, DeliveryAddress.class));
-            }
-        });
-
-
 
 
 

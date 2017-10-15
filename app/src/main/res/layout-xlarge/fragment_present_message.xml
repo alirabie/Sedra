@@ -17,7 +17,7 @@
             android:layout_height="60dp"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/gift_msg_name_input"
+            android:id="@+id/gift_msg_phone_input"
             android:background="@drawable/inputbar"
             android:padding="10dp"
             android:textAlignment="viewStart"
@@ -28,22 +28,22 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/gift_msg_email_input"
+            android:id="@+id/gift_msg_recever_name_input"
             android:background="@drawable/inputbar"
             android:padding="10dp"
             android:layout_marginTop="20dp"
             android:textAlignment="viewStart"
             android:gravity="start"
             android:hint="@string/senderphone"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:inputType="phone" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:ems="10"
-            android:id="@+id/gift_msg_phone_input"
+            android:id="@+id/gift_msg_recever_name_input"
             android:background="@drawable/inputbar"
             android:padding="10dp"
             android:layout_marginTop="20dp"

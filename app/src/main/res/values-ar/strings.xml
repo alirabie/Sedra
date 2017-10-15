@@ -129,5 +129,18 @@
     <string name="cardvdate">وقت التوصيل</string>
     <string name="presentcard">كارت الإهداء</string>
     <string name="addcard">أضف كارت الإهداء</string>
+    <string name="savesuccsess">تم الحفظ بنجاح</string>
+    <string name="selectgiftaddress">من فضلك قم بتحديد عنوان التوصيل</string>
+    <string name="selectgiftmessgae">من فضلك قم بادخال رسالة الاهداء </string>
+    <string name="selectgiftschadule">من فضلك قم باختيار وقت التوصيل</string>
+    <string name="doneaddcard">تم اضافة كارت الاهداء بنجاح</string>
+    <string name="addbuldingnum">من فضلك ادخل رقم المنزل</string>
+    <string name="addnote">من فضلك ادخل ملاحظاتك الاضافية</string>
+    <string name="addrecevernum">من فضلك ادخل رقم جوال المستلم</string>
+    <string name="addsstreet">من فضلك أدخل اسم الشارع</string>
+    <string name="addmessage">من فضلك ادخل رسالة الاهداء</string>
+    <string name="addrecevername">من فضلك ادخل اسم المرسل اليه الهدية</string>
+    <string name="addsendername">من فضلك اسم مرسل الهدية</string>
+    <string name="addsenderphone">من فضلك ادخل رقم مرسل الهدية</string>
 
 </resources>

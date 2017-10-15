@@ -129,5 +129,18 @@
     <string name="cardvdate">Delivery Date</string>
     <string name="presentcard">Present Card</string>
     <string name="addcard">Add Present Card</string>
+    <string name="savesuccsess">Saved Successfully</string>
+    <string name="selectgiftaddress">Please select Present address</string>
+    <string name="selectgiftmessgae">Please select Present Message</string>
+    <string name="selectgiftschadule">Please select Present delivery time</string>
+    <string name="doneaddcard">Present Card added successfully</string>
+    <string name="addbuldingnum">Please add building number</string>
+    <string name="addnote">Please add Note</string>
+    <string name="addrecevernum">Please add receiver number</string>
+    <string name="addsstreet">Please add street name</string>
+    <string name="addmessage">Please Add Gifting Message</string>
+    <string name="addrecevername">Please Add receiver name</string>
+    <string name="addsendername">Please Add sender Name</string>
+    <string name="addsenderphone">Please Add sender phone</string>
 
 </resources>

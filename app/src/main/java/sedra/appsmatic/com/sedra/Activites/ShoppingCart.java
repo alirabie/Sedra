@@ -163,6 +163,9 @@ public class ShoppingCart extends AppCompatActivity  {
                                     orderItems.add(orderItem);
                                 }
 
+                                //Place new Order to server
+                                Home.placeNewOrder(orderItems,ShoppingCart.this);
+
                             }else {
                                 orderItems.clear();
                             }
@@ -234,6 +237,28 @@ public class ShoppingCart extends AppCompatActivity  {
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //pay action
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,94 +267,20 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
-                //startActivity(new Intent(ShoppingCart.this,PresentCard.class));
-                //Loading dialog
-                final ProgressDialog mProgressDialog = new ProgressDialog(ShoppingCart.this);
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
-                mProgressDialog.show();
-
-                //Create New Order .
-                //Check if order items is empty or not
-                if (!orderItems.isEmpty()) {
-                    NewOrder newOrder = new NewOrder();
-                    Order order = new Order();
-                    order.setCustomerId(Integer.parseInt(SaveSharedPreference.getCustomerId(ShoppingCart.this)));
-                    order.setOrderItems(orderItems);
-                    order.setBillingAddress(SaveSharedPreference.getCustomerInfo(ShoppingCart.this).getCustomers().get(0).getBillingAddress());
-                    order.setPaymentMethodSystemName("Payments.Manual");
-                    newOrder.setOrder(order);
-                    Gson gson = new Gson();
-                    //log request body
-                    Log.e("New Order request ", gson.toJson(newOrder));
-
-                    //place order on server
-                    Generator.createService(SedraApi.class).placeNewOrder(newOrder).enqueue(new Callback<OrderResponse>() {
-                        @Override
-                        public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                            if (response.isSuccessful()) {
-                                if (mProgressDialog.isShowing())
-                                    mProgressDialog.dismiss();
-
-                                if (response.body().getOrders() != null) {
-                                    Toast.makeText(ShoppingCart.this, getResources().getString(R.string.orderplace), Toast.LENGTH_LONG).show();
-
-                                    //Check if card brand selected
-                                    if(cridetCards.getText().toString().isEmpty()){
-                                        cridetCards.setError(getResources().getString(R.string.selectcard));
-                                    }else {
-                                        startActivity(new Intent(ShoppingCart.this, PaymentScreen.class)
-                                                .putExtra("cardBrand", cardBrand)
-                                                .putExtra("totalPrice", totalPrice.getText()));
-                                        ShoppingCart.this.finish();
-                                    }
-
-
-                                } else {
-                                    if (mProgressDialog.isShowing())
-                                        mProgressDialog.dismiss();
-                                    Toast.makeText(ShoppingCart.this, "there is an error in order placement response body", Toast.LENGTH_LONG).show();
-                                }
-                                //Gson gson1=new Gson();
-                                //Log.e("New Order response ", gson1.toJson(response.body()));
-
-                            } else {
-                                if (mProgressDialog.isShowing())
-                                    mProgressDialog.dismiss();
-                                try {
-                                    Toast.makeText(ShoppingCart.this, "Response not success from order placement : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<OrderResponse> call, Throwable t) {
-                            if (mProgressDialog.isShowing())
-                                mProgressDialog.dismiss();
-                            Toast.makeText(ShoppingCart.this, "Connection failed from order placement" + t.getMessage(), Toast.LENGTH_LONG).show();
-                            Log.e("errrr", t.getMessage());
-                        }
-                    });
-
-                }else{
-
-                    if (mProgressDialog.isShowing())
-                        mProgressDialog.dismiss();
-                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(ShoppingCart.this);
-                    dialogBuilder
-                            .withTitle(getResources().getString(R.string.sedra))
-                            .withDialogColor(R.color.colorPrimary)
-                            .withTitleColor("#FFFFFF")
-                            .withIcon(getResources().getDrawable(R.drawable.icon))
-                            .withDuration(700)                                          //def
-                            .withEffect(Effectstype.RotateBottom)
-                            .withMessage(getResources().getString(R.string.emptyproducts))
-                            .show();
+                //Check if card brand selected
+                if(cridetCards.getText().toString().isEmpty()){
+                    cridetCards.setError(getResources().getString(R.string.selectcard));
+                }else {
+                    startActivity(new Intent(ShoppingCart.this, PaymentScreen.class)
+                            .putExtra("cardBrand", cardBrand)
+                            .putExtra("totalPrice", totalPrice.getText()));
+                    ShoppingCart.this.finish();
                 }
 
+
+
             }
+
 
         });
 
@@ -342,6 +293,11 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
     }
+
+
+
+
+
 
 
 

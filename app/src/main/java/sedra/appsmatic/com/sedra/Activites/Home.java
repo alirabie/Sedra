@@ -50,7 +50,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +63,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
+import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
+import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
+import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
+import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
@@ -91,6 +98,7 @@ public class Home extends AppCompatActivity  {
     public static HashMap <String,String> itemsIds=new HashMap();
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -775,6 +783,58 @@ public class Home extends AppCompatActivity  {
     }
 
 
+    public static void placeNewOrder(List<OrderItem>orderItems, final Context context){
+        if(SaveSharedPreference.getOrderId(context).equals("")) {
+            if (!orderItems.isEmpty()) {
+                NewOrder newOrder = new NewOrder();
+                final Order order = new Order();
+                order.setCustomerId(Integer.parseInt(SaveSharedPreference.getCustomerId(context)));
+                order.setOrderItems(orderItems);
+                order.setBillingAddress(SaveSharedPreference.getCustomerInfo(context).getCustomers().get(0).getBillingAddress());
+                order.setPaymentMethodSystemName("Payments.Manual");
+                newOrder.setOrder(order);
+                Gson gson = new Gson();
+                //log request body
+                Log.e("New Order request ", gson.toJson(newOrder));
+                //place order on server
+                Generator.createService(SedraApi.class).placeNewOrder(newOrder).enqueue(new Callback<OrderResponse>() {
+                    @Override
+                    public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                        if (response.isSuccessful()) {
+
+                            if (response.body().getOrders() != null) {
+                                Toast.makeText(context, context.getResources().getString(R.string.orderplace), Toast.LENGTH_LONG).show();
+
+                                //Set order id
+                                SaveSharedPreference.setOrderId(context,response.body().getOrders().get(0).getId());
+                            }
+
+                            //Gson gson1=new Gson();
+                            //Log.e("New Order response ", gson1.toJson(response.body()));
+
+                        } else {
+
+                            try {
+                                Toast.makeText(context, "Response not success from order placement : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderResponse> call, Throwable t) {
+
+                        Toast.makeText(context, "Connection failed from order placement" + t.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("errrr", t.getMessage());
+                    }
+                });
+            }
+        }else {
+            Toast.makeText(context,SaveSharedPreference.getOrderId(context)+"",Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
 

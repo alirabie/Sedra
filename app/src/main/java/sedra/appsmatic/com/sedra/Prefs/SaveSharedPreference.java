@@ -25,6 +25,7 @@ public class SaveSharedPreference {
     static final String CUSTOMER_ID="customerid";
     static final String WISHLIST_ORDERS="wishList";
     static final String CUSTOMER_INFO="customerInfo";
+    static final String ORDER_ID="orderId";
 
 
 
@@ -48,6 +49,20 @@ public class SaveSharedPreference {
     public static String getLangId(Context context){
         return getSharedPreferences(context).getString(LANG_ID, "");
     }
+
+
+    public static void setOrderId(Context context,String orderId){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(ORDER_ID,orderId);
+        editor.commit();
+    }
+
+    public static String getOrderId(Context context){
+        return getSharedPreferences(context).getString(ORDER_ID, "");
+    }
+
+
+
 
 
 

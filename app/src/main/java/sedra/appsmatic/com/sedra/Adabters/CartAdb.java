@@ -25,7 +25,11 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Activites.GiftMessageScreen;
+import sedra.appsmatic.com.sedra.Activites.Home;
+import sedra.appsmatic.com.sedra.Activites.PresentCard;
 import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
+import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
 /**
@@ -51,8 +55,7 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
         animate(holder);
 
         holder.pName.setText(resCartItems.getShoppingCarts().get(position).getProduct().getName()+" # "+resCartItems.getShoppingCarts().get(position).getQuantity());
-        holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice()+context.getResources().getString(R.string.sr));
-
+        holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice() + context.getResources().getString(R.string.sr));
 
         SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         SimpleDateFormat DesiredFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
@@ -87,7 +90,13 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
                         if(response.isSuccessful()){
                             if (mProgressDialog.isShowing())
                                 mProgressDialog.dismiss();
-                            ((Activity) context).finish();
+
+                            //Reset Order Id
+                            SaveSharedPreference.setOrderId(context,"");
+
+                            //Here invoke delete item from order by item id and order id
+
+                                    ((Activity) context).finish();
                             context.startActivity(new Intent(context, ShoppingCart.class));
                         }else {
                             if (mProgressDialog.isShowing())
@@ -106,6 +115,37 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
             }
         });
 
+
+
+
+
+
+        //add gift card button action
+
+        //Set images languages
+        if(SaveSharedPreference.getLangId(context).equals("ar")){
+            holder.addGiftCard.setImageResource(R.drawable.addcardbtn);
+
+        }else{
+            holder.addGiftCard.setImageResource(R.drawable.addcardbtn_en);
+        }
+        holder.addGiftCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
+                holder.addGiftCard.clearAnimation();
+                holder.addGiftCard.setAnimation(anim);
+
+                context.startActivity(new Intent(context, PresentCard.class).putExtra("product_id", resCartItems.getShoppingCarts().get(position).getProductId()));
+
+            }
+        });
+
+
+
+
+
+
     }
 
     @Override
@@ -122,7 +162,7 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
     public static class Vh10025 extends RecyclerView.ViewHolder{
 
         private TextView pName,pPrice,pDate;
-        private ImageView deleteBtn;
+        private ImageView deleteBtn,addGiftCard;
 
         public Vh10025(View itemView) {
             super(itemView);
@@ -131,6 +171,7 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
             pPrice=(TextView)itemView.findViewById(R.id.cart_p_price);
             pDate=(TextView)itemView.findViewById(R.id.cart_p_date);
             deleteBtn=(ImageView)itemView.findViewById(R.id.cart_del_btn);
+            addGiftCard=(ImageView)itemView.findViewById(R.id.addgiftcard_btn);
         }
     }
 }

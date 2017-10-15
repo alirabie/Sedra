@@ -146,34 +146,6 @@
                 android:background="@drawable/floarbg">
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/time_deliver_btn"
-                        android:src="@drawable/deliverytime"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/deliver_btn"
-                        android:src="@drawable/deliveryaddress"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gift_msg_btn"
-                    android:src="@drawable/giftingmessage"
-                    android:layout_gravity="center" />
-
-                <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"

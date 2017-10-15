@@ -7,6 +7,20 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="start">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/addgiftcard_btn"
+                android:src="@drawable/addcardbtn"
+                android:padding="10dp" />
+        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="150dp"
