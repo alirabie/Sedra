@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,6 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +36,7 @@ import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.Card;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.OrderCard;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.ReqPresentCard;
+import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Adabters.CustomFragmentPagerAdapter;
@@ -44,6 +52,9 @@ public class PresentCard extends AppCompatActivity {
     PagerSlidingTabStrip tabsStrip;
     CustomFragmentPagerAdapter adapter;
     TextView addCard ;
+    public static int dayCount;
+    public static int vendorId;
+
 
     //Fragments
     CardAddress cardAddress;
@@ -72,6 +83,22 @@ public class PresentCard extends AppCompatActivity {
         giftMessage=false;
         gitSchudle=false;
 
+
+        vendorId=Integer.parseInt(getIntent().getStringExtra("vendorid"));
+
+
+        /*
+
+        if(Integer.parseInt(getIntent().getStringExtra("days1"))>Integer.parseInt(getIntent().getStringExtra("days2"))){
+            dayCount=Integer.parseInt(getIntent().getStringExtra("days1"));
+        }else {
+            dayCount=Integer.parseInt(getIntent().getStringExtra("days2"));
+        }
+
+*/
+
+
+
         //Check Os Ver For Set Status Bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -79,7 +106,9 @@ public class PresentCard extends AppCompatActivity {
 
 
 
-        Toast.makeText(this,getIntent().getIntExtra("product_id",0)+"",Toast.LENGTH_LONG).show();
+
+
+  Toast.makeText(this,getIntent().getIntExtra("product_id",0)+" Count "+getIntent().getIntExtra("count",0)+" Vendor Id "+vendorId+" Days "+dayCount,Toast.LENGTH_LONG).show();
 
 
 
@@ -104,7 +133,12 @@ public class PresentCard extends AppCompatActivity {
 
 
         addCard=(TextView)findViewById(R.id.master_add_card_button);
+
+
+        //Setup Card
         card=new Card();
+        card.setProductId(getIntent().getIntExtra("product_id",0));
+        card.setQuantity(getIntent().getIntExtra("count",0));
 
 
         addCard.setOnClickListener(new View.OnClickListener() {
@@ -173,15 +207,24 @@ public class PresentCard extends AppCompatActivity {
     }
 
 
+
+
+
+
+
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
-
         giftAddress=false;
         giftMessage=false;
-        gitSchudle=false;
+        gitSchudle = false;
         card.setCardmessage(null);
         card.setCardaddress(null);
         card.setCardschedule(null);
+
+
     }
 }

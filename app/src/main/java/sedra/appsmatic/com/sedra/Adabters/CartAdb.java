@@ -136,17 +136,20 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
                 holder.addGiftCard.clearAnimation();
                 holder.addGiftCard.setAnimation(anim);
 
-                context.startActivity(new Intent(context, PresentCard.class).putExtra("product_id", resCartItems.getShoppingCarts().get(position).getProductId()));
+                context.startActivity(new Intent(context, PresentCard.class)
+                        .putExtra("product_id", resCartItems.getShoppingCarts().get(position).getProductId())
+                        .putExtra("count",resCartItems.getShoppingCarts().get(position).getQuantity()));
+                       //   .putExtra("vendorid",resCartItems.getShoppingCarts().get(position).getProduct().getVendorId())
+                       // .putExtra("days1",resCartItems.getShoppingCarts().get(position).getProduct().getAttributes().get(0).getDefaultValue())
+                      //  .putExtra("days2",resCartItems.getShoppingCarts().get(position).getProduct().getAttributes().get(1).getDefaultValue()));
 
             }
         });
 
 
-
-
-
-
     }
+
+
 
     @Override
     public int getItemCount() {

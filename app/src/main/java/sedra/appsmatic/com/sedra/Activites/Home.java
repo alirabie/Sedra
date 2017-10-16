@@ -115,18 +115,6 @@ public class Home extends AppCompatActivity  {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         sideMenuAdb=new SideMenuAdb(Home.this);
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -256,6 +244,8 @@ public class Home extends AppCompatActivity  {
 
 
 
+
+        //Default Product list
         Products products2 = new Products();
         Bundle bundle = new Bundle();
         //put here id to send to fragment
@@ -264,6 +254,7 @@ public class Home extends AppCompatActivity  {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentcontener, products2);
         fragmentTransaction.commit();
+
 
 
 
@@ -341,13 +332,6 @@ public class Home extends AppCompatActivity  {
 
 
 
-
-
-
-
-
-
-
         //get districts
         Generator.createService(SedraApi.class).getDestrics(getIntent().getStringExtra("countryname"),getIntent().getStringExtra("statename")).enqueue(new Callback<Districts>() {
             @Override
@@ -411,89 +395,13 @@ public class Home extends AppCompatActivity  {
 
 
 
-
-
-
-
-
-
         //setup side menuR
         sideMenu=(RecyclerView)findViewById(R.id.sidemenulist);
         sideMenu.setAdapter(sideMenuAdb);
         sideMenu.setLayoutManager(new LinearLayoutManager(Home.this));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //Toolbar setup
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -677,6 +585,10 @@ public class Home extends AppCompatActivity  {
 
 
 
+
+    //******************************************* Utils Methods *****************************************************
+
+
     //Turn GPS ON Method
     public static void turnLocationOn(final Context ctx){
 
@@ -758,6 +670,8 @@ public class Home extends AppCompatActivity  {
     }
 
 
+
+    //Get Shopping Cart Count
     public static void getCartItemsCount (final Context context,String customerId){
         Generator.createService(SedraApi.class).getCartItems(customerId).enqueue(new Callback<ResCartItems>() {
             @Override
@@ -783,6 +697,9 @@ public class Home extends AppCompatActivity  {
     }
 
 
+
+
+    //Place New Order from Shopping Cart
     public static void placeNewOrder(List<OrderItem>orderItems, final Context context){
         if(SaveSharedPreference.getOrderId(context).equals("")) {
             if (!orderItems.isEmpty()) {

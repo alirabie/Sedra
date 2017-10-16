@@ -124,9 +124,9 @@
     <string name="phoneinfo">Phone Number</string>
     <string name="phone">+96651234567 / +96655533322</string>
     <string name="sedrainfo">Sedra is an e-shop consists of four sections the first for Flowers, the second for the various gifts, the third for chocolates and cakes, the fourth for seedlings and the ornamental trees</string>
-    <string name="cardaddress">Delivery Address</string>
-    <string name="cardmessage">Gifting Message</string>
-    <string name="cardvdate">Delivery Date</string>
+    <string name="cardaddress">Address</string>
+    <string name="cardmessage">Message</string>
+    <string name="cardvdate">Date</string>
     <string name="presentcard">Present Card</string>
     <string name="addcard">Add Present Card</string>
     <string name="savesuccsess">Saved Successfully</string>

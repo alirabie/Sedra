@@ -7,6 +7,12 @@ import com.google.gson.annotations.SerializedName;
  * Created by Eng Ali on 10/11/2017.
  */
 public class Card {
+    @SerializedName("product_id")
+    @Expose
+    private Integer productId;
+    @SerializedName("quantity")
+    @Expose
+    private Integer quantity;
     @SerializedName("cardaddress")
     @Expose
     private Cardaddress cardaddress;
@@ -39,5 +45,21 @@ public class Card {
 
     public void setCardmessage(Cardmessage cardmessage) {
         this.cardmessage = cardmessage;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

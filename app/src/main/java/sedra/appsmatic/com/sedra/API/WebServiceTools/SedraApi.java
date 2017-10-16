@@ -162,11 +162,14 @@ public interface SedraApi {
     Call<ResponseBody> selectPresentCard(@Body Object item);
 
 
+    //Update Order
+    @PUT("/api/orders/{id}")
+    Call<OrderResponse>updateOrder(@Body Object order,@Path("id")String id);
 
 
-
-
-
+    //Delete Item from order
+    @DELETE("/api/orders/{orderId}/items/{orderItemId}")
+    Call<OrderResponse>deleteOrderItem(@Path("orderId")String orderId,@Path("orderItemId")String itemId);
 
 
 }
