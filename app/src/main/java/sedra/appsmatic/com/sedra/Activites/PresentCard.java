@@ -52,8 +52,9 @@ public class PresentCard extends AppCompatActivity {
     PagerSlidingTabStrip tabsStrip;
     CustomFragmentPagerAdapter adapter;
     TextView addCard ;
-    public static int dayCount;
+
     public static int vendorId;
+    public static int schudleId;
 
 
     //Fragments
@@ -84,18 +85,12 @@ public class PresentCard extends AppCompatActivity {
         gitSchudle=false;
 
 
-        vendorId=Integer.parseInt(getIntent().getStringExtra("vendorid"));
+      //Receive vendor id
+       vendorId = getIntent().getIntExtra("vendorid",0);
 
 
-        /*
 
-        if(Integer.parseInt(getIntent().getStringExtra("days1"))>Integer.parseInt(getIntent().getStringExtra("days2"))){
-            dayCount=Integer.parseInt(getIntent().getStringExtra("days1"));
-        }else {
-            dayCount=Integer.parseInt(getIntent().getStringExtra("days2"));
-        }
 
-*/
 
 
 
@@ -106,9 +101,7 @@ public class PresentCard extends AppCompatActivity {
 
 
 
-
-
-  Toast.makeText(this,getIntent().getIntExtra("product_id",0)+" Count "+getIntent().getIntExtra("count",0)+" Vendor Id "+vendorId+" Days "+dayCount,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,getIntent().getIntExtra("product_id",0)+" Count "+getIntent().getIntExtra("count",0)+" Vendor Id "+vendorId,Toast.LENGTH_LONG).show();
 
 
 
@@ -117,6 +110,9 @@ public class PresentCard extends AppCompatActivity {
         cardAddress=new CardAddress();
         cardMessage=new CardMessage();
         cardSchedule=new CardSchedule();
+
+
+
         adapter = new CustomFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(cardAddress,getResources().getString(R.string.cardaddress));
         adapter.addFragment(cardSchedule, getResources().getString(R.string.cardvdate));

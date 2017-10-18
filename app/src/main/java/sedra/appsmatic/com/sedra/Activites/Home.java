@@ -786,5 +786,47 @@ public class Home extends AppCompatActivity  {
     }
 
 
+    //Delete item from shopping cart
+    public static void deleteItemFromShoppingCart(final Context context, final String id){
+
+        //Loading Dialog
+        final ProgressDialog mProgressDialog = new ProgressDialog(context);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage(context.getResources().getString(R.string.pleasew));
+        mProgressDialog.show();
+
+        Generator.createService(SedraApi.class).deleteCartItems(id).enqueue(new Callback<ResCartItems>() {
+            @Override
+            public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
+                if (response.isSuccessful()) {
+                    if (mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
+
+                    //Reset Order Id
+                    SaveSharedPreference.setOrderId(context, "");
+
+                    //Here invoke delete item from order by item id and order id
+
+                    ((Activity) context).finish();
+                    context.startActivity(new Intent(context, ShoppingCart.class));
+                } else {
+                    if (mProgressDialog.isShowing())
+                        mProgressDialog.dismiss();
+                    Log.e("Delete Nooo", id);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResCartItems> call, Throwable t) {
+                if (mProgressDialog.isShowing())
+                    mProgressDialog.dismiss();
+                Log.e("Delete Nooo", t.getMessage());
+            }
+
+            });
+
+        }
+
+
 
 }

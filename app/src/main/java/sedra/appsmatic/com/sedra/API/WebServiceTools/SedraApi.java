@@ -23,6 +23,7 @@ import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.States.ResStates;
+import sedra.appsmatic.com.sedra.API.Models.VendorDateSchedule.ResVendorsSch;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.Models.verifications.VerificationCode;
@@ -170,6 +171,11 @@ public interface SedraApi {
     //Delete Item from order
     @DELETE("/api/orders/{orderId}/items/{orderItemId}")
     Call<OrderResponse>deleteOrderItem(@Path("orderId")String orderId,@Path("orderItemId")String itemId);
+
+
+    //Get vendor schedule intervals
+    @GET("/api/vendors/schedule/{VendorId}")
+    Call<ResVendorsSch>getVendorSchedule(@Path("VendorId")String vendorId);
 
 
 }

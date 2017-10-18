@@ -142,5 +142,9 @@
     <string name="addrecevername">Please Add receiver name</string>
     <string name="addsendername">Please Add sender Name</string>
     <string name="addsenderphone">Please Add sender phone</string>
+    <string name="selectdelevierytime">Please Select Delivery Time</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="notimes">Delivery Times is Empty</string>
 
 </resources>

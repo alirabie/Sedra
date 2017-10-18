@@ -4,24 +4,46 @@
     android:layout_height="match_parent"
     tools:context="sedra.appsmatic.com.sedra.Fragments.PresentCardTabs.CardSchedule">
 
-    <DatePicker
-        android:id="@+id/simpleDatePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:background="#ffffff" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/save_date_btn"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/savebtn"
-        android:padding="20dp"
-        android:layout_alignParentLeft="false"
-        android:layout_alignWithParentIfMissing="false" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/selectdelevierytime"
+            android:id="@+id/textView10"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:gravity="start"
+            android:textSize="25dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorPrimary" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/deleviry_times_list">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/notimes"
+                android:id="@+id/empty_times_flag"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="40dp" />
+        </FrameLayout>
+    </LinearLayout>
 </RelativeLayout>

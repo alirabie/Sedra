@@ -107,6 +107,13 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
 
+        //Set images languages
+        if(SaveSharedPreference.getLangId(this).equals("ar")){
+           addToCartBtn.setImageResource(R.drawable.addtocart_btn);
+
+        }else{
+            addToCartBtn.setImageResource(R.drawable.add_to_cart_btn_en);
+        }
 
 
         //Get product info by id

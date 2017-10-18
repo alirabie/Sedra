@@ -57,6 +57,8 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
         holder.pName.setText(resCartItems.getShoppingCarts().get(position).getProduct().getName()+" # "+resCartItems.getShoppingCarts().get(position).getQuantity());
         holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice() + context.getResources().getString(R.string.sr));
 
+
+        //Date setup
         SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         SimpleDateFormat DesiredFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
         // 'a' for AM/PM
@@ -70,65 +72,34 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
         String formattedDate = DesiredFormat.format(date.getTime());
         holder.pDate.setText(formattedDate);
 
+
+
+
+
+        //Delete item from shopping cart
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
                 holder.deleteBtn.clearAnimation();
                 holder.deleteBtn.setAnimation(anim);
-
-
-                //Loading Dialog
-                final ProgressDialog mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setMessage(context.getResources().getString(R.string.pleasew));
-                mProgressDialog.show();
-
-                Generator.createService(SedraApi.class).deleteCartItems(resCartItems.getShoppingCarts().get(position).getId()).enqueue(new Callback<ResCartItems>() {
-                    @Override
-                    public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
-                        if(response.isSuccessful()){
-                            if (mProgressDialog.isShowing())
-                                mProgressDialog.dismiss();
-
-                            //Reset Order Id
-                            SaveSharedPreference.setOrderId(context,"");
-
-                            //Here invoke delete item from order by item id and order id
-
-                                    ((Activity) context).finish();
-                            context.startActivity(new Intent(context, ShoppingCart.class));
-                        }else {
-                            if (mProgressDialog.isShowing())
-                                mProgressDialog.dismiss();
-                            Log.e("Delete Nooo",resCartItems.getShoppingCarts().get(position).getId());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResCartItems> call, Throwable t) {
-                        if (mProgressDialog.isShowing())
-                            mProgressDialog.dismiss();
-                        Log.e("Delete Nooo",t.getMessage());
-                    }
-                });
+                //Invoking delete item from card method
+                Home.deleteItemFromShoppingCart(context,resCartItems.getShoppingCarts().get(position).getId());
             }
         });
 
 
 
 
-
-
-        //add gift card button action
-
         //Set images languages
         if(SaveSharedPreference.getLangId(context).equals("ar")){
             holder.addGiftCard.setImageResource(R.drawable.addcardbtn);
-
         }else{
             holder.addGiftCard.setImageResource(R.drawable.addcardbtn_en);
         }
+
+
+        //add gift card button action
         holder.addGiftCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,10 +109,9 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
 
                 context.startActivity(new Intent(context, PresentCard.class)
                         .putExtra("product_id", resCartItems.getShoppingCarts().get(position).getProductId())
-                        .putExtra("count",resCartItems.getShoppingCarts().get(position).getQuantity()));
-                       //   .putExtra("vendorid",resCartItems.getShoppingCarts().get(position).getProduct().getVendorId())
-                       // .putExtra("days1",resCartItems.getShoppingCarts().get(position).getProduct().getAttributes().get(0).getDefaultValue())
-                      //  .putExtra("days2",resCartItems.getShoppingCarts().get(position).getProduct().getAttributes().get(1).getDefaultValue()));
+                        .putExtra("count",resCartItems.getShoppingCarts().get(position).getQuantity())
+                        .putExtra("vendorid",resCartItems.getShoppingCarts().get(position).getProduct().getVendorId()));
+
 
             }
         });

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -24,10 +27,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.Cardschedule;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.API.Models.VendorDateSchedule.ResVendorsSch;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.PresentCard;
+import sedra.appsmatic.com.sedra.Adabters.ScheduleAdapter;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
@@ -35,10 +40,10 @@ import sedra.appsmatic.com.sedra.R;
 public class CardSchedule extends Fragment {
 
     private Cardschedule cardschedule;
-    private ImageView saveBtn;
-    private DatePicker simpleDatePicker;
-    private int day,month,year;
-    Date currentDate;
+    private RecyclerView timesList;
+    private TextView emptyflag;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,57 +61,56 @@ public class CardSchedule extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         cardschedule=new Cardschedule();
-        saveBtn=(ImageView)view.findViewById(R.id.save_date_btn);
 
-
-        try {
-            currentDate = new Date();
-            currentDate.setTime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(PresentCard.dayCount));
-            simpleDatePicker = (DatePicker) view.findViewById(R.id.simpleDatePicker); // initiate a date picker
-            saveBtn = (ImageView) view.findViewById(R.id.save_date_btn);
-            simpleDatePicker.setSpinnersShown(false);
-            simpleDatePicker.setMinDate(currentDate.getTime());
-        }catch (Exception e){
-            Toast.makeText(getContext(),"Error from Day count calc"+e.getMessage(),Toast.LENGTH_LONG).show();
-        }
-
-
-
-        //Set images languages
-        if(SaveSharedPreference.getLangId(getContext()).equals("ar")){
-            saveBtn.setImageResource(R.drawable.savebtn);
-        }else{
-            saveBtn.setImageResource(R.drawable.save_btn_en);
-        }
+        emptyflag=(TextView)view.findViewById(R.id.empty_times_flag);
+        emptyflag.setVisibility(View.INVISIBLE);
 
 
 
 
-        //save address btn action
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.alpha);
-                saveBtn.clearAnimation();
-                saveBtn.setAnimation(anim);
-                day = simpleDatePicker.getDayOfMonth();
-                month = simpleDatePicker.getMonth() + 1;
-                year = simpleDatePicker.getYear();
-                Date date = new Date();
-                date.setDate(day);
-                date.setMonth(simpleDatePicker.getMonth());
-                if (date.before(currentDate)) {
-                    Toast.makeText(getContext(), "You cannot select previous date !", Toast.LENGTH_LONG).show();
-                } else {
-                    String date2 = "Selected Date : " + day + "-" + month + "-" + year;
-                    Toast.makeText(getContext(), date2, Toast.LENGTH_LONG).show();
+
+
+
+        //Get Delivery Times for vendor
+        timesList=(RecyclerView)view.findViewById(R.id.deleviry_times_list);
+        if(PresentCard.vendorId!=0) {
+            Generator.createService(SedraApi.class).getVendorSchedule(PresentCard.vendorId + "").enqueue(new Callback<ResVendorsSch>() {
+                @Override
+                public void onResponse(Call<ResVendorsSch> call, Response<ResVendorsSch> response) {
+
+                    if (response.isSuccessful()) {
+                        if (!response.body().getDeliveryschedules().isEmpty()) {
+                            timesList.setAdapter(new ScheduleAdapter(getContext(), response.body()));
+                            timesList.setLayoutManager(new LinearLayoutManager(getContext()));
+                            emptyflag.setVisibility(View.INVISIBLE);
+                        }else {
+                            emptyflag.setVisibility(View.VISIBLE);
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "not response from delivery times", Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
+                @Override
+                public void onFailure(Call<ResVendorsSch> call, Throwable t) {
+                    Toast.makeText(getContext(), t.getMessage() + " Failure from delivery times", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else {
 
-                PresentCard.gitSchudle = true;
-                Toast.makeText(getContext(), getResources().getString(R.string.savesuccsess), Toast.LENGTH_LONG).show();
-            }
-        });
+            emptyflag.setVisibility(View.VISIBLE);
+
+
+        }
+
+
+
+
+
+
+
     }
 
 

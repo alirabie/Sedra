@@ -142,5 +142,9 @@
     <string name="addrecevername">من فضلك ادخل اسم المرسل اليه الهدية</string>
     <string name="addsendername">من فضلك اسم مرسل الهدية</string>
     <string name="addsenderphone">من فضلك ادخل رقم مرسل الهدية</string>
+    <string name="selectdelevierytime">من فضلك قم باختيار موعد التوصيل </string>
+    <string name="from">من</string>
+    <string name="to">الى</string>
+    <string name="notimes">لا توجد مواعيد توصيل</string>
 
 </resources>

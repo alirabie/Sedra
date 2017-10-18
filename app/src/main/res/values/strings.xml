@@ -140,7 +140,10 @@
     <string name="addsenderphone">Please Add sender phone</string>
     <string name="addrecevername">Please Add receiver name</string>
     <string name="addmessage">Please Add Gifting Message</string>
-
+    <string name="selectdelevierytime">Please Select Delivery Time </string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="notimes">Delivery Times is Empty</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
