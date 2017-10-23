@@ -85,6 +85,10 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
                 holder.deleteBtn.setAnimation(anim);
                 //Invoking delete item from card method
                 Home.deleteItemFromShoppingCart(context,resCartItems.getShoppingCarts().get(position).getId());
+                if(!SaveSharedPreference.getOrderId(context).isEmpty()){
+                    Home.deleteItemFromOrder(context,SaveSharedPreference.getOrderId(context),resCartItems.getShoppingCarts().get(position).getProductId()+"");
+                }
+
             }
         });
 

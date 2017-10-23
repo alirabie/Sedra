@@ -68,12 +68,12 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
     private ImageView addToCartBtn,sugTitle,up,down,favBtn,shareBtn;
     private static int count =0;
     private static String dayCount="0";
-    NiftyDialogBuilder dialogBuildercard;
+    private NiftyDialogBuilder dialogBuildercard;
     private FrameLayout bg;
     private ImageView contin,finishShopping;
     private Boolean isRental;
     private int vendorId=0;
-    RecyclerView relatedProductsList;
+    private RecyclerView relatedProductsList;
     private static final String ALLOWED_URI_CHARS = " @#&=*+-_.,:!?()/~'%";
 
     @Override
@@ -274,6 +274,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                 if (response.isSuccessful()) {
 
                                     //Reset Order Id
+                                    //Repalce this with update order by product id
                                     SaveSharedPreference.setOrderId(ProductInfoScreen.this,"");
 
                                    /*
@@ -507,7 +508,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
 
 
-        //fav btn action
+        //favorite btn action
         favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -519,6 +520,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         favBtn.setImageResource(R.drawable.favoriteheart);
                         favBtn.setTag("2");
 
+                        //Add to wishList Service Invoking
                         Generator.createService(SedraApi.class).addToWishList(getIntent().getStringExtra("product_id"),2,1,Integer.parseInt(SaveSharedPreference.getCustomerId(ProductInfoScreen.this))).enqueue(new Callback<ResAddingWishList>() {
                             @Override
                             public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
@@ -554,10 +556,8 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         favBtn.setImageResource(R.drawable.favoriteheartunacvtive);
                         favBtn.setTag("1");
 
-                        //remove locally for testing waiting delete api working to active deleting on server
 
-
-
+                        //Remove from wishList Service Invoking
                         Generator.createService(SedraApi.class).deleteWishlistItem(Home.itemsIds.get(getIntent().getStringExtra("product_id")), SaveSharedPreference.getCustomerId(ProductInfoScreen.this)).enqueue(new Callback<ResAddingWishList>() {
                             @Override
                             public void onResponse(Call<ResAddingWishList> call, Response<ResAddingWishList> response) {
@@ -589,10 +589,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                 Log.e("removewish", "fali" + t.getMessage());
                             }
                         });
-
-
-
-
 
 
 

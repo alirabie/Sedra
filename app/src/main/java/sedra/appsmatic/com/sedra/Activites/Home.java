@@ -67,6 +67,7 @@ import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
 import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
+import sedra.appsmatic.com.sedra.API.Models.Orders.ResDeleteOrderItem;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
@@ -98,6 +99,8 @@ public class Home extends AppCompatActivity  {
     public static HashMap <String,String> itemsIds=new HashMap();
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
+
+
 
 
     @Override
@@ -692,6 +695,7 @@ public class Home extends AppCompatActivity  {
 
 
 
+    //Mesh 3aref bt3mel aeh de ^_^
     public static void saveWishListToPrefs (Context context){
         SaveSharedPreference.setWishListOrders(context, wishListProductsIds);
     }
@@ -796,16 +800,14 @@ public class Home extends AppCompatActivity  {
         mProgressDialog.show();
 
         Generator.createService(SedraApi.class).deleteCartItems(id).enqueue(new Callback<ResCartItems>() {
+
             @Override
             public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
+
+
                 if (response.isSuccessful()) {
                     if (mProgressDialog.isShowing())
                         mProgressDialog.dismiss();
-
-                    //Reset Order Id
-                    SaveSharedPreference.setOrderId(context, "");
-
-                    //Here invoke delete item from order by item id and order id
 
                     ((Activity) context).finish();
                     context.startActivity(new Intent(context, ShoppingCart.class));
@@ -813,6 +815,7 @@ public class Home extends AppCompatActivity  {
                     if (mProgressDialog.isShowing())
                         mProgressDialog.dismiss();
                     Log.e("Delete Nooo", id);
+
                 }
             }
 
@@ -826,6 +829,40 @@ public class Home extends AppCompatActivity  {
             });
 
         }
+
+
+    //Delete item from current order by order id
+    public static void deleteItemFromOrder(final Context context,String orderId,String itemId){
+
+        Generator.createService(SedraApi.class).deleteOrderItem(orderId,itemId).enqueue(new Callback<ResDeleteOrderItem>() {
+            @Override
+            public void onResponse(Call<ResDeleteOrderItem> call, Response<ResDeleteOrderItem> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getError().isEmpty()){
+                        Toast.makeText(context,response.body().getStatus(),Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(context,"Error from deleting item from order",Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    try {
+                        Toast.makeText(context, "Response not success from delete item from order : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResDeleteOrderItem> call, Throwable t) {
+
+                Toast.makeText(context,"Connection Failure from delete item from order : "+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+    }
 
 
 

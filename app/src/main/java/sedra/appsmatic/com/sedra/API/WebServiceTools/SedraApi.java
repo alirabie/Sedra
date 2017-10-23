@@ -18,6 +18,7 @@ import sedra.appsmatic.com.sedra.API.Models.Countries.ResCountry;
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
+import sedra.appsmatic.com.sedra.API.Models.Orders.ResDeleteOrderItem;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.ReqPresentCard;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
@@ -157,7 +158,6 @@ public interface SedraApi {
     Call<RegResponse> updateCustomer(@Body Object item,@Path("id")String id);
 
 
-
     //Select Present Card
     @POST("api/presentcard")
     Call<ResponseBody> selectPresentCard(@Body Object item);
@@ -170,7 +170,7 @@ public interface SedraApi {
 
     //Delete Item from order
     @DELETE("/api/orders/{orderId}/items/{orderItemId}")
-    Call<OrderResponse>deleteOrderItem(@Path("orderId")String orderId,@Path("orderItemId")String itemId);
+    Call<ResDeleteOrderItem>deleteOrderItem(@Path("orderId")String orderId,@Path("orderItemId")String itemId);
 
 
     //Get vendor schedule intervals
