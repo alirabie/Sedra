@@ -23,6 +23,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.OrderItem;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.ReqNewOrderItem;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.Activites.GiftMessageScreen;
@@ -71,9 +73,6 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
         }
         String formattedDate = DesiredFormat.format(date.getTime());
         holder.pDate.setText(formattedDate);
-
-
-
 
 
         //Delete item from shopping cart

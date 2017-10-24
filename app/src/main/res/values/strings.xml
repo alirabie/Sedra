@@ -144,6 +144,8 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="notimes">Delivery Times is Empty</string>
+    <string name="additem">Added to your current order</string>
+    <string name="removeitem">Removed from your current order</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

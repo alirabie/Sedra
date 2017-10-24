@@ -8,12 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +20,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +49,9 @@ import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ReqCartItems;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ShoppingCartItem;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.OrderItem;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.ReqNewOrderItem;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.ResUpdateOrder;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
@@ -273,19 +272,17 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                                 if (response.isSuccessful()) {
 
-                                    //Reset Order Id
-                                    //Repalce this with update order by product id
-                                    SaveSharedPreference.setOrderId(ProductInfoScreen.this,"");
+                                 //Update current order by new item
 
-                                   /*
-                                    if(SaveSharedPreference.getOrderId(ProductInfoScreen.this).equals("")){
-                                        //In this case order id is empty and this is first add to order
-                                    }else {
+                                    if(!SaveSharedPreference.getOrderId(ProductInfoScreen.this).equals("")){
                                         //in this case order id is exist and need update order only
+                                        ReqNewOrderItem newOrderItem=new ReqNewOrderItem();
+                                        OrderItem orderItem=new OrderItem();
+                                        orderItem.setProductId(Integer.parseInt(getIntent().getStringExtra("product_id")));
+                                        orderItem.setQuantity(count);
+                                        newOrderItem.setOrderItem(orderItem);
+                                       Home.addItemToOrder(ProductInfoScreen.this, SaveSharedPreference.getOrderId(ProductInfoScreen.this), newOrderItem);
                                     }
-
-
-                                    */
 
 
                                     //Update cart badge count

@@ -146,5 +146,7 @@
     <string name="from">من</string>
     <string name="to">الى</string>
     <string name="notimes">لا توجد مواعيد توصيل</string>
+    <string name="additem">تم الاضافة لطلبك الحالى</string>
+    <string name="removeitem">تم الحذف من طلبك الحالى</string>
 
 </resources>

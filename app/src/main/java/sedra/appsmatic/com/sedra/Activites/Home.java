@@ -3,7 +3,6 @@ package sedra.appsmatic.com.sedra.Activites;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
@@ -18,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,10 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -61,7 +56,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
 import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
@@ -69,10 +63,13 @@ import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
 import sedra.appsmatic.com.sedra.API.Models.Orders.ResDeleteOrderItem;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.ReqNewOrderItem;
+import sedra.appsmatic.com.sedra.API.Models.UpdateOrder.ResUpdateOrder;
 import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Adabters.CartAdb;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
 import sedra.appsmatic.com.sedra.CountBadge.BadgeDrawable;
 import sedra.appsmatic.com.sedra.Fragments.Products;
@@ -393,7 +390,6 @@ public class Home extends AppCompatActivity  {
                 Toast.makeText(getApplication(), "connection error from districts home spinner"+t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
 
 
 
@@ -758,8 +754,6 @@ public class Home extends AppCompatActivity  {
     }
 
 
-
-
     //fill wish list from server
     public static void fillWishListFromServer(final Context context){
 
@@ -834,12 +828,12 @@ public class Home extends AppCompatActivity  {
     //Delete item from current order by order id
     public static void deleteItemFromOrder(final Context context,String orderId,String itemId){
 
-        Generator.createService(SedraApi.class).deleteOrderItem(orderId,itemId).enqueue(new Callback<ResDeleteOrderItem>() {
+        Generator.createService(SedraApi.class).deleteOrderItem(orderId, itemId).enqueue(new Callback<ResDeleteOrderItem>() {
             @Override
             public void onResponse(Call<ResDeleteOrderItem> call, Response<ResDeleteOrderItem> response) {
                 if(response.isSuccessful()){
                     if(response.body().getError().isEmpty()){
-                        Toast.makeText(context,response.body().getStatus(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,response.body().getStatus()+" "+context.getResources().getString(R.string.removeitem),Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(context,"Error from deleting item from order",Toast.LENGTH_SHORT).show();
                     }
@@ -856,6 +850,67 @@ public class Home extends AppCompatActivity  {
             public void onFailure(Call<ResDeleteOrderItem> call, Throwable t) {
 
                 Toast.makeText(context,"Connection Failure from delete item from order : "+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+    }
+
+
+    //Add item to Order
+    public static void addItemToOrder(final Context context,String orderId,ReqNewOrderItem newOrderItem){
+
+
+        Generator.createService(SedraApi.class).addItemToOrder(orderId, newOrderItem).enqueue(new Callback<ResUpdateOrder>() {
+            @Override
+            public void onResponse(Call<ResUpdateOrder> call, Response<ResUpdateOrder> response) {
+                if(response.isSuccessful()){
+                    if(!response.body().getOrderItems().isEmpty()){
+                        Toast.makeText(context,context.getResources().getString(R.string.additem),Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    try {
+                        Toast.makeText(context, "Response not success from add item to order : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResUpdateOrder> call, Throwable t) {
+                Toast.makeText(context,"Connection failed from add item to order : "+t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+
+    //Update current Order
+    public static void updateOrder(final Context context,String orderId,String itemId,ReqNewOrderItem newOrderItem){
+
+        Generator.createService(SedraApi.class).updateOrder(newOrderItem, orderId, itemId).enqueue(new Callback<ResUpdateOrder>() {
+            @Override
+            public void onResponse(Call<ResUpdateOrder> call, Response<ResUpdateOrder> response) {
+                if(response.isSuccessful()){
+                    if(!response.body().getOrderItems().isEmpty()){
+                        Toast.makeText(context,"New Item updated successfully",Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    try {
+                        Toast.makeText(context, "Response not success from update item to order : " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResUpdateOrder> call, Throwable t) {
+                Toast.makeText(context,"Connection failed from update item to order : "+t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
 
