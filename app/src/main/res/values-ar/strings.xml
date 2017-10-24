@@ -148,5 +148,6 @@
     <string name="notimes">لا توجد مواعيد توصيل</string>
     <string name="additem">تم الاضافة لطلبك الحالى</string>
     <string name="removeitem">تم الحذف من طلبك الحالى</string>
+    <string name="updateorder">تم تحديث طلبك الحالى</string>
 
 </resources>

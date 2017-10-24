@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
+import sedra.appsmatic.com.sedra.API.Models.LocalShoppingCartProductId;
 
 /**
  * Created by Eng Ali on 4/20/2017.
@@ -26,6 +27,8 @@ public class SaveSharedPreference {
     static final String WISHLIST_ORDERS="wishList";
     static final String CUSTOMER_INFO="customerInfo";
     static final String ORDER_ID="orderId";
+    static final String CURRENT_ITEM_COUNT="currentCount";
+    static final String CART_ITEMS_IDS="cartItemsIds";
 
 
 
@@ -151,6 +154,42 @@ public class SaveSharedPreference {
             cartMeals= gson.fromJson(json, type);
         }
         return cartMeals;
+    }
+
+
+
+    public static void setCurrentCount(Context context,int count){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        editor.putString(CURRENT_ITEM_COUNT,count+"");
+        editor.commit();
+    }
+
+
+    public static int getCurrentCount(Context context){
+        return Integer.parseInt(getSharedPreferences(context).getString(CURRENT_ITEM_COUNT,"0"));
+    }
+
+
+    public static void setCartIds(Context context,List<LocalShoppingCartProductId>localShoppingCartProductIds){
+        SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(localShoppingCartProductIds);
+        editor.putString(CART_ITEMS_IDS, json);
+        editor.commit();
+    }
+
+
+    public static List<LocalShoppingCartProductId>getCartIds(Context context){
+
+        String json= getSharedPreferences(context).getString(CART_ITEMS_IDS, "");
+        List<LocalShoppingCartProductId>localShoppingCartProductIds=new ArrayList<>();
+        if(!json.isEmpty()) {
+            Type type = new TypeToken<List<LocalShoppingCartProductId>>() {}.getType();
+            Gson gson = new Gson();
+            localShoppingCartProductIds= gson.fromJson(json, type);
+        }
+
+        return  localShoppingCartProductIds;
     }
 
 

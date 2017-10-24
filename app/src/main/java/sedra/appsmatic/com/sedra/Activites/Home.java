@@ -57,6 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
+import sedra.appsmatic.com.sedra.API.Models.LocalShoppingCartProductId;
 import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
 import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
@@ -99,6 +100,11 @@ public class Home extends AppCompatActivity  {
 
 
 
+    public static List<LocalShoppingCartProductId>cardItemsIds=new ArrayList<>();
+    public static int currentCount=0;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +113,8 @@ public class Home extends AppCompatActivity  {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-
+        cardItemsIds=SaveSharedPreference.getCartIds(Home.this);
+        currentCount=SaveSharedPreference.getCurrentCount(Home.this);
 
         if(!SaveSharedPreference.getCustomerId(Home.this).isEmpty()){
             fillWishListFromServer(Home.this);
@@ -254,6 +261,7 @@ public class Home extends AppCompatActivity  {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentcontener, products2);
         fragmentTransaction.commit();
+
 
 
 
@@ -650,8 +658,6 @@ public class Home extends AppCompatActivity  {
     }
 
 
-
-
     //set cart number badge
     public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
         BadgeDrawable badge;
@@ -670,13 +676,30 @@ public class Home extends AppCompatActivity  {
 
 
 
-    //Get Shopping Cart Count
+    //Get Shopping Cart Count and fill shopping cart ids local
     public static void getCartItemsCount (final Context context,String customerId){
         Generator.createService(SedraApi.class).getCartItems(customerId).enqueue(new Callback<ResCartItems>() {
             @Override
             public void onResponse(Call<ResCartItems> call, Response<ResCartItems> response) {
                 if (response.isSuccessful()) {
+
+                    cardItemsIds.clear();
+                    SaveSharedPreference.setCartIds(context,Home.cardItemsIds);
+
                     setBadgeCount(context, icon, response.body().getShoppingCarts().size() + "");
+
+                    for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
+                        //fill local cart ids by local id object
+                        LocalShoppingCartProductId localShoppingCartProductId=new LocalShoppingCartProductId();
+                        localShoppingCartProductId.setId(response.body().getShoppingCarts().get(i).getProductId());
+                        localShoppingCartProductId.setCount(response.body().getShoppingCarts().get(i).getQuantity());
+                        Home.cardItemsIds.add(localShoppingCartProductId);
+                        Log.e("cart Id : ", Home.cardItemsIds.get(i).getId() + " "+Home.cardItemsIds.get(i).getCount());
+                    }
+
+                    SaveSharedPreference.setCartIds(context,Home.cardItemsIds);
+
+
                 } else {
                     Log.e("erorr", "cart not set num");
                 }
@@ -897,7 +920,7 @@ public class Home extends AppCompatActivity  {
             public void onResponse(Call<ResUpdateOrder> call, Response<ResUpdateOrder> response) {
                 if(response.isSuccessful()){
                     if(!response.body().getOrderItems().isEmpty()){
-                        Toast.makeText(context,"New Item updated successfully",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,context.getResources().getString(R.string.updateorder),Toast.LENGTH_SHORT).show();
                     }
                 }else {
                     try {
@@ -920,5 +943,22 @@ public class Home extends AppCompatActivity  {
     }
 
 
+
+    //check if id exist in local shopping cart ids and pick current count of this product that hold this id
+    public static boolean IsIdExistInShoppingCart(Context context,int id){
+        boolean result=new Boolean(null);
+        for(int i=0;i<Home.cardItemsIds.size();i++){
+            if(Home.cardItemsIds.get(i).getId()==id){
+                result=true;
+                currentCount=cardItemsIds.get(i).getCount();
+                SaveSharedPreference.setCurrentCount(context,currentCount);
+                break;
+
+            }else {
+                result=false;
+            }
+        }
+        return result;
+    }
 
 }

@@ -146,6 +146,7 @@
     <string name="notimes">Delivery Times is Empty</string>
     <string name="additem">Added to your current order</string>
     <string name="removeitem">Removed from your current order</string>
+    <string name="updateorder">Your Current Order has been Updated</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -273,16 +273,34 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                 if (response.isSuccessful()) {
 
                                  //Update current order by new item
-
                                     if(!SaveSharedPreference.getOrderId(ProductInfoScreen.this).equals("")){
-                                        //in this case order id is exist and need update order only
-                                        ReqNewOrderItem newOrderItem=new ReqNewOrderItem();
-                                        OrderItem orderItem=new OrderItem();
-                                        orderItem.setProductId(Integer.parseInt(getIntent().getStringExtra("product_id")));
-                                        orderItem.setQuantity(count);
-                                        newOrderItem.setOrderItem(orderItem);
-                                       Home.addItemToOrder(ProductInfoScreen.this, SaveSharedPreference.getOrderId(ProductInfoScreen.this), newOrderItem);
+
+
+                                        //Check if product id that we want add Exist in Shopping Cart or not
+                                       if(Home.IsIdExistInShoppingCart(ProductInfoScreen.this,Integer.parseInt(getIntent().getStringExtra("product_id")))){
+                                           //in case of exist Invoke Update order method
+                                           ReqNewOrderItem newOrderItem=new ReqNewOrderItem();
+                                           OrderItem orderItem=new OrderItem();
+                                           orderItem.setProductId(Integer.parseInt(getIntent().getStringExtra("product_id")));
+                                           orderItem.setQuantity(Home.currentCount+count);
+                                           newOrderItem.setOrderItem(orderItem);
+                                           Home.updateOrder(ProductInfoScreen.this,SaveSharedPreference.getOrderId(ProductInfoScreen.this),getIntent().getStringExtra("product_id"),newOrderItem);
+                                          //Toast.makeText(ProductInfoScreen.this,"Exist"+Home.currentCount,Toast.LENGTH_SHORT).show();
+
+                                        }else {
+                                           //In case of not exist Invoke add new item to order method
+                                           ReqNewOrderItem newOrderItem=new ReqNewOrderItem();
+                                           OrderItem orderItem=new OrderItem();
+                                           orderItem.setProductId(Integer.parseInt(getIntent().getStringExtra("product_id")));
+                                           orderItem.setQuantity(count);
+                                           newOrderItem.setOrderItem(orderItem);
+                                           Home.addItemToOrder(ProductInfoScreen.this, SaveSharedPreference.getOrderId(ProductInfoScreen.this), newOrderItem);
+                                       }
+
+
+
                                     }
+
 
 
                                     //Update cart badge count

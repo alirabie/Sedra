@@ -130,6 +130,8 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
 
+
+
         if(SaveSharedPreference.getCustomerId(ShoppingCart.this).isEmpty()){
             emptyFlag.setVisibility(View.VISIBLE);
             emptyFlag.setText(getResources().getString(R.string.loginplease));
@@ -152,10 +154,9 @@ public class ShoppingCart extends AppCompatActivity  {
                             itemsList.setAdapter(new CartAdb(response.body(), ShoppingCart.this));
                             isReadyToPay=true;
 
-
-
                             //fill order items
                             if(!response.body().getShoppingCarts().isEmpty()) {
+
                                 for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
                                     OrderItem orderItem = new OrderItem();
                                     orderItem.setProductId(response.body().getShoppingCarts().get(i).getProductId());
@@ -258,7 +259,6 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
 
-
         //pay action
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,7 +307,5 @@ public class ShoppingCart extends AppCompatActivity  {
         super.onPause();
         orderItems.clear();
     }
-
-
 
 }
