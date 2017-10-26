@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import sedra.appsmatic.com.sedra.API.Models.PresentCards.Cardschedule;
 import sedra.appsmatic.com.sedra.API.Models.VendorDateSchedule.ResVendorsSch;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.Item;
 import sedra.appsmatic.com.sedra.Activites.Home;
@@ -83,11 +84,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.VH2000
                 Animation anim = AnimationUtils.loadAnimation(context, R.anim.alpha);
                 holder.selectButton.clearAnimation();
                 holder.selectButton.setAnimation(anim);
-                PresentCard.schudleId=resVendorsSch.getDeliveryschedules().get(position).getId();
+
+                DateFormatSymbols dfs = new DateFormatSymbols(Locale.US);
+                String weekdays[] = dfs.getWeekdays();
+                PresentCard.cardschedule2.setScheduleId(resVendorsSch.getDeliveryschedules().get(position).getId());
+                PresentCard.cardschedule2.setDeliveryDay(weekdays[resVendorsSch.getDeliveryschedules().get(position).getDay()+1]);
+                PresentCard.cardschedule2.setDeliveryTime(resVendorsSch.getDeliveryschedules().get(position).getTimefrom());
                 PresentCard.gitSchudle=true;
-
-
-                Toast.makeText(context,context.getResources().getString(R.string.savesuccsess)+" Id :  "+PresentCard.schudleId+"",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,context.getResources().getString(R.string.savesuccsess),Toast.LENGTH_LONG).show();
 
             }
         });

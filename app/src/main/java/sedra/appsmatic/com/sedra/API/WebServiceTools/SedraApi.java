@@ -161,7 +161,7 @@ public interface SedraApi {
 
     //Select Present Card
     @POST("api/presentcard")
-    Call<ResponseBody> selectPresentCard(@Body Object item);
+    Call<ResDeleteOrderItem> selectPresentCard(@Body Object item);
 
 
     //Add item to order

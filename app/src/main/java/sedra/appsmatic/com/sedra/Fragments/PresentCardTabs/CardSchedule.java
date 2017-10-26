@@ -39,7 +39,7 @@ import sedra.appsmatic.com.sedra.R;
 
 public class CardSchedule extends Fragment {
 
-    private Cardschedule cardschedule;
+
     private RecyclerView timesList;
     private TextView emptyflag;
 
@@ -60,7 +60,7 @@ public class CardSchedule extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cardschedule=new Cardschedule();
+
 
         emptyflag=(TextView)view.findViewById(R.id.empty_times_flag);
         emptyflag.setVisibility(View.INVISIBLE);

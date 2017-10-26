@@ -13,6 +13,7 @@ public class Card {
     @SerializedName("quantity")
     @Expose
     private Integer quantity;
+
     @SerializedName("cardaddress")
     @Expose
     private Cardaddress cardaddress;

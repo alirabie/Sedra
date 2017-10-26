@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,7 +27,9 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +37,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.Orders.ResDeleteOrderItem;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.Card;
+import sedra.appsmatic.com.sedra.API.Models.PresentCards.Cardschedule;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.OrderCard;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.ReqPresentCard;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
@@ -52,9 +58,14 @@ public class PresentCard extends AppCompatActivity {
     PagerSlidingTabStrip tabsStrip;
     CustomFragmentPagerAdapter adapter;
     TextView addCard ;
+    public static Cardschedule cardschedule2;
+
+
 
     public static int vendorId;
     public static int schudleId;
+    public static String timefrom,selectedDay;
+
 
 
     //Fragments
@@ -79,6 +90,8 @@ public class PresentCard extends AppCompatActivity {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        cardSchedule=new CardSchedule();
+        cardschedule2=new Cardschedule();
 
         giftAddress=false;
         giftMessage=false;
@@ -133,8 +146,8 @@ public class PresentCard extends AppCompatActivity {
 
         //Setup Card
         card=new Card();
-        card.setProductId(getIntent().getIntExtra("product_id",0));
-        card.setQuantity(getIntent().getIntExtra("count",0));
+        card.setProductId(getIntent().getIntExtra("product_id", 0));
+        card.setQuantity(getIntent().getIntExtra("count", 0));
 
 
         addCard.setOnClickListener(new View.OnClickListener() {
@@ -152,35 +165,65 @@ public class PresentCard extends AppCompatActivity {
                     Toast.makeText(PresentCard.this,getResources().getString(R.string.selectgiftaddress),Toast.LENGTH_LONG).show();
                 }else {
 
+
+                    final ProgressDialog mProgressDialog = new ProgressDialog(PresentCard.this);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.setMessage(getApplicationContext().getResources().getString(R.string.pleasew));
+                    mProgressDialog.show();
+
+                    card.setCardschedule(cardschedule2);
                     orderCard=new OrderCard();
                     List<Card>cards=new ArrayList<Card>();
+
                     cards.add(card);
                     orderCard.setCards(cards);
                     orderCard.setOrderId(Integer.parseInt(SaveSharedPreference.getOrderId(PresentCard.this)));
                     ReqPresentCard reqPresentCard =new ReqPresentCard();
                     reqPresentCard.setOrderCard(orderCard);
 
+                    Gson gson=new Gson();
 
-                    Generator.createService(SedraApi.class).selectPresentCard(orderCard).enqueue(new Callback<ResponseBody>() {
+                    Log.e("CardReq", gson.toJson(reqPresentCard));
+                    Generator.createService(SedraApi.class).selectPresentCard(reqPresentCard).enqueue(new Callback<ResDeleteOrderItem>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        public void onResponse(Call<ResDeleteOrderItem> call, Response<ResDeleteOrderItem> response) {
                             if (response.isSuccessful()) {
-                                Toast.makeText(PresentCard.this, getResources().getString(R.string.doneaddcard), Toast.LENGTH_LONG).show();
-                                giftAddress=false;
-                                giftMessage=false;
-                                gitSchudle=false;
-                                card.setCardmessage(null);
-                                card.setCardaddress(null);
-                                card.setCardschedule(null);
-                                PresentCard.this.finish();
-                            } else {
 
-                                Toast.makeText(PresentCard.this, getResources().getString(R.string.faild), Toast.LENGTH_LONG).show();
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+
+                              if(response.body().getStatus().equals("ok")){
+                                  Toast.makeText(PresentCard.this, getResources().getString(R.string.doneaddcard), Toast.LENGTH_LONG).show();
+                                  giftAddress=false;
+                                  giftMessage=false;
+                                  gitSchudle=false;
+                                  card.setCardmessage(null);
+                                  card.setCardaddress(null);
+                                  card.setCardschedule(null);
+                                  PresentCard.this.finish();
+                              }else {
+                                  Toast.makeText(PresentCard.this," Error from Add Present Card : "+ getResources().getString(R.string.faild), Toast.LENGTH_LONG).show();
+                              }
+
+
+
+
+                            } else {
+                                if (mProgressDialog.isShowing())
+                                    mProgressDialog.dismiss();
+                                try {
+                                    Toast.makeText(PresentCard.this, getResources().getString(R.string.faild) + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        public void onFailure(Call<ResDeleteOrderItem> call, Throwable t) {
+                            if (mProgressDialog.isShowing())
+                                mProgressDialog.dismiss();
                             Toast.makeText(PresentCard.this, getResources().getString(R.string.erorr)+t.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
