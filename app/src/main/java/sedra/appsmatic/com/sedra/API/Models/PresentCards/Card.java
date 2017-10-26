@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName;
  * Created by Eng Ali on 10/11/2017.
  */
 public class Card {
+    @SerializedName("order_id")
+    @Expose
+    private Integer orderId;
+
     @SerializedName("product_id")
     @Expose
     private Integer productId;
-    @SerializedName("quantity")
-    @Expose
-    private Integer quantity;
-
     @SerializedName("cardaddress")
     @Expose
     private Cardaddress cardaddress;
@@ -56,11 +56,13 @@ public class Card {
         this.productId = productId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
+
+
 }

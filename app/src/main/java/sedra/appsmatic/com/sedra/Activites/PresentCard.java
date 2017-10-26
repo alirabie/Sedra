@@ -147,7 +147,10 @@ public class PresentCard extends AppCompatActivity {
         //Setup Card
         card=new Card();
         card.setProductId(getIntent().getIntExtra("product_id", 0));
-        card.setQuantity(getIntent().getIntExtra("count", 0));
+        if(!SaveSharedPreference.getOrderId(PresentCard.this).isEmpty()) {
+            card.setOrderId(Integer.parseInt(SaveSharedPreference.getOrderId(PresentCard.this)));
+        }
+       // card.setQuantity(getIntent().getIntExtra("count", 0));
 
 
         addCard.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +180,6 @@ public class PresentCard extends AppCompatActivity {
 
                     cards.add(card);
                     orderCard.setCards(cards);
-                    orderCard.setOrderId(Integer.parseInt(SaveSharedPreference.getOrderId(PresentCard.this)));
                     ReqPresentCard reqPresentCard =new ReqPresentCard();
                     reqPresentCard.setOrderCard(orderCard);
 

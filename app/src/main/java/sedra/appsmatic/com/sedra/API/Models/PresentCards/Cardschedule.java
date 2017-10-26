@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Cardschedule {
 
+
     @SerializedName("schedule_id")
     @Expose
     private Integer scheduleId;

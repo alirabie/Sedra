@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Cardmessage {
 
+
     @SerializedName("message")
     @Expose
     private String message;

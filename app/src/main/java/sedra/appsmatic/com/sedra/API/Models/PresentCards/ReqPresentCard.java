@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ReqPresentCard {
 
+
     @SerializedName("order_card")
     @Expose
     private OrderCard orderCard;
