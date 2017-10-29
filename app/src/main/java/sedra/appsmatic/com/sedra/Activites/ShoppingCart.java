@@ -178,8 +178,8 @@ public class ShoppingCart extends AppCompatActivity  {
                                 for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
                                     total = total + response.body().getShoppingCarts().get(i).getQuantity() * response.body().getShoppingCarts().get(i).getProduct().getPrice();
                                 }
-                                totalPrice.setText(total+" "+getResources().getString(R.string.sr));
-                                finalTotalprice.setText(total+" "+getResources().getString(R.string.sr));
+                                totalPrice.setText(total+" "+ Home.currency.getSymbol());
+                                finalTotalprice.setText(total+" "+ Home.currency.getSymbol());
                             }
 
 

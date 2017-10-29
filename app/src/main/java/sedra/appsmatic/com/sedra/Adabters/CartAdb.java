@@ -57,7 +57,7 @@ public class CartAdb extends RecyclerView.Adapter<CartAdb.Vh10025> {
         animate(holder);
 
         holder.pName.setText(resCartItems.getShoppingCarts().get(position).getProduct().getName()+" # "+resCartItems.getShoppingCarts().get(position).getQuantity());
-        holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice() + context.getResources().getString(R.string.sr));
+        holder.pPrice.setText(resCartItems.getShoppingCarts().get(position).getProduct().getPrice() +" "+ Home.currency.getSymbol());
 
 
         //Date setup

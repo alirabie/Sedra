@@ -1,5 +1,6 @@
 package sedra.appsmatic.com.sedra.Activites;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,8 +51,10 @@ import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +100,7 @@ public class Home extends AppCompatActivity  {
     public static HashMap <String,String> itemsIds=new HashMap();
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
+    public static Currency currency;
 
 
 
@@ -112,6 +116,19 @@ public class Home extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+        //ar-sa ar-kw
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(getIntent().getStringExtra("country_id").equals("69")){
+                currency = Currency.getInstance(Locale.forLanguageTag("ar-sa"));
+            } else if (getIntent().getStringExtra("country_id").equals("52")){
+                currency =Currency.getInstance(Locale.forLanguageTag("ar-kw"));
+            }
+        }else {
+            currency=Currency.getInstance(Locale.US);
+        }
+
 
         cardItemsIds=SaveSharedPreference.getCartIds(Home.this);
         currentCount=SaveSharedPreference.getCurrentCount(Home.this);
@@ -132,9 +149,9 @@ public class Home extends AppCompatActivity  {
         }
 
         //Check location permissions for Marshmallow
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
         }
 
 

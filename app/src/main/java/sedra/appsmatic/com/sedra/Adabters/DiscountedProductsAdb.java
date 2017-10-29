@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.ProductInfoScreen;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
@@ -38,7 +39,7 @@ public class DiscountedProductsAdb extends RecyclerView.Adapter<DiscountedProduc
     @Override
     public void onBindViewHolder(vh0 holder, final int position) {
 
-        holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
+        holder.priceTv.setText(products.getProducts().get(position).getPrice()+" "+ Home.currency.getSymbol());
 
         if(products.getProducts().get(position).getImages().isEmpty()){
             Picasso.with(context)

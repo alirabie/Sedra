@@ -125,7 +125,7 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                         isRental = response.body().getProducts().get(0).getIsRental();
                         pName.setText(response.body().getProducts().get(0).getName() + "");
                         pDec.setText(response.body().getProducts().get(0).getShortDescription() + "");
-                        pPrice.setText(response.body().getProducts().get(0).getPrice() + getResources().getString(R.string.sr));
+                        pPrice.setText(response.body().getProducts().get(0).getPrice() +" "+ Home.currency.getSymbol());
                         vendorId = response.body().getProducts().get(0).getVendorId();
                         if (!response.body().getProducts().get(0).getAttributes().isEmpty()) {
                             if (response.body().getProducts().get(0).getAttributes().get(0).getDefaultValue() != null) {

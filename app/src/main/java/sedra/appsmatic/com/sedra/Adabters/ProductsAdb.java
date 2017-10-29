@@ -1,8 +1,10 @@
 package sedra.appsmatic.com.sedra.Adabters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,11 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.util.Currency;
+import java.util.Locale;
+
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
+import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Activites.ProductInfoScreen;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
@@ -40,10 +46,13 @@ public class ProductsAdb extends RecyclerView.Adapter<ProductsAdb.vh0> {
         return new vh0(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_prouduct,parent,false));
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final vh0 holder, final int position) {
         animate(holder);
-        holder.priceTv.setText(products.getProducts().get(position).getPrice()+context.getResources().getString(R.string.sr));
+
+
+        holder.priceTv.setText(products.getProducts().get(position).getPrice()+" "+ Home.currency.getSymbol());
 
         if(products.getProducts().get(position).getImages().isEmpty()){
             Picasso.with(context)
