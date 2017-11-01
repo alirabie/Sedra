@@ -14,7 +14,7 @@ public class CheckoutBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        PaymentParamsBrand brand = intent.getParcelableExtra(CheckoutActivity.EXTRA_PAYMENT_BRAND);
+        String paymentBrand = intent.getStringExtra(CheckoutActivity.EXTRA_PAYMENT_BRAND);
         String checkoutId = intent.getStringExtra(CheckoutActivity.EXTRA_CHECKOUT_ID);
 
         /* You can request a new checkout ID or just send back the same id to continue checkout process */
@@ -25,5 +25,6 @@ public class CheckoutBroadcastReceiver extends BroadcastReceiver {
 
         context.startActivity(intent);
     }
+
 
 }

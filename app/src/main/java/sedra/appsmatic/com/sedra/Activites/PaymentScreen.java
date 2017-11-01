@@ -5,21 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
-import android.content.res.AssetManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +22,6 @@ import com.craftman.cardform.CardForm;
 import com.craftman.cardform.OnPayBtnClickListner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.mobile.connect.PWConnect;
-import com.mobile.connect.exception.PWException;
-import com.mobile.connect.exception.PWProviderNotInitializedException;
-import com.mobile.connect.payment.PWCurrency;
-import com.mobile.connect.payment.PWPaymentParams;
-import com.mobile.connect.payment.credit.PWCreditCardType;
-import com.mobile.connect.service.PWProviderBinder;
 import com.oppwa.mobile.connect.exception.PaymentError;
 import com.oppwa.mobile.connect.exception.PaymentException;
 import com.oppwa.mobile.connect.payment.CheckoutInfo;
@@ -53,22 +40,24 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.util.Locale;
 
-import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
-import sedra.appsmatic.com.sedra.BuildConfig;
-import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResCheckoutId;
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResponseData;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
+import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
 import sedra.appsmatic.com.sedra.R;
-import sedra.appsmatic.com.sedra.RequestPayment;
 
 public class PaymentScreen extends AppCompatActivity  implements ITransactionListener {
 
     CardForm cardForm;
     TextView txtDes;
     Button pay;
-    private ResPaymentAction requestPayment;
     private static final String APPLICATIONIDENTIFIER = "YOUR APP ID";
     private static final String PROFILETOKEN = "YOUR PROFILE TOKEN";
+    public static String checkoutId;
 
 
 
@@ -112,26 +101,6 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
 
 
 
-        //Request Payment Checkout id
-        try {
-            String json= RequestPayment.request(100.0, "SAR");
-            Log.e("jjjjjj", json);
-            Type type = new TypeToken<ResPaymentAction>() {}.getType();
-            Gson gson = new Gson();
-            requestPayment= gson.fromJson(json, type);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
 
 
         //setup items
@@ -139,11 +108,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
         txtDes=(TextView)findViewById(R.id.payment_amount);
         pay=(Button)findViewById(R.id.btn_pay);
         txtDes.setText(getIntent().getStringExtra("totalPrice"));
-        pay.setText(String.format("Payer %s",txtDes.getText()));
-
-
-
-
+        pay.setText(String.format("Payer %s", txtDes.getText()));
 
 
 
@@ -162,46 +127,83 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
 
         cardForm.setPayBtnClickListner(new OnPayBtnClickListner() {
             @Override
-            public void onClick(Card card) {
+            public void onClick(final Card card) {
 
-                try {
+                //Get Checkout Id from server
+                Generator.createService(SedraApi.class).getCheckOutId(100, Home.currency.getSymbol()).enqueue(new Callback<ResCheckoutId>() {
+                    @Override
+                    public void onResponse(Call<ResCheckoutId> call, Response<ResCheckoutId> response) {
+                        if (response.isSuccessful()) {
+                            checkoutId = response.body().getResponseData().getId();
 
-                    //Adapt month format when one char add 0 on left
-                    String expMonth="";
-                    if(card.getExpMonth().toString().length()==1){
-                        expMonth="0"+card.getExpMonth();
-                    }else {
-                        expMonth=card.getExpMonth().toString();
+                           //Request checkout with checkout id
+                            try {
+
+                                //Adapt month format when one char add 0 on left
+                                String expMonth = "";
+                                if (card.getExpMonth().toString().length() == 1) {
+                                    expMonth = "0" + card.getExpMonth();
+                                } else {
+                                    expMonth = card.getExpMonth().toString();
+                                }
+
+
+
+                                Log.e("checkoutID ",checkoutId);
+
+                                //collect card data
+                                PaymentParams paymentParams = new CardPaymentParams(
+                                        response.body().getResponseData().getId(),
+                                        getIntent().getStringExtra("cardBrand"),
+                                        card.getNumber(),
+                                        card.getName(),
+                                        expMonth,
+                                        card.getExpYear() + "",
+                                        card.getCVC()
+                                );
+
+
+                                //mack transaction
+                                Transaction transaction = null;
+                                transaction = new Transaction(paymentParams);
+
+                                Log.e("INFOOO ", transaction.getPaymentParams().getCheckoutId() + " " + transaction.getPaymentParams().getPaymentBrand());
+                                binder.submitTransaction(transaction);
+
+
+
+                            } catch (PaymentException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                            binder.addTransactionListener(PaymentScreen.this);
+
+                            Toast.makeText(PaymentScreen.this, "Name : " + card.getExpYear() + " | Last 4 digits : " + card.getExpMonth(), Toast.LENGTH_LONG).show();
+
+
+                        } else {
+                            try {
+                                Toast.makeText(PaymentScreen.this, response.errorBody().string() + "Response not success from requst checkout id", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            checkoutId = "";
+                        }
                     }
 
+                    @Override
+                    public void onFailure(Call<ResCheckoutId> call, Throwable t) {
 
-                    //collect card data
-                    PaymentParams paymentParams = new CardPaymentParams(
-                            requestPayment.getId(),
-                            getIntent().getStringExtra("cardBrand"),
-                            card.getNumber(),
-                            card.getName(),
-                            expMonth,
-                            card.getExpYear()+"",
-                            card.getCVC()
-                    );
+                        checkoutId = "";
 
-
-                    //mack transaction
-                    Transaction transaction = null;
-                    transaction = new Transaction(paymentParams);
-                    binder.submitTransaction(transaction);
+                        Toast.makeText(getApplicationContext(), "Checkout Id connection error : "+t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
 
 
 
-                } catch (PaymentException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-
-                binder.addTransactionListener(PaymentScreen.this);
-
-                Toast.makeText(PaymentScreen.this,"Name : "+card.getExpYear()+" | Last 4 digits : "+card.getExpMonth(),Toast.LENGTH_LONG).show();
             }
 
         });
@@ -245,21 +247,23 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
 
     @Override
     public void paymentConfigRequestSucceeded(CheckoutInfo checkoutInfo) {
-        Toast.makeText(getApplication(),"config success"+" Checkout Id : "+requestPayment.getId()+checkoutInfo.getAmount()+"",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplication(),"config success"+" Checkout Id : "+ checkoutId,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void paymentConfigRequestFailed(PaymentError paymentError) {
-        Toast.makeText(getApplication(),"config error"+" Checkout Id : "+requestPayment.getId()+paymentError.getErrorMessage(),Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplication(),"config error",Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void transactionCompleted(Transaction transaction) {
-        Log.e("Sucsess"," Checkout Id : "+requestPayment.getId()+transaction.getAlipaySignedOrderInfo());
+        Log.e("Sucsess"," Checkout Id : "+ transaction.getPaymentParams().getCheckoutId()+transaction.getAlipaySignedOrderInfo());
     }
 
     @Override
     public void transactionFailed(Transaction transaction, PaymentError paymentError) {
-        Log.e("Not sucsess"," Checkout Id : "+requestPayment.getId()+paymentError.getErrorInfo());
+
+
+        Log.e("Not sucsess", " Checkout Id : " + transaction.getPaymentParams().getCheckoutId()+paymentError.getErrorInfo());
     }
 }

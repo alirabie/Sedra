@@ -73,7 +73,6 @@ import sedra.appsmatic.com.sedra.API.Models.Vendors.ResVendors;
 import sedra.appsmatic.com.sedra.API.Models.WishListItems.ResAddingWishList;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
-import sedra.appsmatic.com.sedra.Adabters.CartAdb;
 import sedra.appsmatic.com.sedra.Adabters.SideMenuAdb;
 import sedra.appsmatic.com.sedra.CountBadge.BadgeDrawable;
 import sedra.appsmatic.com.sedra.Fragments.Products;
@@ -116,6 +115,26 @@ public class Home extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //ar-sa ar-kw
 
@@ -701,20 +720,20 @@ public class Home extends AppCompatActivity  {
                 if (response.isSuccessful()) {
 
                     cardItemsIds.clear();
-                    SaveSharedPreference.setCartIds(context,Home.cardItemsIds);
+                    SaveSharedPreference.setCartIds(context, Home.cardItemsIds);
 
                     setBadgeCount(context, icon, response.body().getShoppingCarts().size() + "");
 
                     for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
                         //fill local cart ids by local id object
-                        LocalShoppingCartProductId localShoppingCartProductId=new LocalShoppingCartProductId();
+                        LocalShoppingCartProductId localShoppingCartProductId = new LocalShoppingCartProductId();
                         localShoppingCartProductId.setId(response.body().getShoppingCarts().get(i).getProductId());
                         localShoppingCartProductId.setCount(response.body().getShoppingCarts().get(i).getQuantity());
                         Home.cardItemsIds.add(localShoppingCartProductId);
-                        Log.e("cart Id : ", Home.cardItemsIds.get(i).getId() + " "+Home.cardItemsIds.get(i).getCount());
+                        Log.e("cart Id : ", Home.cardItemsIds.get(i).getId() + " " + Home.cardItemsIds.get(i).getCount());
                     }
 
-                    SaveSharedPreference.setCartIds(context,Home.cardItemsIds);
+                    SaveSharedPreference.setCartIds(context, Home.cardItemsIds);
 
 
                 } else {
@@ -977,5 +996,8 @@ public class Home extends AppCompatActivity  {
         }
         return result;
     }
+
+
+
 
 }

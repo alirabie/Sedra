@@ -1,9 +1,5 @@
 package sedra.appsmatic.com.sedra.Activites;
 
-import android.animation.LayoutTransition;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,15 +8,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.StrictMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -31,49 +24,31 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.craftman.cardform.Card;
-import com.craftman.cardform.CardForm;
-import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
-import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
-import com.oppwa.mobile.connect.checkout.dialog.PaymentButtonFragment;
-import com.oppwa.mobile.connect.checkout.meta.CheckoutSecurityPolicyMode;
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 import com.oppwa.mobile.connect.exception.PaymentError;
 import com.oppwa.mobile.connect.exception.PaymentException;
-import com.oppwa.mobile.connect.payment.CheckoutInfo;
 import com.oppwa.mobile.connect.payment.PaymentParams;
 import com.oppwa.mobile.connect.payment.card.CardPaymentParams;
 import com.oppwa.mobile.connect.provider.Connect;
-import com.oppwa.mobile.connect.provider.ITransactionListener;
 import com.oppwa.mobile.connect.provider.Transaction;
+import com.oppwa.mobile.connect.provider.TransactionType;
 import com.oppwa.mobile.connect.service.ConnectService;
 import com.oppwa.mobile.connect.service.IProviderBinder;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sedra.appsmatic.com.sedra.API.Models.Orders.NewOrder;
-import sedra.appsmatic.com.sedra.API.Models.Orders.Order;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderItem;
-import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
-import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResPaymentAction;
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResCheckoutId;
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResponseData;
 import sedra.appsmatic.com.sedra.API.Models.ShoppingCart.ResCartItems;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
@@ -81,7 +56,6 @@ import sedra.appsmatic.com.sedra.Adabters.CartAdb;
 import sedra.appsmatic.com.sedra.Adabters.PaymentTypeAdapter;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
-import sedra.appsmatic.com.sedra.RequestPayment;
 
 public class ShoppingCart extends AppCompatActivity  {
 
@@ -92,11 +66,14 @@ public class ShoppingCart extends AppCompatActivity  {
     private String cardBrand="";
     String price ="100.0";
     private RecyclerView itemsList;
-    private ResPaymentAction requestPayment;
+    private ResponseData requestPayment;
     private ProgressBar progressBar;
     private TextView emptyFlag,totalPrice,finalTotalprice;
     private Boolean isReadyToPay;
 
+
+    private IProviderBinder binder;
+    private ServiceConnection serviceConnection;
 
 
 
@@ -111,7 +88,7 @@ public class ShoppingCart extends AppCompatActivity  {
         totalPrice=(TextView)findViewById(R.id.total_price);
         finalTotalprice=(TextView)findViewById(R.id.final_total_price);
         progressBar = (ProgressBar)findViewById(R.id.progressbar_cart);
-        requestPayment=new ResPaymentAction();
+        requestPayment=new ResponseData();
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -126,6 +103,28 @@ public class ShoppingCart extends AppCompatActivity  {
         emptyFlag.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
+        //Connect to Payment Server
+        serviceConnection= new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                binder = (IProviderBinder) service;
+        /* we have a connection to the service */
+                Log.e("Payment Connection : ","Connected");
+                try {
+                    binder.initializeProvider(Connect.ProviderMode.TEST);
+                } catch (PaymentException ee) {
+	    /* error occurred */
+                    Log.e("Payment Error : ",ee.getMessage());
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                binder = null;
+
+                Log.e("Payment Connection : ","Not Connected");
+            }
+        };
 
 
 
@@ -181,12 +180,6 @@ public class ShoppingCart extends AppCompatActivity  {
                                 totalPrice.setText(total+" "+ Home.currency.getSymbol());
                                 finalTotalprice.setText(total+" "+ Home.currency.getSymbol());
                             }
-
-
-
-
-
-
 
                         }
 
@@ -271,12 +264,43 @@ public class ShoppingCart extends AppCompatActivity  {
                 if(cridetCards.getText().toString().isEmpty()){
                     cridetCards.setError(getResources().getString(R.string.selectcard));
                 }else {
-                    startActivity(new Intent(ShoppingCart.this, PaymentScreen.class)
-                            .putExtra("cardBrand", cardBrand)
-                            .putExtra("totalPrice", totalPrice.getText()));
-                    ShoppingCart.this.finish();
-                }
 
+                    //Get Checkout Id from server by add here amount
+                    Generator.createService(SedraApi.class).getCheckOutId(100, Home.currency.getSymbol()).enqueue(new Callback<ResCheckoutId>() {
+                        @Override
+                        public void onResponse(Call<ResCheckoutId> call, Response<ResCheckoutId> response) {
+                            if (response.isSuccessful()) {
+                                Log.e("checkout Id : ", response.body().getResponseData().getId());
+
+                                //Start Payment screen
+                                Set<String> paymentBrands = new LinkedHashSet<String>();
+                                paymentBrands.add(cardBrand);
+                                CheckoutSettings checkoutSettings = new CheckoutSettings(response.body().getResponseData().getId(), paymentBrands);
+                                Intent intent = new Intent(ShoppingCart.this, CheckoutActivity.class);
+                                intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
+                                startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+
+
+                            } else {
+                                try {
+                                    Toast.makeText(ShoppingCart.this, response.errorBody().string() + "Response not success from requst checkout id", Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResCheckoutId> call, Throwable t) {
+
+
+                            Toast.makeText(getApplicationContext(), "Checkout Id connection error : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
 
 
             }
@@ -285,7 +309,18 @@ public class ShoppingCart extends AppCompatActivity  {
         });
 
 
+/*
+                //Check if card brand selected
+                if(cridetCards.getText().toString().isEmpty()){
+                    cridetCards.setError(getResources().getString(R.string.selectcard));
+                }else {
+                    startActivity(new Intent(ShoppingCart.this, PaymentScreen.class)
+                            .putExtra("cardBrand", cardBrand)
+                            .putExtra("totalPrice", totalPrice.getText()));
+                    ShoppingCart.this.finish();
+                }
 
+*/
 
 
 
@@ -296,6 +331,25 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Intent intent = new Intent(this, ConnectService.class);
+
+        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        unbindService(serviceConnection);
+        stopService(new Intent(this, ConnectService.class));
+    }
 
 
 
@@ -307,5 +361,36 @@ public class ShoppingCart extends AppCompatActivity  {
         super.onPause();
         orderItems.clear();
     }
+
+
+
+
+
+
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case CheckoutActivity.RESULT_OK:
+            /* transaction completed */
+                Transaction transaction = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION);
+                Toast.makeText(ShoppingCart.this,transaction.getPaymentParams().getCheckoutId(),Toast.LENGTH_SHORT).show();
+
+                break;
+            case CheckoutActivity.RESULT_CANCELED:
+            /* shopper canceled the checkout process */
+                break;
+            case CheckoutActivity.RESULT_ERROR:
+            /* error occurred */
+                PaymentError error = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR);
+
+                Toast.makeText(ShoppingCart.this,error.getErrorMessage()+"  "+error.getErrorInfo(),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 }

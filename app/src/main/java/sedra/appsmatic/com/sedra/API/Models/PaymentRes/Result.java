@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Eng Ali on 6/5/2017.
+ * Created by Eng Ali on 11/1/2017.
  */
 public class Result {
     @SerializedName("code")

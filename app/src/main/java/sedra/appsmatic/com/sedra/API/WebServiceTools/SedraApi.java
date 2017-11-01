@@ -19,6 +19,7 @@ import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.District.Districts;
 import sedra.appsmatic.com.sedra.API.Models.Orders.OrderResponse;
 import sedra.appsmatic.com.sedra.API.Models.Orders.ResDeleteOrderItem;
+import sedra.appsmatic.com.sedra.API.Models.PaymentRes.ResCheckoutId;
 import sedra.appsmatic.com.sedra.API.Models.PresentCards.ReqPresentCard;
 import sedra.appsmatic.com.sedra.API.Models.Productes.Product;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
@@ -181,6 +182,11 @@ public interface SedraApi {
     //Get vendor schedule intervals
     @GET("api/vendors/schedule/{VendorId}")
     Call<ResVendorsSch>getVendorSchedule(@Path("VendorId")String vendorId);
+
+
+    //Request Payment Checkout
+    @POST("api/payment/checkout")
+    Call<ResCheckoutId> getCheckOutId(@Query("amount") int amount,@Query("currency") String currency);
 
 
 }
