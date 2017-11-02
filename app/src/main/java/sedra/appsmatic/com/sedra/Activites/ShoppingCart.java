@@ -24,6 +24,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 import com.oppwa.mobile.connect.exception.PaymentError;
@@ -37,10 +39,17 @@ import com.oppwa.mobile.connect.service.ConnectService;
 import com.oppwa.mobile.connect.service.IProviderBinder;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.AttributedCharacterIterator;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import retrofit2.Call;
@@ -64,12 +73,12 @@ public class ShoppingCart extends AppCompatActivity  {
     private BetterSpinner cridetCards;
     private String[] contentArray ={"VISA","MASTER"};
     private String cardBrand="";
-    String price ="100.0";
     private RecyclerView itemsList;
     private ResponseData requestPayment;
     private ProgressBar progressBar;
     private TextView emptyFlag,totalPrice,finalTotalprice;
     private Boolean isReadyToPay;
+    static Double total;
 
 
     private IProviderBinder binder;
@@ -172,7 +181,7 @@ public class ShoppingCart extends AppCompatActivity  {
 
 
                             //Calc total price for cart
-                            Double total=0.0;
+                            total=0.00;
                             if(!response.body().getShoppingCarts().isEmpty()) {
                                 for (int i = 0; i < response.body().getShoppingCarts().size(); i++) {
                                     total = total + response.body().getShoppingCarts().get(i).getQuantity() * response.body().getShoppingCarts().get(i).getProduct().getPrice();
@@ -260,49 +269,79 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
+                //in case of shopping cart not empty
+                if(isReadyToPay) {
                 //Check if card brand selected
                 if(cridetCards.getText().toString().isEmpty()){
                     cridetCards.setError(getResources().getString(R.string.selectcard));
                 }else {
-
-                    //Get Checkout Id from server by add here amount
-                    Generator.createService(SedraApi.class).getCheckOutId(100, Home.currency.getSymbol()).enqueue(new Callback<ResCheckoutId>() {
-                        @Override
-                        public void onResponse(Call<ResCheckoutId> call, Response<ResCheckoutId> response) {
-                            if (response.isSuccessful()) {
-                                Log.e("checkout Id : ", response.body().getResponseData().getId());
-
-                                //Start Payment screen
-                                Set<String> paymentBrands = new LinkedHashSet<String>();
-                                paymentBrands.add(cardBrand);
-                                CheckoutSettings checkoutSettings = new CheckoutSettings(response.body().getResponseData().getId(), paymentBrands);
-                                Intent intent = new Intent(ShoppingCart.this, CheckoutActivity.class);
-                                intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
-                                startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+                        //Get Checkout Id from server by add here amount
 
 
-                            } else {
-                                try {
-                                    Toast.makeText(ShoppingCart.this, response.errorBody().string() + "Response not success from requst checkout id", Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+
+
+                    NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
+                    DecimalFormat formatter = (DecimalFormat)nf;
+                    formatter.applyPattern("0.00");
+                    String decodedAmount=  formatter.format(total);
+                    String currency="";
+
+                    if(Home.currency.getCurrencyCode().equals("SAR")){
+                        currency="SAR";
+                    }else if(Home.currency.getCurrencyCode().equals("KWD")){
+                        currency="KWD";
+                    }
+
+                    Log.e("totlaa", decodedAmount+" "+currency);
+
+                            Generator.createService(SedraApi.class).getCheckOutId(decodedAmount,currency).enqueue(new Callback<ResCheckoutId>() {
+                                @Override
+                                public void onResponse(Call<ResCheckoutId> call, Response<ResCheckoutId> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.e("checkout Id : ", response.body().getResponseData().getId());
+
+                                        //Start Payment screen
+                                        Set<String> paymentBrands = new LinkedHashSet<String>();
+                                        paymentBrands.add(cardBrand);
+                                        CheckoutSettings checkoutSettings = new CheckoutSettings(response.body().getResponseData().getId(), paymentBrands);
+                                        Intent intent = new Intent(ShoppingCart.this, CheckoutActivity.class);
+                                        intent.putExtra(CheckoutActivity.CHECKOUT_SETTINGS, checkoutSettings);
+                                        startActivityForResult(intent, CheckoutActivity.CHECKOUT_ACTIVITY);
+
+
+                                    } else {
+                                        try {
+                                            Toast.makeText(ShoppingCart.this, response.errorBody().string() + "Response not success from requst checkout id", Toast.LENGTH_SHORT).show();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
                                 }
 
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResCheckoutId> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<ResCheckoutId> call, Throwable t) {
 
 
-                            Toast.makeText(getApplicationContext(), "Checkout Id connection error : " + t.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                                    Toast.makeText(getApplicationContext(), "Checkout Id connection error : " + t.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                    }
+                }else {
 
+                    //in case of shopping cart is empty
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(ShoppingCart.this);
+                    dialogBuilder
+                            .withTitle(getResources().getString(R.string.sedra))
+                            .withDialogColor(R.color.colorPrimary)
+                            .withTitleColor("#FFFFFF")
+                            .withIcon(getResources().getDrawable(R.drawable.icon))
+                            .withDuration(700)                                          //def
+                            .withEffect(Effectstype.RotateBottom)
+                            .withMessage(getResources().getString(R.string.paynotallaw))
+                            .show();
                 }
-
-
             }
 
 
@@ -377,16 +416,17 @@ public class ShoppingCart extends AppCompatActivity  {
             case CheckoutActivity.RESULT_OK:
             /* transaction completed */
                 Transaction transaction = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION);
-                Toast.makeText(ShoppingCart.this,transaction.getPaymentParams().getCheckoutId(),Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(getApplication(),"transaction successful"+" Checkout Id : "+transaction.getPaymentParams().getCheckoutId(),Toast.LENGTH_LONG).show();
+                ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_CANCELED:
             /* shopper canceled the checkout process */
+                Toast.makeText(getApplication(),"shopper canceled the checkout process",Toast.LENGTH_LONG).show();
+                ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_ERROR:
             /* error occurred */
                 PaymentError error = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR);
-
                 Toast.makeText(ShoppingCart.this,error.getErrorMessage()+"  "+error.getErrorInfo(),Toast.LENGTH_SHORT).show();
         }
     }

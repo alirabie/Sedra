@@ -130,7 +130,7 @@ public class PaymentScreen extends AppCompatActivity  implements ITransactionLis
             public void onClick(final Card card) {
 
                 //Get Checkout Id from server
-                Generator.createService(SedraApi.class).getCheckOutId(100, Home.currency.getSymbol()).enqueue(new Callback<ResCheckoutId>() {
+                Generator.createService(SedraApi.class).getCheckOutId("10", Home.currency.getSymbol()).enqueue(new Callback<ResCheckoutId>() {
                     @Override
                     public void onResponse(Call<ResCheckoutId> call, Response<ResCheckoutId> response) {
                         if (response.isSuccessful()) {

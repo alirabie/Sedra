@@ -186,7 +186,7 @@ public interface SedraApi {
 
     //Request Payment Checkout
     @POST("api/payment/checkout")
-    Call<ResCheckoutId> getCheckOutId(@Query("amount") int amount,@Query("currency") String currency);
+    Call<ResCheckoutId> getCheckOutId(@Query("amount") String amount,@Query("currency") String currency);
 
 
 }
