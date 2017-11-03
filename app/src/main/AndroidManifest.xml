@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="sedra.appsmatic.com.sedra">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -107,12 +108,6 @@
             android:name="com.oppwa.mobile.connect.service.ConnectService"
             android:exported="false" />
 
-        <activity
-            android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.Checkout.Dark"
-            android:windowSoftInputMode="adjustPan" />
 
         <receiver
             android:name=".CheckoutBroadcastReceiver"
@@ -121,6 +116,14 @@
                 <action android:name="com.oppwa.mobile.connect.checkout.ACTION_PAYMENT_METHOD_SELECTED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            tools:replace="android:theme"
+            android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
+            android:theme="@style/Theme.Checkout.Light"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false"
+            android:launchMode="singleTop"/>
 
         <activity android:name=".Activites.PresentCard"
                   android:theme="@style/AppTheme.NoActionBar"></activity>

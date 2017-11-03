@@ -428,6 +428,7 @@ public class ShoppingCart extends AppCompatActivity  {
             /* error occurred */
                 PaymentError error = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR);
                 Toast.makeText(ShoppingCart.this,error.getErrorMessage()+"  "+error.getErrorInfo(),Toast.LENGTH_SHORT).show();
+                Log.e("errrrrr",error.getErrorMessage()+"  "+error.getErrorInfo());
         }
     }
 
