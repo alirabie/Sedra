@@ -149,5 +149,7 @@
     <string name="additem">Added to your current order</string>
     <string name="removeitem">Removed from your current order</string>
     <string name="updateorder">Your Current Order has been Updated</string>
+    <string name="paymentcancled">Payment Operation Canceled</string>
+    <string name="paymentdone">Payment Operation Success</string>
 
 </resources>

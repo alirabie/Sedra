@@ -74,7 +74,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activites.ShoppingCart"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
         <activity
             android:name=".Activites.FavoritesScreen"
             android:theme="@style/AppTheme.NoActionBar" />

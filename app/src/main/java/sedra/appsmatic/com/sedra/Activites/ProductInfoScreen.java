@@ -274,8 +274,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
 
                                  //Update current order by new item
                                     if(!SaveSharedPreference.getOrderId(ProductInfoScreen.this).equals("")){
-
-
                                         //Check if product id that we want add Exist in Shopping Cart or not
                                        if(Home.IsIdExistInShoppingCart(ProductInfoScreen.this,Integer.parseInt(getIntent().getStringExtra("product_id")))){
                                            //in case of exist Invoke Update order method
@@ -296,8 +294,6 @@ public class ProductInfoScreen extends ActionBarActivity implements BaseSliderVi
                                            newOrderItem.setOrderItem(orderItem);
                                            Home.addItemToOrder(ProductInfoScreen.this, SaveSharedPreference.getOrderId(ProductInfoScreen.this), newOrderItem);
                                        }
-
-
 
                                     }
 

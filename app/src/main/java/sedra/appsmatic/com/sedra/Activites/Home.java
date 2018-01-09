@@ -100,7 +100,10 @@ public class Home extends AppCompatActivity  {
     public static ImageView flwerBtn,giftBtn,cookiesBtn,plantsBtn;
     public static RecyclerView sideMenu;
     public static Currency currency;
-
+    String countryId;
+     String stateId;
+     String countryName;
+     String stateName;
 
 
     public static List<LocalShoppingCartProductId>cardItemsIds=new ArrayList<>();
@@ -115,24 +118,6 @@ public class Home extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -175,10 +160,10 @@ public class Home extends AppCompatActivity  {
 
 
         //Receive vendorsIds from countries screen
-        final String countryId=getIntent().getStringExtra("country_id");
-        final String stateId=getIntent().getStringExtra("stateId");
-        final String countryName=getIntent().getStringExtra("countryname");
-        final String stateName=getIntent().getStringExtra("statename");
+        countryId=getIntent().getStringExtra("country_id");
+        stateId=getIntent().getStringExtra("stateId");
+        countryName=getIntent().getStringExtra("countryname");
+        stateName=getIntent().getStringExtra("statename");
 
 
         //Toast.makeText(getApplicationContext(),countryId+"   "+stateId,Toast.LENGTH_LONG).show();
@@ -291,7 +276,9 @@ public class Home extends AppCompatActivity  {
         //Default Product list
         Products products2 = new Products();
         Bundle bundle = new Bundle();
-        //put here id to send to fragment
+        bundle.putString("flag","filter");
+        bundle.putString("countryKey",countryName);
+        bundle.putString("stateKey",stateName);
         products2.setArguments(bundle);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -508,7 +495,9 @@ public class Home extends AppCompatActivity  {
 
             Products products2 = new Products();
             Bundle bundle = new Bundle();
-            //put here id to send to fragment
+            bundle.putString("flag","filter");
+            bundle.putString("countryKey",countryName);
+            bundle.putString("stateKey",stateName);
             products2.setArguments(bundle);
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();

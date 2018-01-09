@@ -269,6 +269,9 @@ public class ShoppingCart extends AppCompatActivity  {
                 payBtn.clearAnimation();
                 payBtn.setAnimation(anim);
 
+
+               Log.e("result Path",CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH) ;
+
                 //in case of shopping cart not empty
                 if(isReadyToPay) {
                 //Check if card brand selected
@@ -376,7 +379,6 @@ public class ShoppingCart extends AppCompatActivity  {
         super.onStart();
 
         Intent intent = new Intent(this, ConnectService.class);
-
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -416,12 +418,13 @@ public class ShoppingCart extends AppCompatActivity  {
             case CheckoutActivity.RESULT_OK:
             /* transaction completed */
                 Transaction transaction = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION);
-                Toast.makeText(getApplication(),"transaction successful"+" Checkout Id : "+transaction.getPaymentParams().getCheckoutId(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),getResources().getString(R.string.paymentdone),Toast.LENGTH_LONG).show();
+                Log.e(" Done Checkout Id : ",transaction.getPaymentParams().getCheckoutId());
                 ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_CANCELED:
             /* shopper canceled the checkout process */
-                Toast.makeText(getApplication(),"shopper canceled the checkout process",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),getResources().getString(R.string.paymentcancled),Toast.LENGTH_LONG).show();
                 ShoppingCart.this.finish();
                 break;
             case CheckoutActivity.RESULT_ERROR:

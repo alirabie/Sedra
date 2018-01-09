@@ -149,5 +149,7 @@
     <string name="additem">تم الاضافة لطلبك الحالى</string>
     <string name="removeitem">تم الحذف من طلبك الحالى</string>
     <string name="updateorder">تم تحديث طلبك الحالى</string>
+    <string name="paymentcancled">تم الغاء عملية الدفع</string>
+    <string name="paymentdone">تمت عملية الدفع بنجاح</string>
 
 </resources>
