@@ -22,34 +22,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:gravity="center">
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/plants_btn"
-        android:layout_weight="1"
-        android:src="@drawable/plantsbtnunactive"/>
+        android:src="@drawable/plantsbtnunactive"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/cookies_btn"
-        android:layout_weight="1"
-        android:src="@drawable/cookiesbtnunactive"/>
+        android:src="@drawable/cookiesbtnunactive"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/gift_btn"
-        android:layout_weight="1"
-        android:src="@drawable/giftbtnunactive"/>
+        android:src="@drawable/giftbtnunactive"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/flower_btn"
-        android:layout_weight="1"
-        android:src="@drawable/flowerbtnunactive"/>
+        android:src="@drawable/flowerbtnunactive"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -59,8 +64,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,7 +72,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/customespanner"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:layout_margin="5dp">
                 <com.weiwangcn.betterspinner.library.BetterSpinner
                     android:id="@+id/countrydown"
@@ -88,7 +92,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/customespanner"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:layout_margin="5dp">
                 <com.weiwangcn.betterspinner.library.BetterSpinner
                     android:id="@+id/citydown"

@@ -119,15 +119,18 @@ public class CustomerProfile extends Fragment {
 
 
         //fill inputs from saved data
-        emailInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getEmail() + "");
-        fNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getFirstName()+"");
-        lNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getLastName() + "");
-        //filterCountries.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCountry().toString()+"");
-        //filterStates.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getProvince().toString()+"");
-        //filterdistructs.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCity().toString()+"");
-        address1.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getAddress1().toString()+"");
-        phoneInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getPhoneNumber().toString() + "");
+        try {
+            emailInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getEmail() + "");
+            fNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getFirstName() + "");
+            lNameInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getLastName() + "");
+            //filterCountries.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCountry().toString()+"");
+            //filterStates.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getProvince().toString()+"");
+            //filterdistructs.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getCity().toString()+"");
+            address1.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getAddress1().toString() + "");
+            phoneInput.setText(SaveSharedPreference.getCustomerInfo(getContext()).getCustomers().get(0).getBillingAddress().getPhoneNumber().toString() + "");
+        }catch (Exception e){
 
+        }
 
 
         //get countries by id

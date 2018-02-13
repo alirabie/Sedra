@@ -61,12 +61,6 @@
             android:name=".Activites.Filter"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".Activites.AboutUsScreen"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activites.ContactUsScreen"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Activites.DeliveryDateScreen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

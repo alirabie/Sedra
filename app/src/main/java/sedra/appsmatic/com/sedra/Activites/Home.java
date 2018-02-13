@@ -102,8 +102,8 @@ public class Home extends AppCompatActivity  {
     public static Currency currency;
     String countryId;
      String stateId;
-     String countryName;
-     String stateName;
+     public static  String countryName;
+     public static  String stateName;
 
 
     public static List<LocalShoppingCartProductId>cardItemsIds=new ArrayList<>();
@@ -188,7 +188,10 @@ public class Home extends AppCompatActivity  {
                 Products flowers = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","1");
+                bundle.putString("flag","filter");
+                bundle.putString("countryKey",countryName);
+                bundle.putString("stateKey",stateName);
+                bundle.putString("categoryKey","1");
                 flowers.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -214,7 +217,10 @@ public class Home extends AppCompatActivity  {
                 Products gifts = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","2");
+                bundle.putString("flag","filter");
+                bundle.putString("countryKey",countryName);
+                bundle.putString("stateKey",stateName);
+                bundle.putString("categoryKey","2");
                 gifts.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -238,7 +244,10 @@ public class Home extends AppCompatActivity  {
                 Products cookies = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","3");
+                bundle.putString("flag","filter");
+                bundle.putString("countryKey",countryName);
+                bundle.putString("stateKey",stateName);
+                bundle.putString("categoryKey","3");
                 cookies.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -259,7 +268,10 @@ public class Home extends AppCompatActivity  {
                 Products plants = new Products();
                 Bundle bundle = new Bundle();
                 //put here id to send to fragment
-                bundle.putString("id","10");
+                bundle.putString("flag","filter");
+                bundle.putString("countryKey",countryName);
+                bundle.putString("stateKey",stateName);
+                bundle.putString("categoryKey","10");
                 plants.setArguments(bundle);
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
@@ -491,8 +503,7 @@ public class Home extends AppCompatActivity  {
             drawer.closeDrawer(GravityCompat.START);
 
         } else {
-
-
+            
             Products products2 = new Products();
             Bundle bundle = new Bundle();
             bundle.putString("flag","filter");

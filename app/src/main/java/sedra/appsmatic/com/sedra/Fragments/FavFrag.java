@@ -1,23 +1,16 @@
-package sedra.appsmatic.com.sedra.Activites;
+package sedra.appsmatic.com.sedra.Fragments;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Build;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,48 +19,40 @@ import android.widget.Toast;
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
-import java.util.HashMap;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sedra.appsmatic.com.sedra.API.Models.Customers.RegResponse;
 import sedra.appsmatic.com.sedra.API.Models.Productes.ResProducts;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.Generator;
 import sedra.appsmatic.com.sedra.API.WebServiceTools.SedraApi;
+import sedra.appsmatic.com.sedra.Activites.FavoritesScreen;
+import sedra.appsmatic.com.sedra.Activites.Home;
 import sedra.appsmatic.com.sedra.Adabters.ProductsAdb;
-import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
 import sedra.appsmatic.com.sedra.R;
 
-public class FavoritesScreen extends AppCompatActivity {
+
+public class FavFrag extends Fragment {
 
 
-    private ImageView home;
     private RecyclerView proudctsList;
     private ProgressBar progressBar;
     private static TextView emptySign;
     private String ids;
     ProductsAdb productsAdb;
 
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_favorite_screen, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_favorite_screen);
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //Check Os Ver For Set Status Bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
-
-
-        progressBar = (ProgressBar)findViewById(R.id.fav_progressbar);
-        emptySign=(TextView)findViewById(R.id.fav_empty_tv);
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //Setup items
+        progressBar = (ProgressBar)view.findViewById(R.id.fav_progressbar);
+        emptySign=(TextView)view.findViewById(R.id.fav_empty_tv);
         emptySign.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         ids="";
@@ -92,31 +77,31 @@ public class FavoritesScreen extends AppCompatActivity {
                         }
 
                         try {
-                            proudctsList = (RecyclerView)findViewById(R.id.fav_prouductslist);
-                            productsAdb=new ProductsAdb(response.body(), FavoritesScreen.this);
+                            proudctsList = (RecyclerView)view.findViewById(R.id.fav_prouductslist);
+                            productsAdb=new ProductsAdb(response.body(),getContext());
                             proudctsList.setAdapter(productsAdb);
                             productsAdb.notifyDataSetChanged();
-                            Display display = FavoritesScreen.this.getWindowManager().getDefaultDisplay();
+                            Display display = getActivity().getWindowManager().getDefaultDisplay();
                             DisplayMetrics outMetrics = new DisplayMetrics();
                             display.getMetrics(outMetrics);
                             float density = getResources().getDisplayMetrics().density;
                             float dpWidth = outMetrics.widthPixels / density;
                             int columns = Math.round(dpWidth / 130);
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(FavoritesScreen.this, columns);
+                            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), columns);
                             proudctsList.setLayoutManager(gridLayoutManager);
                         } catch (Exception e) {
 
                         }
 
                     } else {
-                        Toast.makeText(FavoritesScreen.this, "No response from favorite products ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "No response from favorite products ", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResProducts> call, Throwable t) {
 
-                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(FavoritesScreen.this);
+                    NiftyDialogBuilder dialogBuilder= NiftyDialogBuilder.getInstance(getContext());
                     dialogBuilder
                             .withTitle(getResources().getString(R.string.conectionerrorr))
                             .withDialogColor(R.color.colorPrimary)
@@ -137,10 +122,5 @@ public class FavoritesScreen extends AppCompatActivity {
         }
 
 
-
-
     }
-
-
-
 }

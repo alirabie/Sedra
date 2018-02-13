@@ -1,7 +1,6 @@
 package sedra.appsmatic.com.sedra.Adabters;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +17,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
-import sedra.appsmatic.com.sedra.Activites.AboutUsScreen;
-import sedra.appsmatic.com.sedra.Activites.ContactUsScreen;
 import sedra.appsmatic.com.sedra.Activites.DiscountedScreen;
 import sedra.appsmatic.com.sedra.Activites.FavoritesScreen;
 import sedra.appsmatic.com.sedra.Activites.FloatingLoginDialog;
@@ -35,7 +28,10 @@ import sedra.appsmatic.com.sedra.Activites.ShoppingCart;
 import sedra.appsmatic.com.sedra.Activites.SignInScreen;
 import sedra.appsmatic.com.sedra.Activites.SignUpScreen;
 import sedra.appsmatic.com.sedra.Activites.SplashScreen;
+import sedra.appsmatic.com.sedra.Fragments.AboutUsFrag;
+import sedra.appsmatic.com.sedra.Fragments.ContactUsFrag;
 import sedra.appsmatic.com.sedra.Fragments.CustomerProfile;
+import sedra.appsmatic.com.sedra.Fragments.FavFrag;
 import sedra.appsmatic.com.sedra.Fragments.Products;
 import sedra.appsmatic.com.sedra.Fragments.Settngs;
 import sedra.appsmatic.com.sedra.Prefs.SaveSharedPreference;
@@ -49,8 +45,12 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
     Context context;
     DrawerLayout drawer;
 
+   public static android.support.v4.app.FragmentManager fragmentManager;
+   public static android.support.v4.app.FragmentTransaction fragmentTransaction;
+
     public SideMenuAdb(Context context) {
         this.context = context;
+         fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
     }
 
     private int[] lablesLoggedIn={
@@ -112,6 +112,7 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
     @Override
     public void onBindViewHolder(vh1 holder, final int position) {
 
+
         if(SaveSharedPreference.getCustomerId(context).isEmpty()) {
 
             // In case of customer is logged out and customer id empty
@@ -133,9 +134,11 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             //Home
                             Products products = new Products();
                             Bundle bundle = new Bundle();
+                            bundle.putString("flag","filter");
+                            bundle.putString("countryKey",Home.countryName);
+                            bundle.putString("stateKey", Home.stateName);
                             products.setArguments(bundle);
-                            android.support.v4.app.FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.fragmentcontener, products);
                             fragmentTransaction.commit();
                             //un active all buttons
@@ -147,15 +150,24 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             break;
                         case 1:
                             Settngs settngs = new Settngs();
-                            android.support.v4.app.FragmentManager fragmentManager2 = ((FragmentActivity) context).getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                            fragmentTransaction2.replace(R.id.fragmentcontener, settngs);
-                            fragmentTransaction2.commit();
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, settngs);
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 2:
                             //Create new account
                             context.startActivity(new Intent(context, SignUpScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
 
@@ -185,8 +197,16 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             if(SaveSharedPreference.getCustomerId(context).isEmpty()){
                                 FloatingLoginDialog.startShow(context);
                             }else {
-                                context.startActivity(new Intent(context, FavoritesScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.fragmentcontener, new FavFrag());
+                                fragmentTransaction.commit();
+                                //un active all buttons
+                                Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                                Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                                Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                                Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                                 drawer.closeDrawer(GravityCompat.START);
+                                break;
                             }
 
 
@@ -195,12 +215,28 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         case 7:
 
                             //About Us
-                            context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, new AboutUsFrag());
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 8:
                             //Contact Us
-                            context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, new ContactUsFrag());
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 9:
@@ -236,8 +272,7 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                             Products products = new Products();
                             Bundle bundle = new Bundle();
                             products.setArguments(bundle);
-                            android.support.v4.app.FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.fragmentcontener, products);
                             fragmentTransaction.commit();
                             //un active all buttons
@@ -250,19 +285,27 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         case 1:
                             //settings
                             Settngs settngs = new Settngs();
-                            android.support.v4.app.FragmentManager fragmentManager2 = ((FragmentActivity) context).getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction2 = fragmentManager2.beginTransaction();
-                            fragmentTransaction2.replace(R.id.fragmentcontener, settngs);
-                            fragmentTransaction2.commit();
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, settngs);
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 2:
                             //My account
                             CustomerProfile customerProfile = new CustomerProfile();
-                            android.support.v4.app.FragmentManager fragmentManager3 = ((FragmentActivity) context).getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction fragmentTransaction3 = fragmentManager3.beginTransaction();
-                            fragmentTransaction3.replace(R.id.fragmentcontener, customerProfile);
-                            fragmentTransaction3.commit();
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, customerProfile);
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
 
@@ -285,19 +328,40 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
                         case 6:
 
                             //Favorite screen
-                            context.startActivity(new Intent(context, FavoritesScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, new FavFrag());
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
 
                         case 7:
 
                             //About Us
-                            context.startActivity(new Intent(context, AboutUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, new AboutUsFrag());
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 8:
                             //Contact Us
-                            context.startActivity(new Intent(context, ContactUsScreen.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.fragmentcontener, new ContactUsFrag());
+                            fragmentTransaction.commit();
+                            //un active all buttons
+                            Home.flwerBtn.setImageResource(R.drawable.flowerbtnunactive);
+                            Home.giftBtn.setImageResource(R.drawable.giftbtnunactive);
+                            Home.plantsBtn.setImageResource(R.drawable.plantsbtnunactive);
+                            Home.cookiesBtn.setImageResource(R.drawable.cookiesbtnunactive);
                             drawer.closeDrawer(GravityCompat.START);
                             break;
                         case 9:
@@ -315,40 +379,6 @@ public class SideMenuAdb extends RecyclerView.Adapter<SideMenuAdb.vh1> {
 
                 }
             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
